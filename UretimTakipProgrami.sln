@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami", "UretimTakipProgrami\UretimTakipProgrami.csproj", "{1AF6D2F0-52B9-4036-8C66-06561AF98E8E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4C4EA940-94CE-4229-89F5-C81942E47260} = {4C4EA940-94CE-4229-89F5-C81942E47260}
+		{8B7798A9-6C30-4DA7-8078-FE115E5A13A2} = {8B7798A9-6C30-4DA7-8078-FE115E5A13A2}
+		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2} = {90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.Entities", "UretimTakipProgrami.Entities\UretimTakipProgrami.Entities.csproj", "{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.DataAccess", "UretimTakipProgrami.DataAccess\UretimTakipProgrami.DataAccess.csproj", "{4C4EA940-94CE-4229-89F5-C81942E47260}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.Business", "UretimTakipProgrami.Business\UretimTakipProgrami.Business.csproj", "{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AF6D2F0-52B9-4036-8C66-06561AF98E8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AF6D2F0-52B9-4036-8C66-06561AF98E8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AF6D2F0-52B9-4036-8C66-06561AF98E8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AF6D2F0-52B9-4036-8C66-06561AF98E8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C4EA940-94CE-4229-89F5-C81942E47260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C4EA940-94CE-4229-89F5-C81942E47260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C4EA940-94CE-4229-89F5-C81942E47260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C4EA940-94CE-4229-89F5-C81942E47260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {05A5C86F-45FE-4D9F-AFAB-50E1D730A05C}
+	EndGlobalSection
+EndGlobal
