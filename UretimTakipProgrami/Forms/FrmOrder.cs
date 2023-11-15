@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using UretimTakipProgrami;
-using System.Windows.Forms.VisualStyles;
-using static System.Net.Mime.MediaTypeNames;
-using Microsoft.EntityFrameworkCore;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Forms;
-using System.Windows.Controls;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
 
 namespace UretimTakip.Forms
 {
     public partial class FrmOrder : Form
     {
-        private OrderRepository _orderRepository = new OrderRepository(FrmLogin.dbContext);
-        private ProductRepository _productRepository = new ProductRepository(FrmLogin.dbContext);
-        private CustomerRepository _customerRepository = new CustomerRepository(FrmLogin.dbContext);
+        private OrderRepository _orderRepository;
+        private ProductRepository _productRepository;
+        private CustomerRepository _customerRepository;
 
         private int selectedIndex = 0;
         private int monthCalendarNo = 0;
@@ -29,6 +19,10 @@ namespace UretimTakip.Forms
         public FrmOrder()
         {
             InitializeComponent();
+
+            _orderRepository = InstanceFactory.GetInstance<OrderRepository>();
+            _productRepository = InstanceFactory.GetInstance<ProductRepository>();
+            _customerRepository = InstanceFactory.GetInstance<CustomerRepository>();
 
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;

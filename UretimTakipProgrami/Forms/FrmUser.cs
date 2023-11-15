@@ -2,15 +2,16 @@
 using System.Data;
 using System.Security.Cryptography;
 using System.Text;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
 namespace UretimTakipProgrami.Forms
 {
     public partial class FrmUser : Form
     {
-        private UserRepository _userRepository = new UserRepository(FrmLogin.dbContext);
+        private UserRepository _userRepository;
 
         private int selectedIndex;
         private bool editMode = false;
@@ -18,6 +19,8 @@ namespace UretimTakipProgrami.Forms
         public FrmUser()
         {
             InitializeComponent();
+
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
 
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;

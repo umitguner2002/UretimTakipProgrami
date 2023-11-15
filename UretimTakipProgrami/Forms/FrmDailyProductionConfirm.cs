@@ -1,14 +1,15 @@
 ﻿
 using System.Security.Cryptography;
 using System.Text;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 
 namespace UretimTakipProgrami.Forms
 {
     public partial class FrmDailyProductionConfirm : Form
     {
-        private ProductionRepository _productionRepository = new ProductionRepository(FrmLogin.dbContext);
-        private UserRepository _userRepository = new UserRepository(FrmLogin.dbContext);
+        private ProductionRepository _productionRepository;
+        private UserRepository _userRepository;
 
         private string orderId;
 
@@ -19,6 +20,9 @@ namespace UretimTakipProgrami.Forms
             this.FormBorderStyle = FormBorderStyle.None;
             this.Text = string.Empty;
             this.ControlBox = false;
+
+            _productionRepository = InstanceFactory.GetInstance<ProductionRepository>();
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
 
             this.orderId = OrderId;
         }
@@ -36,7 +40,7 @@ namespace UretimTakipProgrami.Forms
             {
                 await _productionRepository.AddAsync(new()
                 {
-                    UserId = user.Id,
+                    User = user,
                     OrderId = Guid.Parse(orderId),
                     IsStarted = true
                 });

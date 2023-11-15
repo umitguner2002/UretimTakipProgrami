@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using Brush = System.Drawing.Brush;
 using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
@@ -9,12 +10,12 @@ namespace UretimTakipProgrami.Forms
 {
     public partial class FrmProduction : Form
     {
-        private OrderRepository _orderRepository = new OrderRepository(FrmLogin.dbContext);
-        private ProductionRepository _productionRepository = new ProductionRepository(FrmLogin.dbContext);
-        private ProductRepository _productRepository = new ProductRepository(FrmLogin.dbContext);
-        private MachineRepository _machineRepository = new MachineRepository(FrmLogin.dbContext);
-        private MachineProgramRepository _machineProgramRepository = new MachineProgramRepository(FrmLogin.dbContext);
-        private UserRepository _userRepository = new UserRepository(FrmLogin.dbContext);
+        private OrderRepository _orderRepository;
+        private ProductionRepository _productionRepository;
+        private ProductRepository _productRepository;
+        private MachineRepository _machineRepository;
+        private MachineProgramRepository _machineProgramRepository;
+        private UserRepository _userRepository;
 
         private FrmDailyProductionUpdate frmDailyProductionUpdate;
         private FrmDailyProductionConfirm frmDailyProductionConfirm;
@@ -22,8 +23,8 @@ namespace UretimTakipProgrami.Forms
         private int selectedIndex1 = 0;
         private int selectedIndex2 = 0;
         private int selectedIndex3 = 0; // Production List Index
-        private int selectedIndex4 = 0; //Daily Production List Index
-        private int selectedIndex5 = 0; //Daily Production Search Page Index
+        private int selectedIndex4 = 0; // Daily Production List Index
+        private int selectedIndex5 = 0; // Daily Production Search Page Index
 
         private int monthCalendarNo = 0;
 
@@ -35,6 +36,13 @@ namespace UretimTakipProgrami.Forms
         public FrmProduction()
         {
             InitializeComponent();
+
+            _orderRepository = InstanceFactory.GetInstance<OrderRepository>();
+            _productionRepository = InstanceFactory.GetInstance<ProductionRepository>();
+            _productRepository = InstanceFactory.GetInstance<ProductRepository>();
+            _machineRepository = InstanceFactory.GetInstance<MachineRepository>();
+            _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
 
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
@@ -58,41 +66,43 @@ namespace UretimTakipProgrami.Forms
                 })
                 .ToList();
 
-            listTezgah.DataSource = machineList;
-            listTezgah.DisplayMember = "Name";
-            listTezgah.ValueMember = "Id";
+            if(machineList !=  null ) 
+            {
+                listTezgah.DataSource = machineList;
+                listTezgah.DisplayMember = "Name";
+                listTezgah.ValueMember = "Id";
 
-            //listTezgah.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            //listTezgah.AutoCompleteSource = AutoCompleteSource.ListItems;
+                //listTezgah.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                //listTezgah.AutoCompleteSource = AutoCompleteSource.ListItems;
+            }
         }
 
         private void GetUserList()
         {
             var userList = _userRepository.GetAll()
-                .Select(u => new
+                .Select(user => new
                 {
-                    u.Id,
-                    u.Name
+                    user.Id,
+                    user.Name,
+                    user.IsOperator
                 })
+                .Where(u => u.IsOperator)
                 .ToList();
 
-            listAyarOperator.DataSource = userList;
-            listAyarOperator.DisplayMember = "Name";
-            listAyarOperator.ValueMember = "Id";
+            if(userList != null)
+            {
+                listAyarOperator.DataSource = userList;
+                listAyarOperator.DisplayMember = "Name";
+                listAyarOperator.ValueMember = "Id";
 
-            //listAyarOperator.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            //listAyarOperator.AutoCompleteSource = AutoCompleteSource.ListItems;
+                //listAyarOperator.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                //listAyarOperator.AutoCompleteSource = AutoCompleteSource.ListItems;
+            }
         }
 
         private void GetOrderList()
         {
             dataListOrder.DataSource = null;
-
-            var programList = _machineProgramRepository.GetAll().Select(mc => new
-            {
-                Id = mc.Id,
-                Name = mc.Name
-            });
 
             var orderList = _orderRepository.GetAll()
             .Select(order => new
@@ -109,7 +119,7 @@ namespace UretimTakipProgrami.Forms
                 customerId = order.Customer.Id,
                 order.IsWaiting,
                 order.IsProduction,
-                programName = programList.FirstOrDefault(p => p.Id == order.Product.MachineProgram.Id).Name
+                programName = order.Product.MachineProgram.Name
             })
             .Where(or => or.IsWaiting && !or.IsProduction)
             .OrderByDescending(order => order.orderAciliyet)
@@ -124,8 +134,6 @@ namespace UretimTakipProgrami.Forms
         {
             dataListOrderProduction.DataSource = null;
 
-            var userList = _userRepository.GetAll();
-
             var orderList = _orderRepository.GetAll()
             .Select(order => new
             {
@@ -137,8 +145,8 @@ namespace UretimTakipProgrami.Forms
                 orderAciliyet = order.IsUrgent ? Durumlar.Acil : "", // 5
                 order.Id, // 6
                 order.IsUrgent, // 7
-                orderMachine = order.Machine.Name, // 8
-                operatorName = userList.FirstOrDefault(u => u.Id == order.UserId).Name, // 9
+                machineName = order.Machine.Name != null ? order.Machine.Name : "", // 8
+                userName = order.User.Name != null ? order.User.Name : "", // 9
                 order.Description, // 10
                 order.IsWaiting, // 11
                 order.IsProduction, // 12
@@ -177,12 +185,12 @@ namespace UretimTakipProgrami.Forms
                 deliveryDate = order.DeliveryDate.ToLocalTime().Date,
                 orderAciliyet = order.IsUrgent ? Durumlar.Acil : "",
                 orderMachine = order.Machine.Name,
-                operatorName = userList.FirstOrDefault(u => u.Id == order.UserId).Name,
+                operatorName = order.User.Name,
                 order.Description,
                 order.Id,
                 order.IsWaiting,
                 order.IsProduction,
-                programName = programList.FirstOrDefault(p => p.Id == order.Product.MachineProgram.Id).Name,
+                programName = order.Product.MachineProgram.Name,
                 order.IsReady,
                 productionState = order.Productions
                     .Where(pr => pr.Order.Id == order.Id && pr.IsStarted)
@@ -224,8 +232,6 @@ namespace UretimTakipProgrami.Forms
             dataListDailyProduction.DataSource = null;
             bool startActive = false;
 
-            var userList = _userRepository.GetAll();
-
             if (dataListProduction.RowCount > 0)
             {
                 var dailyProductionList = _productionRepository.GetAll()
@@ -238,7 +244,7 @@ namespace UretimTakipProgrami.Forms
                         orderId = production.Order.Id,
                         production.Id,
                         production.IsStarted,
-                        userName = userList.FirstOrDefault(u => u.Id == production.UserId).Name
+                        userName = production.User.Name
                     })
                     .Select(pr => new
                     {
@@ -326,7 +332,7 @@ namespace UretimTakipProgrami.Forms
                     production.Wastage,
                     machineName = production.Order.Machine.Name,
                     operatorName = production.Order.User.Name,
-                    producedOperatorName = userList.FirstOrDefault(u => u.Id == production.UserId).Name,
+                    producedOperatorName = production.User.Name,
                     production.Order.Description,
                     programName = programList.FirstOrDefault(p => p.Id == production.Order.Product.MachineProgram.Id),
                     orderId = production.Order.Id,

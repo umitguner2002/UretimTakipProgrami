@@ -1,13 +1,14 @@
 ﻿
 using FluentValidation;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
 namespace UretimTakipProgrami.Business.Validators
 {
     public class CustomerValidator : AbstractValidator<Customer>
     {
-        private CustomerRepository _customerRepository = new CustomerRepository(new DataAccess.ProductionDbContext());
+        private CustomerRepository _customerRepository;
 
         public CustomerValidator() 
         {
@@ -20,6 +21,7 @@ namespace UretimTakipProgrami.Business.Validators
             RuleFor(c => c.Mail)
             .EmailAddress().When(customer => !string.IsNullOrEmpty(customer.Mail)).WithMessage("Geçerli bir e-posta adresi girin.");
 
+            _customerRepository = InstanceFactory.GetInstance<CustomerRepository>();
         }
 
         private bool IsUniqueName(string name)

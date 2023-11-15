@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Linq.Expressions;
-using UretimTakipProgrami.DataAccess.Repositories.Abstractions;
+using UretimTakipProgrami.Business.Repositories.Abstractions;
+using UretimTakipProgrami.DataAccess;
 using UretimTakipProgrami.Entities.Common;
 
-namespace UretimTakipProgrami.DataAccess.Repositories.Concretes
+namespace UretimTakipProgrami.Business.Repositories.Concretes
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {

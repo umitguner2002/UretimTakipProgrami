@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
 namespace UretimTakipProgrami.Forms
@@ -14,14 +15,17 @@ namespace UretimTakipProgrami.Forms
 
         private int remainQuantity = 0;
 
-
-        private ProductionRepository _productionRepository = new ProductionRepository(FrmLogin.dbContext);
-        private UserRepository _userRepository = new UserRepository(FrmLogin.dbContext);
-        private OrderRepository _orderRepository = new OrderRepository(FrmLogin.dbContext);
+        private ProductionRepository _productionRepository;
+        private UserRepository _userRepository;
+        private OrderRepository _orderRepository;
 
         public FrmDailyProductionUpdate(bool EditMode, Production pr, int remainQuantity)
         {
             InitializeComponent();
+
+            _productionRepository = InstanceFactory.GetInstance<ProductionRepository>();
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();    
+            _orderRepository = InstanceFactory.GetInstance<OrderRepository>();
 
             this.FormBorderStyle = FormBorderStyle.None;
             this.Text = string.Empty;
@@ -34,7 +38,7 @@ namespace UretimTakipProgrami.Forms
 
         private void FrmDailyProductionUpdate_Load(object sender, EventArgs e)
         {
-            var user = _userRepository.GetWhere(u => u.Id == production.UserId).FirstOrDefault();
+            var user = _userRepository.GetWhere(u => u.Id == production.User.Id).FirstOrDefault();
 
             txtKullaniciAdi.Text = user.Name.ToString();
             txtDefoluMiktarı.Value = txtDefoluMiktarı.Minimum;
@@ -58,7 +62,7 @@ namespace UretimTakipProgrami.Forms
         {
             order = _orderRepository.GetWhere(x => x.Id == production.OrderId).FirstOrDefault();
 
-            var user = _userRepository.GetWhere(u => u.Id == production.UserId && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
+            var user = _userRepository.GetWhere(u => u.Id == production.User.Id && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
 
             if((remainQuantity - txtUretimMiktarı.Value) > -1)
             {

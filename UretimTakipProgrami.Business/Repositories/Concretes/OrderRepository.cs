@@ -1,8 +1,9 @@
 ﻿
-using UretimTakipProgrami.DataAccess.Repositories.Abstractions;
+using UretimTakipProgrami.Business.Repositories.Abstractions;
+using UretimTakipProgrami.DataAccess;
 using UretimTakipProgrami.Entities;
 
-namespace UretimTakipProgrami.DataAccess.Repositories.Concretes
+namespace UretimTakipProgrami.Business.Repositories.Concretes
 {
     public class OrderRepository : Repository<Order>, IOrderRepository
     {

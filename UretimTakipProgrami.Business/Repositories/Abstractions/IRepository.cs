@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using UretimTakipProgrami.Entities.Common;
 
-namespace UretimTakipProgrami.DataAccess.Repositories.Abstractions
+namespace UretimTakipProgrami.Business.Repositories.Abstractions
 {
     public interface IRepository<T> where T : class, IBaseEntity
     {

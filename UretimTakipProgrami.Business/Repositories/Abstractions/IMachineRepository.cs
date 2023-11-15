@@ -1,6 +1,6 @@
 ﻿using UretimTakipProgrami.Entities;
 
-namespace UretimTakipProgrami.DataAccess.Repositories.Abstractions
+namespace UretimTakipProgrami.Business.Repositories.Abstractions
 {
     public interface IMachineRepository : IRepository<Machine>
     {

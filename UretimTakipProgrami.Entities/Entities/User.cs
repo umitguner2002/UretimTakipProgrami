@@ -21,5 +21,7 @@ namespace UretimTakipProgrami.Entities
         public bool IsOperator { get; set; }
 
         public bool IsActive { get; set; }
+
+        public ICollection<Production> Productions { get; set; }
     }
 }

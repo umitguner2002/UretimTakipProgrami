@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using UretimTakipProgrami.Forms;
 using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using UretimTakipProgrami.Entities;
+using UretimTakipProgrami.Business.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.DataAccess;
 
 namespace UretimTakipProgrami
@@ -10,16 +10,19 @@ namespace UretimTakipProgrami
     public partial class FrmLogin : Form
     {
 
-        public static ProductionDbContext dbContext = new ProductionDbContext();
+        private UserRepository _userRepository;
+        private ProductionDbContext _dbContext;
 
         public FrmLogin()
         {
             InitializeComponent();
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
+            _dbContext = InstanceFactory.GetInstance<ProductionDbContext>();
         }
 
         private void btnGiris_Click(object sender, EventArgs e)
         {
-            var user = dbContext.Users.Where(u => u.Username == txtKullaniciAdi.Text && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
+            var user = _userRepository.GetWhere(u => u.Username == txtKullaniciAdi.Text && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
 
             if (user != null)
             {
@@ -41,79 +44,24 @@ namespace UretimTakipProgrami
 
         private void FrmLogin_Load(object sender, EventArgs e)
         {
-            string directoryPath = Application.StartupPath;
-            string imageTargetPath = Path.Combine(directoryPath, $"Files\\Images"); // Ürün resimlerinin kaydedileceği klasörü oluştur.
-            string programsTargetPath = Path.Combine(directoryPath, $"Files\\Programs"); // Tezgah programlarının kaydedileceği klasörü oluştur.
-
-            if (!Directory.Exists(imageTargetPath) || !Directory.Exists(programsTargetPath))
-            {
-                Directory.CreateDirectory(imageTargetPath);
-                Directory.CreateDirectory(programsTargetPath);
-            }
-
             try
             {
-                dbContext.Database.EnsureCreated();
+                _dbContext.Database.EnsureCreated();
 
-                if (!dbContext.Users.Any())
+                string directoryPath = Application.StartupPath;
+                string imageTargetPath = Path.Combine(directoryPath, $"Files\\Images"); // Ürün resimlerinin kaydedileceği klasörü oluştur.
+                string programsTargetPath = Path.Combine(directoryPath, $"Files\\Programs"); // Tezgah programlarının kaydedileceği klasörü oluştur.
+
+                if (!Directory.Exists(imageTargetPath) || !Directory.Exists(programsTargetPath))
                 {
-                    var user = new User
-                    {
-                        CreatedDate = DateTime.UtcNow,
-                        Name = "ÜMİT",
-                        Username = "umt",
-                        Password = SHA256Hash("dev"),
-                        Phone = "",
-                        Email = "",
-                        IsAdmin = true,
-                        IsManager = false,
-                        IsOperator = false,
-                        IsActive = true,
-                        IsDeleted = false
-                    };
-
-                    dbContext.Users.Add(user);
-
-                    var startDate = DateTime.UtcNow;
-
-                    var materialShapes = new List<MaterialShape>();
-                    var materialShapeNames = new List<string> { "DOLU", "DELİKLİ", "BOYDAN" ,"BORU", "MİL"};                    
-
-                    foreach (var name in materialShapeNames)
-                    {
-                        var materialShape = new MaterialShape
-                        {
-                            CreatedDate = startDate,
-                            Name = name
-                        };
-                        materialShapes.Add(materialShape);
-                    }
-
-                    dbContext.MaterialShapes.AddRange(materialShapes);
-
-                    var materialTypes = new List<MaterialType>();
-                    var materialTypeNames = new List<string> { "DEMİR", "ÇELİK", "BAKIR", "PİRİNÇ", "ALÜMİNYUM", "DERLİN" };
-
-                    foreach (var name in materialTypeNames)
-                    {
-                        var materialType = new MaterialType
-                        {
-                            CreatedDate = startDate,
-                            Name = name
-                        };
-                        materialTypes.Add(materialType);
-                    }
-
-                    dbContext.MaterialTypes.AddRange(materialTypes);
-
-                    dbContext.SaveChanges();
+                    Directory.CreateDirectory(imageTargetPath);
+                    Directory.CreateDirectory(programsTargetPath);
                 }
-
             }
-            catch (Exception ex)
+            catch (Exception err)
             {
-                MessageBox.Show($"Veritabanı Oluşturma Hatası: {ex.ToString()}");
-            }
+                MessageBox.Show(err.ToString());
+            }            
         }
 
         private string SHA256Hash(string text)

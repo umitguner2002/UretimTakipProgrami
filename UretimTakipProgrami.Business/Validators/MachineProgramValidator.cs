@@ -1,12 +1,13 @@
 ﻿using FluentValidation;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
 namespace UretimTakipProgrami.Business.Validators
 {
     public class MachineProgramValidator : AbstractValidator<MachineProgram>
     {
-        private MachineProgramRepository _machineProgramRepository = new MachineProgramRepository(new DataAccess.ProductionDbContext());
+        private MachineProgramRepository _machineProgramRepository;
 
         public MachineProgramValidator()
         {
@@ -19,6 +20,8 @@ namespace UretimTakipProgrami.Business.Validators
             .NotEmpty().WithMessage("Program Adı boş olamaz.")
             .Length(3, 150).WithMessage("Program Adı {MinLength} ile {MaxLength} karakter arasında olmalı.")
             .Must(IsUniqueName).WithMessage("Bu Program Adı zaten mevcut. Farklı bir Program Adı giriniz.");
+
+            _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
         }
 
         private bool IsUniqueCode(string code)

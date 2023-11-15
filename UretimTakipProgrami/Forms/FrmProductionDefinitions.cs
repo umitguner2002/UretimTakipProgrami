@@ -1,18 +1,19 @@
 ﻿using FluentValidation.Results;
 using System.Data;
+using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
 namespace UretimTakipProgrami.Forms
 {
     public partial class FrmProductionDefinitions : Form
     {
-        private MachineRepository _machineRepository = new MachineRepository(FrmLogin.dbContext);
-        private MachineProgramRepository _machineProgramRepository = new MachineProgramRepository(FrmLogin.dbContext);
-        private MaterialTypeRepository _materialTypeRepository = new MaterialTypeRepository(FrmLogin.dbContext);
-        private MaterialShapeRepository _materialShapeRepository = new MaterialShapeRepository(FrmLogin.dbContext);
-        private MaterialRepository _materialRepository = new MaterialRepository(FrmLogin.dbContext);
+        private MachineRepository _machineRepository;
+        private MachineProgramRepository _machineProgramRepository;
+        private MaterialTypeRepository _materialTypeRepository;
+        private MaterialShapeRepository _materialShapeRepository;
+        private MaterialRepository _materialRepository;
 
         private int groupIndex = 0;
         private int countIndex = 0;
@@ -29,6 +30,12 @@ namespace UretimTakipProgrami.Forms
         public FrmProductionDefinitions()
         {
             InitializeComponent();
+
+            _machineRepository = InstanceFactory.GetInstance<MachineRepository>();
+            _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
+            _materialTypeRepository = InstanceFactory.GetInstance<MaterialTypeRepository>();
+            _materialShapeRepository = InstanceFactory.GetInstance<MaterialShapeRepository>();
+            _materialRepository = InstanceFactory.GetInstance<MaterialRepository>();
 
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;

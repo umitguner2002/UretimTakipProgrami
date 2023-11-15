@@ -1,6 +1,6 @@
 ﻿using UretimTakipProgrami.Entities;
 
-namespace UretimTakipProgrami.DataAccess.Repositories.Abstractions
+namespace UretimTakipProgrami.Business.Repositories.Abstractions
 {
     public interface IOrderRepository : IRepository<Order>
     {

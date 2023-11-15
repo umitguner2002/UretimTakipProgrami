@@ -1,16 +1,17 @@
 ﻿using FluentValidation.Results;
 using System.Data;
 using UretimTakipProgrami.Entities;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
+using UretimTakipProgrami.Business.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
 
 namespace UretimTakipProgrami.Forms
 {
     public partial class FrmProduct : Form
     {
-        private ProductRepository _productRepository = new ProductRepository(FrmLogin.dbContext);
-        private MachineProgramRepository _machineProgramRepository = new MachineProgramRepository(FrmLogin.dbContext);
-        private MaterialRepository _materialRepository = new MaterialRepository(FrmLogin.dbContext);
+        private ProductRepository _productRepository;
+        private MachineProgramRepository _machineProgramRepository;
+        private MaterialRepository _materialRepository;
 
         private int selectedIndex;
         private bool editMode = false;
@@ -20,6 +21,10 @@ namespace UretimTakipProgrami.Forms
         public FrmProduct()
         {
             InitializeComponent();
+
+            _productRepository = InstanceFactory.GetInstance<ProductRepository>();
+            _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
+            _materialRepository = InstanceFactory.GetInstance<MaterialRepository>();
 
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
@@ -31,7 +36,7 @@ namespace UretimTakipProgrami.Forms
 
             Product pr = new Product
             {
-                Name = txtUrunAdi.Text.ToUpper()
+                Name = txtUrunAdi.Text.ToUpper(), 
             };
 
             ProductValidator productValidation = new ProductValidator();
@@ -42,7 +47,7 @@ namespace UretimTakipProgrami.Forms
             {
                 foreach (ValidationFailure failure in errors)
                 {
-                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(failure.ErrorMessage, "Ürün Adı Mevcut", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -69,7 +74,7 @@ namespace UretimTakipProgrami.Forms
                     imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
                 }
 
-                Entities.Material mt = _materialRepository.GetWhere(mt => mt.Id == Guid.Parse(listMalzeme.SelectedValue.ToString())).FirstOrDefault();
+                Material mt = _materialRepository.GetWhere(mt => mt.Id == Guid.Parse(listMalzeme.SelectedValue.ToString())).FirstOrDefault();
                 MachineProgram mp = _machineProgramRepository.GetWhere(mp => mp.Id == Guid.Parse(listProgramAdi.SelectedValue.ToString())).FirstOrDefault();
                 
                 if (!editMode)

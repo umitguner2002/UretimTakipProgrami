@@ -1,15 +1,16 @@
 ﻿using FluentValidation.Results;
 using System.Data;
 using UretimTakipProgrami.Business.Services.Messages;
-using UretimTakipProgrami.DataAccess.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 using UretimTakipProgrami.Business.Validators;
+using UretimTakipProgrami.Business.Repositories.Concretes;
+using UretimTakipProgrami.Business.DependencyResolver;
 
 namespace UretimTakipProgrami.Forms
 {
     public partial class FrmCustomer : Form
     {
-        private CustomerRepository _customerRepository = new CustomerRepository(FrmLogin.dbContext);
+        private CustomerRepository _customerRepository;
         private int selectedIndex = -1;
         private bool editMode = false;
         private AppMessage _appMessage;
@@ -21,6 +22,8 @@ namespace UretimTakipProgrami.Forms
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
             this.ControlBox = false;
+
+            _customerRepository = InstanceFactory.GetInstance<CustomerRepository>();
 
             _appMessage = new AppMessage();
         }
