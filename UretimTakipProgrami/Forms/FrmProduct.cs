@@ -36,7 +36,8 @@ namespace UretimTakipProgrami.Forms
 
             Product pr = new Product
             {
-                Name = txtUrunAdi.Text.ToUpper(), 
+                Name = txtUrunAdi.Text.ToUpper(),
+                MachineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString())
             };
 
             ProductValidator productValidation = new ProductValidator();
@@ -47,7 +48,7 @@ namespace UretimTakipProgrami.Forms
             {
                 foreach (ValidationFailure failure in errors)
                 {
-                    MessageBox.Show(failure.ErrorMessage, "Ürün Adı Mevcut", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(failure.ErrorMessage, "Mevcut Veri Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -74,16 +75,16 @@ namespace UretimTakipProgrami.Forms
                     imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
                 }
 
-                Material mt = _materialRepository.GetWhere(mt => mt.Id == Guid.Parse(listMalzeme.SelectedValue.ToString())).FirstOrDefault();
-                MachineProgram mp = _machineProgramRepository.GetWhere(mp => mp.Id == Guid.Parse(listProgramAdi.SelectedValue.ToString())).FirstOrDefault();
+                var materialId = Guid.Parse(listMalzeme.SelectedValue.ToString());
+                var machineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString());
                 
                 if (!editMode)
                 {
-                    await _productRepository.AddAsync(new()
+                    var x = await _productRepository.AddAsync(new()
                     {
                         Name = txtUrunAdi.Text.ToUpper(),
-                        Material = mt,
-                        MachineProgram = mp,
+                        MaterialId = materialId,
+                        MachineProgramId = machineProgramId,
                         ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
                         ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
                     });
@@ -96,8 +97,8 @@ namespace UretimTakipProgrami.Forms
                     editStatus = _productRepository.Update(new()
                     {
                         Name = txtUrunAdi.Text.ToUpper(),
-                        Material = mt,
-                        MachineProgram = mp,
+                        MaterialId = materialId,
+                        MachineProgramId = machineProgramId,
                         ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
                         ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
                     });

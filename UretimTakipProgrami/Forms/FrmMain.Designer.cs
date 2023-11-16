@@ -29,8 +29,8 @@
             pnlContent = new Panel();
             pnlDesktop = new Panel();
             panel3 = new Panel();
-            lblNumberOfWaitingSelectMachine = new Label();
             label10 = new Label();
+            lblNumberOfWaitingSelectMachine = new Label();
             panel8 = new Panel();
             label7 = new Label();
             lblNumberOfWaiting = new Label();
@@ -344,18 +344,6 @@
             panel3.Size = new Size(180, 120);
             panel3.TabIndex = 9;
             // 
-            // lblNumberOfWaitingSelectMachine
-            // 
-            lblNumberOfWaitingSelectMachine.BackColor = Color.Transparent;
-            lblNumberOfWaitingSelectMachine.Font = new Font("Segoe UI Semilight", 36F, FontStyle.Regular, GraphicsUnit.Point);
-            lblNumberOfWaitingSelectMachine.ForeColor = Color.White;
-            lblNumberOfWaitingSelectMachine.Location = new Point(3, 35);
-            lblNumberOfWaitingSelectMachine.Name = "lblNumberOfWaitingSelectMachine";
-            lblNumberOfWaitingSelectMachine.Size = new Size(174, 65);
-            lblNumberOfWaitingSelectMachine.TabIndex = 1;
-            lblNumberOfWaitingSelectMachine.Text = "999";
-            lblNumberOfWaitingSelectMachine.TextAlign = ContentAlignment.MiddleCenter;
-            // 
             // label10
             // 
             label10.BackColor = Color.Transparent;
@@ -367,6 +355,18 @@
             label10.Size = new Size(180, 44);
             label10.TabIndex = 0;
             label10.Text = "Tezgah Seçimi Bekleyen İş Emirleri";
+            // 
+            // lblNumberOfWaitingSelectMachine
+            // 
+            lblNumberOfWaitingSelectMachine.BackColor = Color.Transparent;
+            lblNumberOfWaitingSelectMachine.Font = new Font("Segoe UI Semilight", 36F, FontStyle.Regular, GraphicsUnit.Point);
+            lblNumberOfWaitingSelectMachine.ForeColor = Color.White;
+            lblNumberOfWaitingSelectMachine.Location = new Point(3, 35);
+            lblNumberOfWaitingSelectMachine.Name = "lblNumberOfWaitingSelectMachine";
+            lblNumberOfWaitingSelectMachine.Size = new Size(174, 65);
+            lblNumberOfWaitingSelectMachine.TabIndex = 1;
+            lblNumberOfWaitingSelectMachine.Text = "999";
+            lblNumberOfWaitingSelectMachine.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel8
             // 
@@ -621,7 +621,7 @@
             lblTime.AutoSize = true;
             lblTime.Font = new Font("Tahoma", 21.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblTime.ForeColor = Color.Gainsboro;
-            lblTime.Location = new Point(516, 42);
+            lblTime.Location = new Point(511, 46);
             lblTime.Name = "lblTime";
             lblTime.Size = new Size(87, 35);
             lblTime.TabIndex = 0;
@@ -632,7 +632,7 @@
             lblDate.AutoSize = true;
             lblDate.Font = new Font("Tahoma", 21.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDate.ForeColor = Color.Gainsboro;
-            lblDate.Location = new Point(516, 7);
+            lblDate.Location = new Point(516, 6);
             lblDate.Name = "lblDate";
             lblDate.Size = new Size(75, 35);
             lblDate.TabIndex = 0;

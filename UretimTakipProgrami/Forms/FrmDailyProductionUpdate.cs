@@ -38,7 +38,7 @@ namespace UretimTakipProgrami.Forms
 
         private void FrmDailyProductionUpdate_Load(object sender, EventArgs e)
         {
-            var user = _userRepository.GetWhere(u => u.Id == production.User.Id).FirstOrDefault();
+            var user = _userRepository.GetWhere(u => u.Id == production.UserId).FirstOrDefault();
 
             txtKullaniciAdi.Text = user.Name.ToString();
             txtDefoluMiktarı.Value = txtDefoluMiktarı.Minimum;
@@ -62,7 +62,7 @@ namespace UretimTakipProgrami.Forms
         {
             order = _orderRepository.GetWhere(x => x.Id == production.OrderId).FirstOrDefault();
 
-            var user = _userRepository.GetWhere(u => u.Id == production.User.Id && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
+            var user = _userRepository.GetWhere(u => u.Id == production.UserId && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
 
             if((remainQuantity - txtUretimMiktarı.Value) > -1)
             {
@@ -78,17 +78,24 @@ namespace UretimTakipProgrami.Forms
                             Wastage = Convert.ToInt32(txtDefoluMiktarı.Value),
                             FinishDate = Convert.ToDateTime(dateTimePicker1.Value).ToUniversalTime(),
                             CreatedDate = production.CreatedDate,
-                            //UserId = production.UserId,
+                            UserId = production.UserId,
                         });
 
                         await _productionRepository.SaveAsync();
                     }
                     else
                     {
-                        production.Quantity = Convert.ToInt32(txtUretimMiktarı.Value);
-                        production.Wastage = Convert.ToInt32(txtDefoluMiktarı.Value);
-                        production.FinishDate = DateTime.UtcNow;
-                        production.IsStarted = false;
+                        bool editStatus = _productionRepository.Update(new()
+                        {
+                            Id = production.Id,
+                            OrderId = production.OrderId,
+                            Quantity = Convert.ToInt32(txtUretimMiktarı.Value),
+                            Wastage = Convert.ToInt32(txtDefoluMiktarı.Value),
+                            FinishDate = DateTime.UtcNow,
+                            CreatedDate = production.CreatedDate,
+                            UserId = production.UserId,
+                            IsStarted = false
+                        });
 
                         cancelSaving = false;
 

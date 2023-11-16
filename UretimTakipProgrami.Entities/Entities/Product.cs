@@ -1,4 +1,5 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
 using UretimTakipProgrami.Entities.Common;
 
 namespace UretimTakipProgrami.Entities
@@ -9,12 +10,17 @@ namespace UretimTakipProgrami.Entities
 
         public string? ImageName { get; set; }
 
-        public string? ImagePath { get; set; }      
+        public string? ImagePath { get; set; }
 
-        public ICollection<Order> Orders { get; set; }
+        [ForeignKey(nameof(MachineProgram))]
+        public Guid MachineProgramId { get; set; }
 
-        public MachineProgram MachineProgram { get; set; }
+        public Guid MaterialId { get; set; }
 
-        public Material Material { get; set; }
+        public virtual MachineProgram MachineProgram { get; set; }
+
+        public virtual Material Material { get; set; }
+
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

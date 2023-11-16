@@ -26,6 +26,6 @@ namespace UretimTakipProgrami.Entities
 
         public MaterialShape MaterialShape { get; set; }
 
-        public ICollection<Product> Products { get; set;}
+        public virtual ICollection<Product> Products { get; set;}
     }
 }

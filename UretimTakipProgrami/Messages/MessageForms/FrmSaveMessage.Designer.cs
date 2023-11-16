@@ -1,4 +1,4 @@
-﻿namespace UretimTakipProgrami.Services.Messages.MessageForms
+﻿namespace UretimTakipProgrami.Messages.MessageForms
 {
     partial class FrmSaveMessage
     {

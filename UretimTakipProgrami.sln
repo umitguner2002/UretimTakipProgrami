@@ -10,11 +10,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami", "Uret
 		{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2} = {90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.Entities", "UretimTakipProgrami.Entities\UretimTakipProgrami.Entities.csproj", "{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami.Entities", "UretimTakipProgrami.Entities\UretimTakipProgrami.Entities.csproj", "{90AF6D37-4B02-4BA6-BC0E-FCB2FC2A3FF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.DataAccess", "UretimTakipProgrami.DataAccess\UretimTakipProgrami.DataAccess.csproj", "{4C4EA940-94CE-4229-89F5-C81942E47260}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami.DataAccess", "UretimTakipProgrami.DataAccess\UretimTakipProgrami.DataAccess.csproj", "{4C4EA940-94CE-4229-89F5-C81942E47260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UretimTakipProgrami.Business", "UretimTakipProgrami.Business\UretimTakipProgrami.Business.csproj", "{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami.Business", "UretimTakipProgrami.Business\UretimTakipProgrami.Business.csproj", "{8B7798A9-6C30-4DA7-8078-FE115E5A13A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

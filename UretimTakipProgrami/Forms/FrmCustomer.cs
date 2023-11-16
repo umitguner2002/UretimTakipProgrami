@@ -1,10 +1,10 @@
 ﻿using FluentValidation.Results;
 using System.Data;
-using UretimTakipProgrami.Business.Services.Messages;
 using UretimTakipProgrami.Entities;
 using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Messages;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -205,7 +205,7 @@ namespace UretimTakipProgrami.Forms
 
             await _customerRepository.SaveAsync();
 
-            if(editMode)
+            if (editMode)
             {
                 dataGridView1.DataSource = _customerRepository
                     .GetWhere(c => c.Id == Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString()))
@@ -284,8 +284,8 @@ namespace UretimTakipProgrami.Forms
                 DisableButtonAndText();
             }
             else
-                MessageBox.Show("Güncellenecek kaydı seçin.","Güncelleme Seçimi",MessageBoxButtons.OK,MessageBoxIcon.Warning);
-            
+                MessageBox.Show("Güncellenecek kaydı seçin.", "Güncelleme Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
 
         private void btnSil_Click(object sender, EventArgs e)

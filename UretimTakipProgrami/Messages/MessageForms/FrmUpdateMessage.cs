@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace UretimTakipProgrami.Services.Messages.MessageForms
+namespace UretimTakipProgrami.Messages.MessageForms
 {
-    public partial class FrmSaveMessage : Form
+    public partial class FrmUpdateMessage : Form
     {
 
-        public FrmSaveMessage()
+        public FrmUpdateMessage()
         {
             InitializeComponent();
         }

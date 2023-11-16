@@ -25,10 +25,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Services\Messages\MessageForms\FrmUpdateMessage.cs">
+    <Compile Update="Messages\MessageForms\FrmUpdateMessage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Services\Messages\MessageForms\FrmSaveMessage.cs">
+    <Compile Update="Messages\MessageForms\FrmSaveMessage.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

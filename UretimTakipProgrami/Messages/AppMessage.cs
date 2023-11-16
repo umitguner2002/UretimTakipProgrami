@@ -1,7 +1,6 @@
-﻿
-using UretimTakipProgrami.Services.Messages.MessageForms;
+﻿using UretimTakipProgrami.Messages.MessageForms;
 
-namespace UretimTakipProgrami.Business.Services.Messages
+namespace UretimTakipProgrami.Messages
 {
     public class AppMessage
     {

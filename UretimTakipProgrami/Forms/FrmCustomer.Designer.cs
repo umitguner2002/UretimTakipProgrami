@@ -63,6 +63,7 @@
             label4 = new Label();
             label2 = new Label();
             panel2 = new Panel();
+            panel3 = new Panel();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             pnlArama.SuspendLayout();
@@ -295,7 +296,7 @@
             // 
             txtMail.Enabled = false;
             txtMail.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMail.Location = new Point(326, 85);
+            txtMail.Location = new Point(307, 85);
             txtMail.Margin = new Padding(4, 3, 4, 3);
             txtMail.Name = "txtMail";
             txtMail.Size = new Size(280, 22);
@@ -479,7 +480,7 @@
             // 
             txtAdres.Enabled = false;
             txtAdres.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtAdres.Location = new Point(326, 135);
+            txtAdres.Location = new Point(307, 135);
             txtAdres.Margin = new Padding(4, 3, 4, 3);
             txtAdres.Multiline = true;
             txtAdres.Name = "txtAdres";
@@ -501,7 +502,6 @@
             groupBox1.BackColor = Color.FromArgb(175, 174, 209);
             groupBox1.Controls.Add(txtTelefon2);
             groupBox1.Controls.Add(txtTelefon1);
-            groupBox1.Controls.Add(panel5);
             groupBox1.Controls.Add(txtMusteriAdi);
             groupBox1.Controls.Add(txtMail);
             groupBox1.Controls.Add(txtAdres);
@@ -510,6 +510,8 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label2);
+            groupBox1.Controls.Add(panel3);
+            groupBox1.Controls.Add(panel5);
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox1.Location = new Point(0, 10);
@@ -553,7 +555,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(326, 68);
+            label3.Location = new Point(307, 68);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(37, 14);
@@ -597,7 +599,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(326, 118);
+            label2.Location = new Point(307, 118);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(38, 14);
@@ -612,6 +614,15 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1055, 10);
             panel2.TabIndex = 6;
+            // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(4, 53);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1047, 177);
+            panel3.TabIndex = 7;
             // 
             // FrmCustomer
             // 
@@ -673,5 +684,6 @@
         private MaskedTextBox txtTelefon2;
         private MaskedTextBox txtTelefon1;
         private FontAwesome.Sharp.IconButton btnGeriDon;
+        private Panel panel3;
     }
 }

@@ -216,13 +216,13 @@ namespace UretimTakipProgrami.Forms
         private void FrmMain_Resize(object sender, EventArgs e)
         {
             lblDate.Location = new Point((pnlStatus.Width - lblDate.Width) / 2, ((pnlStatus.Height - lblDate.Height) / 2) - 15);
-            lblTime.Location = new Point((pnlStatus.Width - lblTime.Width) / 2, (pnlStatus.Height - lblTime.Height + 40) / 2);
+            lblTime.Location = new Point((pnlStatus.Width - lblTime.Width) / 2, (pnlStatus.Height - lblTime.Height + 50) / 2);
         }
 
         private void FrmMain_Shown(object sender, EventArgs e)
         {
             lblDate.Location = new Point((pnlStatus.Width - lblDate.Width) / 2, ((pnlStatus.Height - lblDate.Height) / 2) - 15);
-            lblTime.Location = new Point((pnlStatus.Width - lblTime.Width) / 2, (pnlStatus.Height - lblTime.Height + 40) / 2);
+            lblTime.Location = new Point((pnlStatus.Width - lblTime.Width) / 2, (pnlStatus.Height - lblTime.Height + 50) / 2);
 
             ActivateButton(btnAnaEkran, RGBColors.color6);
             ShowData();

@@ -38,23 +38,31 @@ namespace UretimTakipProgrami.Forms
 
             if (user != null)
             {
-                await _productionRepository.AddAsync(new()
+                if (user.IsOperator)
                 {
-                    User = user,
-                    OrderId = Guid.Parse(orderId),
-                    IsStarted = true
-                });
+                    await _productionRepository.AddAsync(new()
+                    {
+                        UserId = user.Id,
+                        OrderId = Guid.Parse(orderId),
+                        IsStarted = true
+                    });
 
-                await _productionRepository.SaveAsync();
+                    await _productionRepository.SaveAsync();
 
-                this.Close();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Üretim yapabilmek için operatör yetkisi almanız gerekiyor.", "Yetki Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             else
             {
-                MessageBox.Show("Kullanıcı Adı veya Şifre Hatalı", "Yetki Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtKullaniciAdi.Focus();
-                txtKullaniciAdi.SelectAll();
+                MessageBox.Show("Kullanıcı Adı veya Şifre Hatalı", "Kullanıcı Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
             }
+
+            txtKullaniciAdi.Focus();
+            txtKullaniciAdi.SelectAll();
 
         }
 
