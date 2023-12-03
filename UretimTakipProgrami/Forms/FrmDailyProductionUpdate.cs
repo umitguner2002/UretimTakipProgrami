@@ -24,7 +24,7 @@ namespace UretimTakipProgrami.Forms
             InitializeComponent();
 
             _productionRepository = InstanceFactory.GetInstance<ProductionRepository>();
-            _userRepository = InstanceFactory.GetInstance<UserRepository>();    
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
             _orderRepository = InstanceFactory.GetInstance<OrderRepository>();
 
             this.FormBorderStyle = FormBorderStyle.None;
@@ -48,7 +48,7 @@ namespace UretimTakipProgrami.Forms
                 dateTimePicker1.Enabled = true;
                 dateTimePicker1.Value = Convert.ToDateTime(production.FinishDate).ToLocalTime();
 
-                txtUretimMiktarı.Value = production.Quantity;                
+                txtUretimMiktarı.Value = production.Quantity;
             }
             else
             {
@@ -64,7 +64,7 @@ namespace UretimTakipProgrami.Forms
 
             var user = _userRepository.GetWhere(u => u.Id == production.UserId && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
 
-            if((remainQuantity - txtUretimMiktarı.Value) > -1)
+            if ((remainQuantity - txtUretimMiktarı.Value) > -1)
             {
                 if (user != null)
                 {
@@ -140,7 +140,7 @@ namespace UretimTakipProgrami.Forms
 
         private void FrmDailyProductionUpdate_Shown(object sender, EventArgs e)
         {
-            
+
         }
 
         private string SHA256Hash(string text)

@@ -42,26 +42,45 @@ namespace UretimTakip.Forms
         {
             if (dataGridView1.Rows.Count > 0)
             {
-                dataGridView1.Columns[0].HeaderText = "Sipariş Tarihi";
-                dataGridView1.Columns[0].Width = 80;
-                dataGridView1.Columns[1].HeaderText = "Ürün Adı";
-                dataGridView1.Columns[2].HeaderText = "Müşteri Adı / Unvanı";
-                dataGridView1.Columns[3].HeaderText = "Sipariş";
-                dataGridView1.Columns[3].Width = 50;
-                dataGridView1.Columns[4].HeaderText = "Üretim";
-                dataGridView1.Columns[4].Width = 50;
-                dataGridView1.Columns[5].HeaderText = "Teslim Tarihi";
-                dataGridView1.Columns[5].Width = 80;
-                dataGridView1.Columns[6].HeaderText = "Aciliyet";
-                dataGridView1.Columns[6].Width = 50;
-                dataGridView1.Columns[7].HeaderText = "Durum";
-                dataGridView1.Columns[7].Width = 80;
-                dataGridView1.Columns[8].HeaderText = "Açıklama";
-                dataGridView1.Columns[9].Visible = false;
-                dataGridView1.Columns[10].Visible = false;
+                dataGridView1.ColumnHeadersHeight = 25;
 
-                int acilDurumSutunu = 6;
-                int durumSutunu = 7; // Durum sütununun indeksi
+                dataGridView1.Columns[0].HeaderText = "Sipariş Tarihi";
+                dataGridView1.Columns[0].Width = 120;
+
+                dataGridView1.Columns[1].HeaderText = "İş Emri No";
+                dataGridView1.Columns[1].Width = 100;
+
+                dataGridView1.Columns[2].HeaderText = "Ürün Adı";
+                dataGridView1.Columns[2].Width = 300;
+
+                dataGridView1.Columns[3].HeaderText = "Müşteri Adı / Unvanı";
+                dataGridView1.Columns[3].Width = 300;
+
+                dataGridView1.Columns[4].HeaderText = "Sipariş";
+                dataGridView1.Columns[4].Width = 50;
+
+                dataGridView1.Columns[5].HeaderText = "Üretim";
+                dataGridView1.Columns[5].Width = 50;
+
+                dataGridView1.Columns[6].HeaderText = "Teslim Tarihi";
+                dataGridView1.Columns[6].Width = 120;
+
+                dataGridView1.Columns[7].HeaderText = "Aciliyet";
+                dataGridView1.Columns[7].Width = 50;
+
+                dataGridView1.Columns[8].HeaderText = "Durum";
+                dataGridView1.Columns[8].Width = 150;
+
+                dataGridView1.Columns[9].HeaderText = "Açıklama";
+                dataGridView1.Columns[9].Width = 300;
+
+                dataGridView1.Columns[10].Visible = false;
+                dataGridView1.Columns[11].Visible = false;
+                dataGridView1.Columns[12].Visible = false;
+                dataGridView1.Columns[13].Visible = false;
+
+                int acilDurumSutunu = 7;
+                int durumSutunu = 8; // Durum sütununun indeksi
 
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
@@ -145,16 +164,19 @@ namespace UretimTakip.Forms
                 .Select(order => new
                 {
                     orderCreatedDate = order.CreatedDate.ToLocalTime(), // 0
-                    productName = order.Product.Name, // 1
-                    customerName = order.Customer.Name, // 2
-                    order.Quantity, // 3
-                    productionQuantity = order.Productions.Where(pr => pr.OrderId == order.Id).Sum(pr => pr.Quantity), // 4
-                    deliveryDate = order.DeliveryDate.ToLocalTime().Date, // 5
-                    orderAciliyet = order.IsUrgent ? Durumlar.Acil : "", // 6
-                    orderDurum = order.IsWaiting ? Durumlar.Tezgah : !order.IsProduction && !order.IsReady ? Durumlar.OnayBekliyor : order.IsReady ? Durumlar.Hazir : Durumlar.Uretimde, // 7
-                    order.Description, // 8
-                    order.Id, // 9
-                    order.IsUrgent // 10
+                    order.OrderCode, // 1                   
+                    productName = order.Product.Name, // 2
+                    customerName = order.Customer.Name, // 3
+                    order.Quantity, // 4
+                    productionQuantity = order.Productions.Where(pr => pr.OrderId == order.Id).Sum(pr => pr.Quantity), // 5
+                    deliveryDate = order.DeliveryDate.ToLocalTime().Date, // 6
+                    orderAciliyet = order.IsUrgent ? Durumlar.Acil : "", // 7
+                    orderDurum = order.IsWaiting ? Durumlar.Tezgah : !order.IsProduction && !order.IsReady ? Durumlar.OnayBekliyor : order.IsReady ? Durumlar.Hazir : Durumlar.Uretimde, // 8
+                    order.Description, // 9
+                    order.Id, // 10
+                    order.IsUrgent, // 11
+                    materialName = order.Product.Material.Name, // 12 
+                    programName = order.Product.MachineProgram.Name // 13 
                 })
                 .Where(order =>
                     (checkAcilAra.Checked ? order.IsUrgent : true) &&
@@ -193,9 +215,13 @@ namespace UretimTakip.Forms
 
             listUrunAdi.Enabled = false;
             listMusteriAdi.Enabled = false;
+            txtIsEmriNo.Enabled = false;
             txtMiktar.Enabled = false;
             txtTeslimTarihi.Enabled = false;
             txtAciklama.Enabled = false;
+            txtIslenecekMalzeme.Enabled = false;
+            txtProgramAdi.Enabled = false;
+            txtSiparisTarihi.Enabled = false;
 
             checkAcil.Enabled = false;
 
@@ -214,9 +240,13 @@ namespace UretimTakip.Forms
 
             listUrunAdi.Enabled = true;
             listMusteriAdi.Enabled = true;
+            txtIsEmriNo.Enabled = true;
             txtMiktar.Enabled = true;
             txtTeslimTarihi.Enabled = true;
             txtAciklama.Enabled = true;
+            txtIslenecekMalzeme.Enabled = true;
+            txtProgramAdi.Enabled = true;
+            txtSiparisTarihi.Enabled = true;
 
             checkAcil.Enabled = true;
             checkAcil.Checked = false;
@@ -231,6 +261,7 @@ namespace UretimTakip.Forms
             txtMiktar.Value = txtMiktar.Minimum;
             txtAciklama.Clear();
             txtTeslimTarihi.Value = DateTime.UtcNow;
+            txtIsEmriNo.Clear();
             txtSiparisTarihi.Clear();
             txtProgramAdi.Clear();
             txtIslenecekMalzeme.Clear();
@@ -243,12 +274,15 @@ namespace UretimTakip.Forms
             if (selectedIndex >= 0)
             {
                 txtSiparisTarihi.Text = Convert.ToDateTime(dataGridView1.Rows[selectedIndex].Cells[0].Value).ToShortDateString();
-                listUrunAdi.Text = dataGridView1.Rows[selectedIndex].Cells[1].Value.ToString();
-                listMusteriAdi.Text = dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString();
-                txtMiktar.Text = dataGridView1.Rows[selectedIndex].Cells[3].Value.ToString();
-                txtTeslimTarihi.Value = Convert.ToDateTime(dataGridView1.Rows[selectedIndex].Cells[5].Value.ToString());
-                txtAciklama.Text = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
-                checkAcil.Checked = (bool)(dataGridView1.Rows[selectedIndex].Cells[10].Value);
+                txtIsEmriNo.Text = dataGridView1.Rows[selectedIndex].Cells[1].Value.ToString();
+                listUrunAdi.Text = dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString();
+                txtIslenecekMalzeme.Text = dataGridView1.Rows[selectedIndex].Cells[12].Value.ToString();
+                txtProgramAdi.Text = dataGridView1.Rows[selectedIndex].Cells[13].Value.ToString();
+                listMusteriAdi.Text = dataGridView1.Rows[selectedIndex].Cells[3].Value.ToString();
+                txtMiktar.Text = dataGridView1.Rows[selectedIndex].Cells[4].Value.ToString();
+                txtTeslimTarihi.Value = Convert.ToDateTime(dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString());
+                txtAciklama.Text = dataGridView1.Rows[selectedIndex].Cells[9].Value.ToString();
+                checkAcil.Checked = (bool)(dataGridView1.Rows[selectedIndex].Cells[11].Value);
             }
         }
 
@@ -265,14 +299,13 @@ namespace UretimTakip.Forms
         {
             await _orderRepository.AddAsync(new()
             {
+                OrderCode = txtIsEmriNo.Text,
                 ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString()),
                 CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString()),
                 Quantity = Convert.ToInt32(txtMiktar.Value),
                 DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date,
                 Description = txtAciklama.Text,
                 IsUrgent = checkAcil.Checked ? true : false
-                //CreatedDate = DateTime.UtcNow,
-                //IsDeleted = false
             });
 
             await _orderRepository.SaveAsync();
@@ -283,6 +316,7 @@ namespace UretimTakip.Forms
         {
             DisableButtonAndText();
             ClearText();
+            txtIsEmriNo.Text = GenerateOrderCode();
 
             txtSiparisTarihi.Text = DateTime.Now.ToShortDateString();
 
@@ -483,5 +517,38 @@ namespace UretimTakip.Forms
             }
         }
 
+        private string GenerateOrderCode()
+        {
+            int currentYear = DateTime.Now.Year;
+
+            string lastProductCode = GetLastProductCodeFromDatabase();
+
+            if (string.IsNullOrEmpty(lastProductCode) || !lastProductCode.StartsWith(currentYear.ToString()))
+            {
+                return currentYear.ToString() + "00001";
+            }
+            else
+            {
+                int lastCodeNumber = int.Parse(lastProductCode.Substring(4));
+                int newCodeNumber = lastCodeNumber + 1;
+
+                return currentYear.ToString() + newCodeNumber.ToString("D5");
+            }
+        }
+
+        public string GetLastProductCodeFromDatabase()
+        {
+            var lastOrder = _orderRepository.GetAll()
+                .OrderByDescending(o => o.CreatedDate)
+                .Select(o => o.OrderCode)
+                .FirstOrDefault();
+
+            return lastOrder;
+        }
+
+        private void listUrunAdi_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

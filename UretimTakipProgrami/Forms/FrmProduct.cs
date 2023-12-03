@@ -77,7 +77,7 @@ namespace UretimTakipProgrami.Forms
 
                 var materialId = Guid.Parse(listMalzeme.SelectedValue.ToString());
                 var machineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString());
-                
+
                 if (!editMode)
                 {
                     var x = await _productRepository.AddAsync(new()
@@ -112,7 +112,6 @@ namespace UretimTakipProgrami.Forms
 
         private void FrmProduct_Load(object sender, EventArgs e)
         {
-            monthCalendar1.Visible = false;
             dataGridView1.DataSource = null;
             ClearText();
             EnableButtonAndText();
@@ -125,19 +124,9 @@ namespace UretimTakipProgrami.Forms
         private void GetProductList()
         {
             dataGridView1.DataSource = null;
-            List<object> filteredList = new List<object>();
 
-            var materialList = _materialRepository.GetAll().Select(mt => new
-            {
-                Id = mt.Id,
-                Name = mt.Name
-            });
-
-            var programList = _machineProgramRepository.GetAll().Select(mc => new
-            {
-                Id = mc.Id,
-                Name = mc.Name
-            });
+            string arananUrunAdi = txtUrunAdiAra.Text.ToLower();
+            string arananMalzeme = txtMalzemeAra.Text.ToLower();
 
             var productList = _productRepository.GetAll()
                 .Select(product => new
@@ -150,35 +139,23 @@ namespace UretimTakipProgrami.Forms
                     product.Id,
                     product.ImagePath
                 })
+                .Where(product =>
+                      (string.IsNullOrEmpty(arananUrunAdi) || product.Name.ToLower().Contains(arananUrunAdi)) &&
+                      (string.IsNullOrEmpty(arananMalzeme) || product.materialName.ToLower().Contains(arananMalzeme)))
+                .OrderBy(product => product.Name)
                 .ToList();
 
-            string arananUrunAdi = txtUrunAdiAra.Text.ToUpper();
-            string arananTarih = txtKayitTarihiAra.Text;
-            DateTime.TryParse(arananTarih, out DateTime kayitTarihi);
-
-            foreach (var pr in productList)
+            if (productList.Count > 0)
             {
-                if (arananUrunAdi != "" && arananTarih != "")
-                {
-                    if (pr.Name.Contains(arananUrunAdi) && pr.productCreatedDate.Date == kayitTarihi.ToLocalTime().Date)
-                        filteredList.Add(pr);
-                }
-                else if (arananUrunAdi != "")
-                {
-                    if (pr.Name.Contains(arananUrunAdi))
-                        filteredList.Add(pr);
-                }
-                else
-                {
-                    if (pr.productCreatedDate.Date == kayitTarihi.ToLocalTime().Date)
-                        filteredList.Add(pr);
-                }
+                dataGridView1.DataSource = productList;
+                lblKayitSayisi.Text = $"Kayıt Sayısı: {productList.Count.ToString()}";
+                SetDataGridSettings();
             }
+            else
+                lblKayitSayisi.Text = "Gösterilecek kayıt yok";
 
-            dataGridView1.DataSource = filteredList;
-            lblKayitSayisi.Text = $"Kayıt Sayısı: {filteredList.Count.ToString()}";
+            LblKayitSayisiYerlestir();
 
-            SetDataGridSettings();
         }
 
         private void SetDataGridSettings()
@@ -350,7 +327,6 @@ namespace UretimTakipProgrami.Forms
         {
             txtUrunAdi.Clear();
             txtUrunAdiAra.Clear();
-            txtKayitTarihiAra.Clear();
 
             if (listMalzeme.Items.Count > 0)
                 listMalzeme.SelectedIndex = 0;
@@ -368,27 +344,6 @@ namespace UretimTakipProgrami.Forms
         {
             EnableButtonAndText();
             ClearText();
-        }
-
-        private void btnBulTarih_Click(object sender, EventArgs e)
-        {
-            if (monthCalendar1.Visible)
-                monthCalendar1.Visible = false;
-            else
-                monthCalendar1.Visible = true;
-        }
-
-        private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
-        {
-            txtKayitTarihiAra.Text = monthCalendar1.SelectionStart.ToShortDateString();
-            monthCalendar1.Visible = false;
-        }
-
-        private void btnKayitTarihiSil_Click(object sender, EventArgs e)
-        {
-            if (monthCalendar1.Visible)
-                monthCalendar1.Visible = false;
-            txtKayitTarihiAra.Clear();
         }
 
         private void btnUrunAdiSil_Click(object sender, EventArgs e)
@@ -413,11 +368,6 @@ namespace UretimTakipProgrami.Forms
             }
         }
 
-        private void btnProgramEkle_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnDuzenle_Click(object sender, EventArgs e)
         {
             editMode = true;
@@ -430,7 +380,7 @@ namespace UretimTakipProgrami.Forms
         }
 
         private void btnOpenFormMaterial_Click(object sender, EventArgs e)
-        {            
+        {
             OpenDefitinitionForms(1);
             GetMaterialList();
         }
@@ -472,6 +422,21 @@ namespace UretimTakipProgrami.Forms
         private void FrmProduct_FormClosed(object sender, FormClosedEventArgs e)
         {
             btnGeriDon.Visible = false;
+        }
+
+        private void btnMalzemeAdiSil_Click(object sender, EventArgs e)
+        {
+            txtMalzemeAra.Clear();
+        }
+
+        private void FrmProduct_Resize(object sender, EventArgs e)
+        {
+            LblKayitSayisiYerlestir();
+        }
+
+        private void LblKayitSayisiYerlestir()
+        {
+            lblKayitSayisi.Left = pnlArama.Width - lblKayitSayisi.Width - 10;
         }
     }
 }

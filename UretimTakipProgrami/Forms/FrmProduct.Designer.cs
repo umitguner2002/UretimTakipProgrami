@@ -53,19 +53,18 @@ namespace UretimTakipProgrami.Forms
             label4 = new Label();
             label6 = new Label();
             grpboxUrunAra = new GroupBox();
-            monthCalendar1 = new MonthCalendar();
             dataGridView1 = new DataGridView();
             pnlArama = new Panel();
-            btnKayitTarihiSil = new FontAwesome.Sharp.IconButton();
+            btnMalzemeAdiSil = new FontAwesome.Sharp.IconButton();
             btnUrunAdiSil = new FontAwesome.Sharp.IconButton();
-            btnBulTarih = new FontAwesome.Sharp.IconButton();
-            txtKayitTarihiAra = new TextBox();
+            txtMalzemeAra = new TextBox();
             txtUrunAdiAra = new TextBox();
             btnUrunBul = new FontAwesome.Sharp.IconButton();
             lblKayitSayisi = new Label();
-            label7 = new Label();
+            label2 = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
+            panel3 = new Panel();
             ((System.ComponentModel.ISupportInitialize)resimKutusu).BeginInit();
             groupBox1.SuspendLayout();
             panel5.SuspendLayout();
@@ -147,7 +146,6 @@ namespace UretimTakipProgrami.Forms
             groupBox1.Controls.Add(btnOpenFormMaterial);
             groupBox1.Controls.Add(listMalzeme);
             groupBox1.Controls.Add(listProgramAdi);
-            groupBox1.Controls.Add(panel5);
             groupBox1.Controls.Add(btnResimKaldir);
             groupBox1.Controls.Add(btnResimEkle);
             groupBox1.Controls.Add(txtUrunAdi);
@@ -155,6 +153,8 @@ namespace UretimTakipProgrami.Forms
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(panel3);
+            groupBox1.Controls.Add(panel5);
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox1.Location = new Point(0, 10);
@@ -418,9 +418,9 @@ namespace UretimTakipProgrami.Forms
             label3.Location = new Point(20, 168);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
-            label3.Size = new Size(117, 14);
+            label3.Size = new Size(98, 14);
             label3.TabIndex = 2;
-            label3.Text = "Tezgah Program Adı";
+            label3.Text = "Tezgah Programı";
             // 
             // label4
             // 
@@ -438,7 +438,7 @@ namespace UretimTakipProgrami.Forms
             label6.AutoSize = true;
             label6.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.Gainsboro;
-            label6.Location = new Point(11, 11);
+            label6.Location = new Point(66, 11);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(58, 14);
@@ -447,7 +447,6 @@ namespace UretimTakipProgrami.Forms
             // 
             // grpboxUrunAra
             // 
-            grpboxUrunAra.Controls.Add(monthCalendar1);
             grpboxUrunAra.Controls.Add(dataGridView1);
             grpboxUrunAra.Controls.Add(pnlArama);
             grpboxUrunAra.Dock = DockStyle.Fill;
@@ -460,15 +459,6 @@ namespace UretimTakipProgrami.Forms
             grpboxUrunAra.TabIndex = 5;
             grpboxUrunAra.TabStop = false;
             grpboxUrunAra.Text = "Ürün Ara";
-            // 
-            // monthCalendar1
-            // 
-            monthCalendar1.Location = new Point(312, 50);
-            monthCalendar1.MaxSelectionCount = 1;
-            monthCalendar1.Name = "monthCalendar1";
-            monthCalendar1.TabIndex = 7;
-            monthCalendar1.TabStop = false;
-            monthCalendar1.DateSelected += monthCalendar1_DateSelected;
             // 
             // dataGridView1
             // 
@@ -496,57 +486,56 @@ namespace UretimTakipProgrami.Forms
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridView1.Location = new Point(4, 53);
+            dataGridView1.Location = new Point(4, 83);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1016, 305);
+            dataGridView1.Size = new Size(1016, 275);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // pnlArama
             // 
             pnlArama.BackColor = Color.FromArgb(43, 84, 126);
-            pnlArama.Controls.Add(btnKayitTarihiSil);
+            pnlArama.Controls.Add(btnMalzemeAdiSil);
             pnlArama.Controls.Add(btnUrunAdiSil);
-            pnlArama.Controls.Add(btnBulTarih);
-            pnlArama.Controls.Add(txtKayitTarihiAra);
+            pnlArama.Controls.Add(txtMalzemeAra);
             pnlArama.Controls.Add(txtUrunAdiAra);
             pnlArama.Controls.Add(btnUrunBul);
             pnlArama.Controls.Add(lblKayitSayisi);
-            pnlArama.Controls.Add(label7);
+            pnlArama.Controls.Add(label2);
             pnlArama.Controls.Add(label6);
             pnlArama.Dock = DockStyle.Top;
             pnlArama.Location = new Point(4, 18);
             pnlArama.Name = "pnlArama";
-            pnlArama.Size = new Size(1016, 35);
+            pnlArama.Size = new Size(1016, 65);
             pnlArama.TabIndex = 1;
             // 
-            // btnKayitTarihiSil
+            // btnMalzemeAdiSil
             // 
-            btnKayitTarihiSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnKayitTarihiSil.BackColor = Color.FromArgb(43, 84, 126);
-            btnKayitTarihiSil.Cursor = Cursors.Hand;
-            btnKayitTarihiSil.FlatAppearance.BorderSize = 0;
-            btnKayitTarihiSil.FlatStyle = FlatStyle.Flat;
-            btnKayitTarihiSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnKayitTarihiSil.ForeColor = Color.WhiteSmoke;
-            btnKayitTarihiSil.IconChar = FontAwesome.Sharp.IconChar.Xmark;
-            btnKayitTarihiSil.IconColor = Color.WhiteSmoke;
-            btnKayitTarihiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnKayitTarihiSil.IconSize = 18;
-            btnKayitTarihiSil.Location = new Point(541, 7);
-            btnKayitTarihiSil.Margin = new Padding(4, 3, 4, 3);
-            btnKayitTarihiSil.Name = "btnKayitTarihiSil";
-            btnKayitTarihiSil.Size = new Size(23, 23);
-            btnKayitTarihiSil.TabIndex = 3;
-            btnKayitTarihiSil.TextAlign = ContentAlignment.MiddleRight;
-            btnKayitTarihiSil.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnKayitTarihiSil.UseVisualStyleBackColor = false;
-            btnKayitTarihiSil.Click += btnKayitTarihiSil_Click;
+            btnMalzemeAdiSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnMalzemeAdiSil.BackColor = Color.FromArgb(43, 84, 126);
+            btnMalzemeAdiSil.Cursor = Cursors.Hand;
+            btnMalzemeAdiSil.FlatAppearance.BorderSize = 0;
+            btnMalzemeAdiSil.FlatStyle = FlatStyle.Flat;
+            btnMalzemeAdiSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnMalzemeAdiSil.ForeColor = Color.WhiteSmoke;
+            btnMalzemeAdiSil.IconChar = FontAwesome.Sharp.IconChar.Xmark;
+            btnMalzemeAdiSil.IconColor = Color.WhiteSmoke;
+            btnMalzemeAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnMalzemeAdiSil.IconSize = 18;
+            btnMalzemeAdiSil.Location = new Point(377, 35);
+            btnMalzemeAdiSil.Margin = new Padding(4, 3, 4, 3);
+            btnMalzemeAdiSil.Name = "btnMalzemeAdiSil";
+            btnMalzemeAdiSil.Size = new Size(23, 23);
+            btnMalzemeAdiSil.TabIndex = 3;
+            btnMalzemeAdiSil.TextAlign = ContentAlignment.MiddleRight;
+            btnMalzemeAdiSil.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnMalzemeAdiSil.UseVisualStyleBackColor = false;
+            btnMalzemeAdiSil.Click += btnMalzemeAdiSil_Click;
             // 
             // btnUrunAdiSil
             // 
@@ -561,7 +550,7 @@ namespace UretimTakipProgrami.Forms
             btnUrunAdiSil.IconColor = Color.WhiteSmoke;
             btnUrunAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunAdiSil.IconSize = 18;
-            btnUrunAdiSil.Location = new Point(275, 7);
+            btnUrunAdiSil.Location = new Point(377, 7);
             btnUrunAdiSil.Margin = new Padding(4, 3, 4, 3);
             btnUrunAdiSil.Name = "btnUrunAdiSil";
             btnUrunAdiSil.Size = new Size(23, 23);
@@ -571,36 +560,20 @@ namespace UretimTakipProgrami.Forms
             btnUrunAdiSil.UseVisualStyleBackColor = false;
             btnUrunAdiSil.Click += btnUrunAdiSil_Click;
             // 
-            // btnBulTarih
+            // txtMalzemeAra
             // 
-            btnBulTarih.BackColor = SystemColors.Window;
-            btnBulTarih.FlatAppearance.BorderSize = 0;
-            btnBulTarih.FlatStyle = FlatStyle.Flat;
-            btnBulTarih.IconChar = FontAwesome.Sharp.IconChar.Calendar;
-            btnBulTarih.IconColor = Color.Black;
-            btnBulTarih.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnBulTarih.IconSize = 20;
-            btnBulTarih.Location = new Point(518, 8);
-            btnBulTarih.Name = "btnBulTarih";
-            btnBulTarih.Size = new Size(20, 20);
-            btnBulTarih.TabIndex = 4;
-            btnBulTarih.UseVisualStyleBackColor = false;
-            btnBulTarih.Click += btnBulTarih_Click;
-            // 
-            // txtKayitTarihiAra
-            // 
-            txtKayitTarihiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtKayitTarihiAra.Location = new Point(417, 7);
-            txtKayitTarihiAra.Name = "txtKayitTarihiAra";
-            txtKayitTarihiAra.Size = new Size(125, 22);
-            txtKayitTarihiAra.TabIndex = 7;
+            txtMalzemeAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtMalzemeAra.Location = new Point(131, 35);
+            txtMalzemeAra.Name = "txtMalzemeAra";
+            txtMalzemeAra.Size = new Size(246, 22);
+            txtMalzemeAra.TabIndex = 6;
             // 
             // txtUrunAdiAra
             // 
             txtUrunAdiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtUrunAdiAra.Location = new Point(76, 7);
+            txtUrunAdiAra.Location = new Point(131, 7);
             txtUrunAdiAra.Name = "txtUrunAdiAra";
-            txtUrunAdiAra.Size = new Size(200, 22);
+            txtUrunAdiAra.Size = new Size(246, 22);
             txtUrunAdiAra.TabIndex = 6;
             // 
             // btnUrunBul
@@ -616,7 +589,7 @@ namespace UretimTakipProgrami.Forms
             btnUrunBul.IconColor = Color.WhiteSmoke;
             btnUrunBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunBul.IconSize = 18;
-            btnUrunBul.Location = new Point(585, 6);
+            btnUrunBul.Location = new Point(477, 7);
             btnUrunBul.Margin = new Padding(4, 3, 4, 3);
             btnUrunBul.Name = "btnUrunBul";
             btnUrunBul.Size = new Size(87, 22);
@@ -640,17 +613,17 @@ namespace UretimTakipProgrami.Forms
             lblKayitSayisi.TabIndex = 2;
             lblKayitSayisi.Text = "Kayıt Sayısı:";
             // 
-            // label7
+            // label2
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.ForeColor = Color.Gainsboro;
-            label7.Location = new Point(340, 11);
-            label7.Margin = new Padding(4, 0, 4, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(70, 14);
-            label7.TabIndex = 2;
-            label7.Text = "Kayıt Tarihi:";
+            label2.AutoSize = true;
+            label2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label2.ForeColor = Color.Gainsboro;
+            label2.Location = new Point(12, 38);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(112, 14);
+            label2.TabIndex = 2;
+            label2.Text = "İşlenecek Malzeme:";
             // 
             // panel1
             // 
@@ -670,6 +643,15 @@ namespace UretimTakipProgrami.Forms
             panel2.Size = new Size(1024, 10);
             panel2.TabIndex = 6;
             // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(4, 53);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1016, 273);
+            panel3.TabIndex = 9;
+            // 
             // FrmProduct
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -684,6 +666,7 @@ namespace UretimTakipProgrami.Forms
             Text = "Ürünler";
             FormClosed += FrmProduct_FormClosed;
             Load += FrmProduct_Load;
+            Resize += FrmProduct_Resize;
             ((System.ComponentModel.ISupportInitialize)resimKutusu).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
@@ -718,11 +701,6 @@ namespace UretimTakipProgrami.Forms
         private FontAwesome.Sharp.IconButton btnResimEkle;
         private FontAwesome.Sharp.IconButton btnUrunBul;
         private Label label3;
-        private Label label7;
-        private TextBox txtKayitTarihiAra;
-        private MonthCalendar monthCalendar1;
-        private FontAwesome.Sharp.IconButton btnBulTarih;
-        private FontAwesome.Sharp.IconButton btnKayitTarihiSil;
         private FontAwesome.Sharp.IconButton btnUrunAdiSil;
         private FontAwesome.Sharp.IconButton btnSil;
         private FontAwesome.Sharp.IconButton btnResimKaldir;
@@ -732,5 +710,9 @@ namespace UretimTakipProgrami.Forms
         private Button btnOpenFormProgram;
         private Button btnOpenFormMaterial;
         private FontAwesome.Sharp.IconButton btnGeriDon;
+        private FontAwesome.Sharp.IconButton btnMalzemeAdiSil;
+        private TextBox txtMalzemeAra;
+        private Label label2;
+        private Panel panel3;
     }
 }

@@ -2,6 +2,7 @@
 using System.Data;
 using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.Business.Repositories.Concretes;
+using UretimTakipProgrami.Entities;
 using Brush = System.Drawing.Brush;
 using Brushes = System.Drawing.Brushes;
 using Color = System.Drawing.Color;
@@ -66,7 +67,7 @@ namespace UretimTakipProgrami.Forms
                 })
                 .ToList();
 
-            if(machineList !=  null ) 
+            if (machineList != null)
             {
                 listTezgah.DataSource = machineList;
                 listTezgah.DisplayMember = "Name";
@@ -89,7 +90,7 @@ namespace UretimTakipProgrami.Forms
                 .Where(u => u.IsOperator)
                 .ToList();
 
-            if(userList != null)
+            if (userList != null)
             {
                 listAyarOperator.DataSource = userList;
                 listAyarOperator.DisplayMember = "Name";
@@ -321,11 +322,15 @@ namespace UretimTakipProgrami.Forms
                 bitisTarih = parsedBitisTarihi;
             }
 
+            /*
             var dailyProductionList = _productionRepository.GetAll()
                 .Select(production => new
                 {
                     productionStartDate = production.CreatedDate.ToLocalTime(),
                     productionFinishDate = production.FinishDate == null ? null : (object)Convert.ToDateTime(production.FinishDate).ToLocalTime(),
+                    productionTime = production.FinishDate != null && production.CreatedDate != null
+                            ? ((DateTime)production.FinishDate - (DateTime)production.CreatedDate).ToString("hh\\:mm\\:ss")
+                            : "",
                     productName = production.Order.Product.Name,
                     customerName = production.Order.Customer.Name,
                     production.Quantity,
@@ -339,26 +344,6 @@ namespace UretimTakipProgrami.Forms
                     production.IsStarted,
                     production.Id
                 })
-                .Select(pr => new
-                {
-                    pr.productionStartDate,
-                    pr.productionFinishDate,
-                    productionTime = pr.productionFinishDate != null && pr.productionStartDate != null
-                            ? ((DateTime)pr.productionFinishDate - (DateTime)pr.productionStartDate).ToString("hh\\:mm\\:ss")
-                            : "",
-                    pr.productName,
-                    pr.customerName,
-                    pr.Quantity,
-                    pr.Wastage,
-                    pr.machineName,
-                    pr.operatorName,
-                    pr.producedOperatorName,
-                    pr.Description,
-                    pr.programName,
-                    pr.orderId,
-                    pr.IsStarted,
-                    pr.Id
-                })
                 .Where(pr =>
                     (!pr.IsStarted) &&
                     (!baslangicTarih.HasValue || pr.productionStartDate.Date >= baslangicTarih) &&
@@ -369,6 +354,40 @@ namespace UretimTakipProgrami.Forms
                     (string.IsNullOrEmpty(arananUrun) || pr.productName.ToLower().Contains(arananUrun.ToLower())))
                 .OrderBy(pr => pr.productionStartDate)
                 .ToList();
+            */
+
+            var dailyProductionList = _productionRepository.GetAll()
+            .Select(production => new
+            {
+                productionStartDate = production.CreatedDate.ToLocalTime(),
+                productionFinishDate = production.FinishDate != null ? (object)Convert.ToDateTime(production.FinishDate).ToLocalTime() : null,
+                productionTime = production.FinishDate != null && production.CreatedDate != null
+                        ? ((DateTime)production.FinishDate - (DateTime)production.CreatedDate).ToString("hh\\:mm\\:ss")
+                        : "",
+                productName = production.Order.Product.Name,
+                customerName = production.Order.Customer.Name,
+                production.Quantity,
+                production.Wastage,
+                machineName = production.Order.Machine.Name,
+                operatorName = production.Order.User.Name,
+                producedOperatorName = production.User.Name,
+                production.Order.Description,
+                programName = production.Order.Product.MachineProgram.Name,
+                orderId = production.Order.Id,
+                production.IsStarted,
+                production.Id
+            })
+            .Where(pr =>
+                (!pr.IsStarted) &&
+                (!baslangicTarih.HasValue || pr.productionStartDate.Date >= baslangicTarih) &&
+                (!bitisTarih.HasValue || pr.productionStartDate.Date <= bitisTarih) &&
+                (string.IsNullOrEmpty(arananTezgah) || pr.machineName.ToLower().Contains(arananTezgah)) &&
+                (string.IsNullOrEmpty(arananOperator) || pr.producedOperatorName.ToLower().Contains(arananOperator)) &&
+                (string.IsNullOrEmpty(arananMusteri) || pr.customerName.ToLower().Contains(arananMusteri.ToLower())) &&
+                (string.IsNullOrEmpty(arananUrun) || pr.productName.ToLower().Contains(arananUrun.ToLower())))
+            .OrderBy(pr => pr.productionStartDate)
+            .ToList();
+
 
             if (dailyProductionList.Count > 0)
             {
@@ -1127,6 +1146,20 @@ namespace UretimTakipProgrami.Forms
         private void btnMusteriAdıSil_Click(object sender, EventArgs e)
         {
             txtMusteriAdiAra.Clear();
+        }
+
+        private void tabControl1_Leave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPageIndex != 2)
+            {
+                e.Cancel = true; // Geçişi iptal et
+                MessageBox.Show("Kontrolden çıkamazsınız.");
+            }
         }
     }
 }

@@ -49,6 +49,7 @@ namespace UretimTakipProgrami.Forms
             btnOnayaGönder = new FontAwesome.Sharp.IconButton();
             panel2 = new Panel();
             groupBox2 = new GroupBox();
+            radioButton1 = new RadioButton();
             listTezgah = new ComboBox();
             label7 = new Label();
             label8 = new Label();
@@ -142,6 +143,8 @@ namespace UretimTakipProgrami.Forms
             label37 = new Label();
             label30 = new Label();
             label31 = new Label();
+            radioButton2 = new RadioButton();
+            groupBox4 = new GroupBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel1.SuspendLayout();
@@ -172,6 +175,7 @@ namespace UretimTakipProgrami.Forms
             grpboxUrunAra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataListSearchDailyProduction).BeginInit();
             pnlArama.SuspendLayout();
+            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -189,6 +193,8 @@ namespace UretimTakipProgrami.Forms
             tabControl1.TabIndex = 0;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
+            tabControl1.Selecting += tabControl1_Selecting;
+            tabControl1.Leave += tabControl1_Leave;
             // 
             // tabPage1
             // 
@@ -348,6 +354,7 @@ namespace UretimTakipProgrami.Forms
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(groupBox4);
             groupBox2.Controls.Add(listTezgah);
             groupBox2.Controls.Add(label7);
             groupBox2.Controls.Add(label8);
@@ -359,6 +366,19 @@ namespace UretimTakipProgrami.Forms
             groupBox2.TabIndex = 14;
             groupBox2.TabStop = false;
             groupBox2.Text = "Tezgah / Operatör Seçimi";
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Checked = true;
+            radioButton1.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            radioButton1.Location = new Point(6, 22);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(66, 20);
+            radioButton1.TabIndex = 5;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "Manuel";
+            radioButton1.UseVisualStyleBackColor = true;
             // 
             // listTezgah
             // 
@@ -1734,6 +1754,28 @@ namespace UretimTakipProgrami.Forms
             label31.TabIndex = 2;
             label31.Text = "Ürün Adı:";
             // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            radioButton2.Location = new Point(105, 22);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(64, 20);
+            radioButton2.TabIndex = 5;
+            radioButton2.Text = "Sistem";
+            radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(radioButton1);
+            groupBox4.Controls.Add(radioButton2);
+            groupBox4.Location = new Point(55, 125);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(181, 55);
+            groupBox4.TabIndex = 6;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Onaya Gönderme Seçimi";
+            // 
             // FrmProduction
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -1788,6 +1830,8 @@ namespace UretimTakipProgrami.Forms
             ((System.ComponentModel.ISupportInitialize)dataListSearchDailyProduction).EndInit();
             pnlArama.ResumeLayout(false);
             pnlArama.PerformLayout();
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1897,5 +1941,8 @@ namespace UretimTakipProgrami.Forms
         private TextBox txtOperatorAdiAra;
         private TextBox txtIslenecekMalzeme;
         private Label label9;
+        private RadioButton radioButton1;
+        private GroupBox groupBox4;
+        private RadioButton radioButton2;
     }
 }

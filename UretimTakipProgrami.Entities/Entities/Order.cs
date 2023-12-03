@@ -10,6 +10,8 @@ namespace UretimTakipProgrami.Entities
             Productions = new HashSet<Production>();
         }
 
+        public string OrderCode { get; set; }
+
         public int Quantity { get; set; }
 
         public string? Description { get; set; }
@@ -36,12 +38,12 @@ namespace UretimTakipProgrami.Entities
 
         public virtual Product Product { get; set; }
 
-        public Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
 
-        public User? User { get; set; }
+        public virtual User? User { get; set; }
 
-        public Machine? Machine { get; set; }
+        public virtual Machine? Machine { get; set; }
 
-        public ICollection<Production>? Productions { get; set; }
+        public virtual ICollection<Production>? Productions { get; set; }
     }
 }

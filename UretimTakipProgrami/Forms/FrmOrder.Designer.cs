@@ -74,12 +74,14 @@
             txtTeslimTarihi = new DateTimePicker();
             listMusteriAdi = new ComboBox();
             listUrunAdi = new ComboBox();
+            txtIsEmriNo = new TextBox();
             txtSiparisTarihi = new TextBox();
             txtProgramAdi = new TextBox();
             txtIslenecekMalzeme = new TextBox();
             txtAciklama = new TextBox();
             label5 = new Label();
             label1 = new Label();
+            label15 = new Label();
             label14 = new Label();
             label3 = new Label();
             label12 = new Label();
@@ -225,19 +227,18 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle1.Font = new Font("Tahoma", 8F, FontStyle.Bold, GraphicsUnit.Point);
             dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = SystemColors.Control;
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle2.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = Color.Orange;
             dataGridViewCellStyle2.SelectionForeColor = Color.Black;
@@ -245,7 +246,7 @@
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
-            dataGridView1.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridView1.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
             dataGridView1.Location = new Point(4, 83);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
@@ -729,12 +730,14 @@
             groupBox1.Controls.Add(listMusteriAdi);
             groupBox1.Controls.Add(listUrunAdi);
             groupBox1.Controls.Add(panel5);
+            groupBox1.Controls.Add(txtIsEmriNo);
             groupBox1.Controls.Add(txtSiparisTarihi);
             groupBox1.Controls.Add(txtProgramAdi);
             groupBox1.Controls.Add(txtIslenecekMalzeme);
             groupBox1.Controls.Add(txtAciklama);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(label15);
             groupBox1.Controls.Add(label14);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label12);
@@ -787,7 +790,7 @@
             checkAcil.AutoSize = true;
             checkAcil.Enabled = false;
             checkAcil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            checkAcil.Location = new Point(528, 90);
+            checkAcil.Location = new Point(619, 90);
             checkAcil.Name = "checkAcil";
             checkAcil.Size = new Size(81, 18);
             checkAcil.TabIndex = 5;
@@ -798,12 +801,12 @@
             // 
             txtMiktar.Enabled = false;
             txtMiktar.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMiktar.Location = new Point(332, 86);
+            txtMiktar.Location = new Point(537, 86);
             txtMiktar.Margin = new Padding(4, 3, 4, 3);
             txtMiktar.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             txtMiktar.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             txtMiktar.Name = "txtMiktar";
-            txtMiktar.Size = new Size(100, 22);
+            txtMiktar.Size = new Size(74, 22);
             txtMiktar.TabIndex = 2;
             txtMiktar.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -811,7 +814,7 @@
             // 
             txtTeslimTarihi.Enabled = false;
             txtTeslimTarihi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtTeslimTarihi.Location = new Point(127, 85);
+            txtTeslimTarihi.Location = new Point(332, 85);
             txtTeslimTarihi.Name = "txtTeslimTarihi";
             txtTeslimTarihi.Size = new Size(198, 22);
             txtTeslimTarihi.TabIndex = 4;
@@ -836,34 +839,53 @@
             listUrunAdi.Size = new Size(279, 22);
             listUrunAdi.TabIndex = 0;
             listUrunAdi.SelectedValueChanged += listUrunAdi_SelectedValueChanged;
+            listUrunAdi.TextChanged += listUrunAdi_TextChanged;
+            // 
+            // txtIsEmriNo
+            // 
+            txtIsEmriNo.BackColor = Color.LightYellow;
+            txtIsEmriNo.Enabled = false;
+            txtIsEmriNo.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            txtIsEmriNo.Location = new Point(20, 85);
+            txtIsEmriNo.Margin = new Padding(4, 3, 4, 3);
+            txtIsEmriNo.Name = "txtIsEmriNo";
+            txtIsEmriNo.ReadOnly = true;
+            txtIsEmriNo.Size = new Size(171, 22);
+            txtIsEmriNo.TabIndex = 6;
             // 
             // txtSiparisTarihi
             // 
+            txtSiparisTarihi.BackColor = Color.LightYellow;
             txtSiparisTarihi.Enabled = false;
-            txtSiparisTarihi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtSiparisTarihi.Location = new Point(20, 85);
+            txtSiparisTarihi.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            txtSiparisTarihi.Location = new Point(199, 85);
             txtSiparisTarihi.Margin = new Padding(4, 3, 4, 3);
             txtSiparisTarihi.Name = "txtSiparisTarihi";
-            txtSiparisTarihi.Size = new Size(100, 22);
+            txtSiparisTarihi.ReadOnly = true;
+            txtSiparisTarihi.Size = new Size(126, 22);
             txtSiparisTarihi.TabIndex = 6;
             // 
             // txtProgramAdi
             // 
+            txtProgramAdi.BackColor = Color.LightYellow;
             txtProgramAdi.Enabled = false;
             txtProgramAdi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtProgramAdi.Location = new Point(619, 136);
             txtProgramAdi.Margin = new Padding(4, 3, 4, 3);
             txtProgramAdi.Name = "txtProgramAdi";
+            txtProgramAdi.ReadOnly = true;
             txtProgramAdi.Size = new Size(279, 22);
             txtProgramAdi.TabIndex = 6;
             // 
             // txtIslenecekMalzeme
             // 
+            txtIslenecekMalzeme.BackColor = Color.LightYellow;
             txtIslenecekMalzeme.Enabled = false;
             txtIslenecekMalzeme.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtIslenecekMalzeme.Location = new Point(332, 136);
             txtIslenecekMalzeme.Margin = new Padding(4, 3, 4, 3);
             txtIslenecekMalzeme.Name = "txtIslenecekMalzeme";
+            txtIslenecekMalzeme.ReadOnly = true;
             txtIslenecekMalzeme.Size = new Size(279, 22);
             txtIslenecekMalzeme.TabIndex = 6;
             // 
@@ -881,7 +903,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(332, 69);
+            label5.Location = new Point(537, 69);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(39, 14);
@@ -899,6 +921,17 @@
             label1.TabIndex = 2;
             label1.Text = "Ürün Adı";
             // 
+            // label15
+            // 
+            label15.AutoSize = true;
+            label15.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label15.Location = new Point(20, 68);
+            label15.Margin = new Padding(4, 0, 4, 0);
+            label15.Name = "label15";
+            label15.Size = new Size(62, 14);
+            label15.TabIndex = 2;
+            label15.Text = "İş Emri No";
+            // 
             // label14
             // 
             label14.AutoSize = true;
@@ -914,7 +947,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(20, 68);
+            label3.Location = new Point(199, 68);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(76, 14);
@@ -958,7 +991,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(127, 68);
+            label2.Location = new Point(332, 68);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(74, 14);
@@ -1058,5 +1091,7 @@
         private Label label12;
         private TextBox txtProgramAdi;
         private Label label14;
+        private TextBox txtIsEmriNo;
+        private Label label15;
     }
 }

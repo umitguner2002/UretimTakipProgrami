@@ -33,16 +33,14 @@
             groupBox2 = new GroupBox();
             dataGridView1 = new DataGridView();
             pnlArama = new Panel();
-            btnKayitTarihiSil = new FontAwesome.Sharp.IconButton();
+            btnTelefonNoAra = new FontAwesome.Sharp.IconButton();
+            txtTelefonNoAra = new MaskedTextBox();
             btnUrunAdiSil = new FontAwesome.Sharp.IconButton();
-            btnBulTarih = new FontAwesome.Sharp.IconButton();
-            txtKayitTarihiAra = new TextBox();
             txtMusteriAdiAra = new TextBox();
             btnMusteriBul = new FontAwesome.Sharp.IconButton();
-            lblKayitSayisi = new Label();
             label7 = new Label();
+            lblKayitSayisi = new Label();
             label6 = new Label();
-            monthCalendar1 = new MonthCalendar();
             txtMail = new TextBox();
             panel5 = new Panel();
             btnGeriDon = new FontAwesome.Sharp.IconButton();
@@ -62,8 +60,8 @@
             label1 = new Label();
             label4 = new Label();
             label2 = new Label();
-            panel2 = new Panel();
             panel3 = new Panel();
+            panel2 = new Panel();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             pnlArama.SuspendLayout();
@@ -77,7 +75,6 @@
             groupBox2.BackColor = Color.FromArgb(175, 174, 209);
             groupBox2.Controls.Add(dataGridView1);
             groupBox2.Controls.Add(pnlArama);
-            groupBox2.Controls.Add(monthCalendar1);
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox2.Location = new Point(0, 243);
@@ -115,57 +112,66 @@
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridView1.Location = new Point(4, 53);
+            dataGridView1.Location = new Point(4, 83);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1047, 354);
+            dataGridView1.Size = new Size(1047, 324);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // pnlArama
             // 
             pnlArama.BackColor = Color.FromArgb(43, 84, 126);
-            pnlArama.Controls.Add(btnKayitTarihiSil);
+            pnlArama.Controls.Add(btnTelefonNoAra);
+            pnlArama.Controls.Add(txtTelefonNoAra);
             pnlArama.Controls.Add(btnUrunAdiSil);
-            pnlArama.Controls.Add(btnBulTarih);
-            pnlArama.Controls.Add(txtKayitTarihiAra);
             pnlArama.Controls.Add(txtMusteriAdiAra);
             pnlArama.Controls.Add(btnMusteriBul);
-            pnlArama.Controls.Add(lblKayitSayisi);
             pnlArama.Controls.Add(label7);
+            pnlArama.Controls.Add(lblKayitSayisi);
             pnlArama.Controls.Add(label6);
             pnlArama.Dock = DockStyle.Top;
             pnlArama.Location = new Point(4, 18);
             pnlArama.Name = "pnlArama";
-            pnlArama.Size = new Size(1047, 35);
+            pnlArama.Size = new Size(1047, 65);
             pnlArama.TabIndex = 1;
             // 
-            // btnKayitTarihiSil
+            // btnTelefonNoAra
             // 
-            btnKayitTarihiSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnKayitTarihiSil.BackColor = Color.FromArgb(43, 84, 126);
-            btnKayitTarihiSil.Cursor = Cursors.Hand;
-            btnKayitTarihiSil.FlatAppearance.BorderSize = 0;
-            btnKayitTarihiSil.FlatStyle = FlatStyle.Flat;
-            btnKayitTarihiSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnKayitTarihiSil.ForeColor = Color.WhiteSmoke;
-            btnKayitTarihiSil.IconChar = FontAwesome.Sharp.IconChar.Xmark;
-            btnKayitTarihiSil.IconColor = Color.WhiteSmoke;
-            btnKayitTarihiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnKayitTarihiSil.IconSize = 18;
-            btnKayitTarihiSil.Location = new Point(554, 7);
-            btnKayitTarihiSil.Margin = new Padding(4, 3, 4, 3);
-            btnKayitTarihiSil.Name = "btnKayitTarihiSil";
-            btnKayitTarihiSil.Size = new Size(23, 23);
-            btnKayitTarihiSil.TabIndex = 3;
-            btnKayitTarihiSil.TextAlign = ContentAlignment.MiddleRight;
-            btnKayitTarihiSil.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnKayitTarihiSil.UseVisualStyleBackColor = false;
-            btnKayitTarihiSil.Click += btnKayitTarihiSil_Click;
+            btnTelefonNoAra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnTelefonNoAra.BackColor = Color.FromArgb(43, 84, 126);
+            btnTelefonNoAra.Cursor = Cursors.Hand;
+            btnTelefonNoAra.FlatAppearance.BorderSize = 0;
+            btnTelefonNoAra.FlatStyle = FlatStyle.Flat;
+            btnTelefonNoAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnTelefonNoAra.ForeColor = Color.WhiteSmoke;
+            btnTelefonNoAra.IconChar = FontAwesome.Sharp.IconChar.Xmark;
+            btnTelefonNoAra.IconColor = Color.WhiteSmoke;
+            btnTelefonNoAra.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnTelefonNoAra.IconSize = 18;
+            btnTelefonNoAra.Location = new Point(369, 35);
+            btnTelefonNoAra.Margin = new Padding(4, 3, 4, 3);
+            btnTelefonNoAra.Name = "btnTelefonNoAra";
+            btnTelefonNoAra.Size = new Size(23, 23);
+            btnTelefonNoAra.TabIndex = 3;
+            btnTelefonNoAra.TextAlign = ContentAlignment.MiddleRight;
+            btnTelefonNoAra.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnTelefonNoAra.UseVisualStyleBackColor = false;
+            btnTelefonNoAra.Click += btnTelefonNoAra_Click;
+            // 
+            // txtTelefonNoAra
+            // 
+            txtTelefonNoAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtTelefonNoAra.Location = new Point(89, 35);
+            txtTelefonNoAra.Name = "txtTelefonNoAra";
+            txtTelefonNoAra.Size = new Size(280, 22);
+            txtTelefonNoAra.TabIndex = 1;
+            txtTelefonNoAra.Enter += txtTelefonNoAra_Enter;
+            txtTelefonNoAra.Leave += txtTelefonNoAra_Leave;
             // 
             // btnUrunAdiSil
             // 
@@ -180,7 +186,7 @@
             btnUrunAdiSil.IconColor = Color.WhiteSmoke;
             btnUrunAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunAdiSil.IconSize = 18;
-            btnUrunAdiSil.Location = new Point(288, 7);
+            btnUrunAdiSil.Location = new Point(369, 8);
             btnUrunAdiSil.Margin = new Padding(4, 3, 4, 3);
             btnUrunAdiSil.Name = "btnUrunAdiSil";
             btnUrunAdiSil.Size = new Size(23, 23);
@@ -190,36 +196,12 @@
             btnUrunAdiSil.UseVisualStyleBackColor = false;
             btnUrunAdiSil.Click += btnUrunAdiSil_Click;
             // 
-            // btnBulTarih
-            // 
-            btnBulTarih.BackColor = SystemColors.Window;
-            btnBulTarih.FlatAppearance.BorderSize = 0;
-            btnBulTarih.FlatStyle = FlatStyle.Flat;
-            btnBulTarih.IconChar = FontAwesome.Sharp.IconChar.Calendar;
-            btnBulTarih.IconColor = Color.Black;
-            btnBulTarih.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnBulTarih.IconSize = 20;
-            btnBulTarih.Location = new Point(531, 8);
-            btnBulTarih.Name = "btnBulTarih";
-            btnBulTarih.Size = new Size(20, 20);
-            btnBulTarih.TabIndex = 4;
-            btnBulTarih.UseVisualStyleBackColor = false;
-            btnBulTarih.Click += btnBulTarih_Click;
-            // 
-            // txtKayitTarihiAra
-            // 
-            txtKayitTarihiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtKayitTarihiAra.Location = new Point(430, 7);
-            txtKayitTarihiAra.Name = "txtKayitTarihiAra";
-            txtKayitTarihiAra.Size = new Size(125, 22);
-            txtKayitTarihiAra.TabIndex = 6;
-            // 
             // txtMusteriAdiAra
             // 
             txtMusteriAdiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMusteriAdiAra.Location = new Point(89, 7);
+            txtMusteriAdiAra.Location = new Point(89, 8);
             txtMusteriAdiAra.Name = "txtMusteriAdiAra";
-            txtMusteriAdiAra.Size = new Size(200, 22);
+            txtMusteriAdiAra.Size = new Size(280, 22);
             txtMusteriAdiAra.TabIndex = 5;
             // 
             // btnMusteriBul
@@ -235,7 +217,7 @@
             btnMusteriBul.IconColor = Color.WhiteSmoke;
             btnMusteriBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnMusteriBul.IconSize = 18;
-            btnMusteriBul.Location = new Point(627, 7);
+            btnMusteriBul.Location = new Point(437, 8);
             btnMusteriBul.Margin = new Padding(4, 3, 4, 3);
             btnMusteriBul.Name = "btnMusteriBul";
             btnMusteriBul.Size = new Size(100, 22);
@@ -245,6 +227,18 @@
             btnMusteriBul.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnMusteriBul.UseVisualStyleBackColor = false;
             btnMusteriBul.Click += btnMusteriBul_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.ForeColor = Color.Gainsboro;
+            label7.Location = new Point(29, 39);
+            label7.Margin = new Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(53, 14);
+            label7.TabIndex = 2;
+            label7.Text = "Telefon:";
             // 
             // lblKayitSayisi
             // 
@@ -259,38 +253,17 @@
             lblKayitSayisi.TabIndex = 2;
             lblKayitSayisi.Text = "Kayıt Sayısı:";
             // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.ForeColor = Color.Gainsboro;
-            label7.Location = new Point(353, 11);
-            label7.Margin = new Padding(4, 0, 4, 0);
-            label7.Name = "label7";
-            label7.Size = new Size(70, 14);
-            label7.TabIndex = 2;
-            label7.Text = "Kayıt Tarihi:";
-            // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.Gainsboro;
-            label6.Location = new Point(11, 11);
+            label6.Location = new Point(11, 12);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(71, 14);
             label6.TabIndex = 2;
             label6.Text = "Müşteri Adı:";
-            // 
-            // monthCalendar1
-            // 
-            monthCalendar1.Location = new Point(325, 52);
-            monthCalendar1.MaxSelectionCount = 1;
-            monthCalendar1.Name = "monthCalendar1";
-            monthCalendar1.TabIndex = 7;
-            monthCalendar1.TabStop = false;
-            monthCalendar1.DateSelected += monthCalendar1_DateSelected;
             // 
             // txtMail
             // 
@@ -527,19 +500,21 @@
             // 
             txtTelefon2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtTelefon2.Location = new Point(20, 185);
-            txtTelefon2.Mask = "9 (999) 000 00 00";
             txtTelefon2.Name = "txtTelefon2";
             txtTelefon2.Size = new Size(280, 22);
             txtTelefon2.TabIndex = 2;
+            txtTelefon2.Enter += txtTelefon2_Enter;
+            txtTelefon2.Leave += txtTelefon2_Leave;
             // 
             // txtTelefon1
             // 
             txtTelefon1.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtTelefon1.Location = new Point(20, 135);
-            txtTelefon1.Mask = "9 (999) 000 00 00";
             txtTelefon1.Name = "txtTelefon1";
             txtTelefon1.Size = new Size(280, 22);
             txtTelefon1.TabIndex = 1;
+            txtTelefon1.Enter += txtTelefon1_Enter;
+            txtTelefon1.Leave += txtTelefon1_Leave;
             // 
             // txtMusteriAdi
             // 
@@ -606,15 +581,6 @@
             label2.TabIndex = 2;
             label2.Text = "Adres";
             // 
-            // panel2
-            // 
-            panel2.BackColor = Color.FromArgb(175, 174, 209);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(1055, 10);
-            panel2.TabIndex = 6;
-            // 
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
@@ -623,6 +589,15 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(1047, 177);
             panel3.TabIndex = 7;
+            // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(175, 174, 209);
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1055, 10);
+            panel2.TabIndex = 6;
             // 
             // FrmCustomer
             // 
@@ -652,17 +627,12 @@
         #endregion
 
         private GroupBox groupBox2;
-        private MonthCalendar monthCalendar1;
         private DataGridView dataGridView1;
         private Panel pnlArama;
-        private FontAwesome.Sharp.IconButton btnKayitTarihiSil;
         private FontAwesome.Sharp.IconButton btnUrunAdiSil;
-        private FontAwesome.Sharp.IconButton btnBulTarih;
-        private TextBox txtKayitTarihiAra;
         private TextBox txtMusteriAdiAra;
         private FontAwesome.Sharp.IconButton btnMusteriBul;
         private Label lblKayitSayisi;
-        private Label label7;
         private Label label6;
         private TextBox txtMail;
         private Panel panel5;
@@ -685,5 +655,8 @@
         private MaskedTextBox txtTelefon1;
         private FontAwesome.Sharp.IconButton btnGeriDon;
         private Panel panel3;
+        private FontAwesome.Sharp.IconButton btnTelefonNoAra;
+        private MaskedTextBox txtTelefonNoAra;
+        private Label label7;
     }
 }

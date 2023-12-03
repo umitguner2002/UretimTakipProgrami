@@ -40,6 +40,7 @@
             btnKaydet = new FontAwesome.Sharp.IconButton();
             label4 = new Label();
             label3 = new Label();
+            label5 = new Label();
             ((System.ComponentModel.ISupportInitialize)txtUretimMiktarı).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtDefoluMiktarı).BeginInit();
             panel1.SuspendLayout();
@@ -96,6 +97,7 @@
             panel1.Controls.Add(label4);
             panel1.Controls.Add(txtDefoluMiktarı);
             panel1.Controls.Add(label3);
+            panel1.Controls.Add(label5);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(label2);
             panel1.Dock = DockStyle.Fill;
@@ -203,6 +205,16 @@
             label3.TabIndex = 0;
             label3.Text = "Üretim Yapan Operatör";
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label5.Location = new Point(35, 82);
+            label5.Name = "label5";
+            label5.Size = new Size(68, 14);
+            label5.TabIndex = 0;
+            label5.Text = "Üretim Bitiş";
+            // 
             // FrmDailyProductionUpdate
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -235,5 +247,6 @@
         private TextBox txtSifre;
         private TextBox txtKullaniciAdi;
         private Label label4;
+        private Label label5;
     }
 }

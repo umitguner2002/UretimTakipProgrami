@@ -5,6 +5,8 @@ using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.Messages;
+using System.Globalization;
+using System.Windows.Forms;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -48,46 +50,28 @@ namespace UretimTakipProgrami.Forms
         private void GetCustomerList()
         {
             dataGridView1.DataSource = null;
-            List<object> filteredList = new List<object>();
+
+            string arananMusteriAdi = txtMusteriAdiAra.Text.ToUpper();
+            string arananTelefonNo = string.IsNullOrEmpty(txtTelefonNoAra.Text) ? string.Empty : txtTelefonNoAra.Text;
 
             var customerList = _customerRepository.GetAll()
                 .Select(customer => new
                 {
                     customer.Name,
-                    customer.Phone1,
-                    customer.Phone2,
+                    Tel1 = !string.IsNullOrEmpty(arananMusteriAdi) ? MaskedPhoneNumber(customer.Phone1) : "",
+                    Tel2 = !string.IsNullOrEmpty(arananMusteriAdi) ? MaskedPhoneNumber(customer.Phone2) : "",
                     customer.Mail,
                     customer.Address,
                     customerCreatedDate = customer.CreatedDate.ToLocalTime(),
                     customer.Id,
                 })
+                .Where(customer =>
+                    (string.IsNullOrEmpty(arananMusteriAdi) || customer.Name.Contains(arananMusteriAdi)) &&
+                    (string.IsNullOrEmpty(arananTelefonNo) || customer.Tel1 == arananTelefonNo || customer.Tel2 == arananTelefonNo))
                 .ToList();
 
-            string arananMusteriAdi = txtMusteriAdiAra.Text;
-            string arananTarih = txtKayitTarihiAra.Text;
-            DateTime.TryParse(txtKayitTarihiAra.Text, out DateTime kayitTarihi);
-
-            foreach (var cs in customerList)
-            {
-                if (arananMusteriAdi != "" && arananTarih != "")
-                {
-                    if (cs.Name.ToLower().StartsWith(arananMusteriAdi.ToLower()) && cs.customerCreatedDate.Date == kayitTarihi.ToLocalTime().Date)
-                        filteredList.Add(cs);
-                }
-                else if (arananMusteriAdi != "")
-                {
-                    if (cs.Name.ToLower().StartsWith(arananMusteriAdi.ToLower()))
-                        filteredList.Add(cs);
-                }
-                else
-                {
-                    if (cs.customerCreatedDate.Date == kayitTarihi.ToLocalTime().Date)
-                        filteredList.Add(cs);
-                }
-            }
-
-            dataGridView1.DataSource = filteredList;
-            lblKayitSayisi.Text = $"Kayıt Sayısı: {filteredList.Count.ToString()}";
+            dataGridView1.DataSource = customerList;
+            lblKayitSayisi.Text = $"Kayıt Sayısı: {customerList.Count.ToString()}";
 
             SetDataGridSettings();
         }
@@ -128,18 +112,19 @@ namespace UretimTakipProgrami.Forms
         {
             txtMusteriAdi.Clear();
             txtTelefon1.Clear();
+            txtTelefon1.Mask = "";
             txtTelefon2.Clear();
+            txtTelefon2.Mask = "";
             txtMail.Clear();
             txtAdres.Clear();
             txtMusteriAdiAra.Clear();
-            txtKayitTarihiAra.Clear();
+            txtTelefonNoAra.Clear();
 
             txtMusteriAdi.Focus();
         }
 
         private void FrmCustomer_Load(object sender, EventArgs e)
         {
-            monthCalendar1.Visible = false;
             dataGridView1.DataSource = null;
             ClearText();
             EnableButtonAndText();
@@ -180,8 +165,8 @@ namespace UretimTakipProgrami.Forms
                 await _customerRepository.AddAsync(new()
                 {
                     Name = txtMusteriAdi.Text.ToUpper(),
-                    Phone1 = txtTelefon1.Text,
-                    Phone2 = txtTelefon2.Text,
+                    Phone1 = txtTelefon1.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", ""),
+                    Phone2 = txtTelefon2.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", ""),
                     Mail = txtMail.Text,
                     Address = txtAdres.Text.ToUpper()
                 });
@@ -238,24 +223,15 @@ namespace UretimTakipProgrami.Forms
 
                 DataGridTextAktar();
             }
+            else
+                dataGridView1.DataSource = null;
 
-        }
-
-        private void btnBulTarih_Click(object sender, EventArgs e)
-        {
-            monthCalendar1.Visible = true;
         }
 
         private void btnIptal_Click(object sender, EventArgs e)
         {
             EnableButtonAndText();
             ClearText();
-        }
-
-        private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
-        {
-            txtKayitTarihiAra.Text = monthCalendar1.SelectionStart.ToShortDateString();
-            monthCalendar1.Visible = false;
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -267,13 +243,6 @@ namespace UretimTakipProgrami.Forms
         private void btnUrunAdiSil_Click(object sender, EventArgs e)
         {
             txtMusteriAdiAra.Clear();
-        }
-
-        private void btnKayitTarihiSil_Click(object sender, EventArgs e)
-        {
-            if (monthCalendar1.Visible)
-                monthCalendar1.Visible = false;
-            txtKayitTarihiAra.Clear();
         }
 
         private void btnDuzenle_Click(object sender, EventArgs e)
@@ -295,6 +264,9 @@ namespace UretimTakipProgrami.Forms
 
         private void DataGridTextAktar()
         {
+            string phoneNumber = string.Empty;
+            string maskedPhoneNumber = string.Empty;
+
             if (selectedIndex >= 0)
             {
                 txtMusteriAdi.Text = dataGridView1.Rows[selectedIndex].Cells[0].Value.ToString();
@@ -313,6 +285,74 @@ namespace UretimTakipProgrami.Forms
         private void FrmCustomer_FormClosed(object sender, FormClosedEventArgs e)
         {
             btnGeriDon.Enabled = false;
+        }
+
+        private void btnTelefonNoAra_Click(object sender, EventArgs e)
+        {
+            txtTelefonNoAra.Clear();
+        }
+
+        private void txtTelefon1_Enter(object sender, EventArgs e)
+        {
+            MaskedTextBoxEnter(txtTelefon1);
+        }
+
+        private void txtTelefon2_Enter(object sender, EventArgs e)
+        {
+            MaskedTextBoxEnter(txtTelefon2);
+        }
+
+        private void txtTelefonNoAra_Enter(object sender, EventArgs e)
+        {
+            MaskedTextBoxEnter(txtTelefonNoAra);
+        }
+
+        private void MaskedTextBoxEnter(MaskedTextBox maskedTextBox)
+        {
+            if (maskedTextBox.Text == string.Empty)
+            {
+                maskedTextBox.Mask = "9 (999) 000 00 00";
+                maskedTextBox.Text = "0";
+                maskedTextBox.Focus();
+                maskedTextBox.Select(3, 0);
+            }
+        }
+
+        private void txtTelefon1_Leave(object sender, EventArgs e)
+        {
+            SetPhoneNumber(txtTelefon1);
+        }
+
+        private void txtTelefon2_Leave(object sender, EventArgs e)
+        {
+            SetPhoneNumber(txtTelefon2);
+        }
+
+        private void txtTelefonNoAra_Leave(object sender, EventArgs e)
+        {
+            SetPhoneNumber(txtTelefonNoAra);
+        }
+
+        private void SetPhoneNumber(MaskedTextBox maskedTextBox)
+        {
+            string phoneNumber = maskedTextBox.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
+
+            if (phoneNumber.Length < 11)
+            {
+                maskedTextBox.Clear();
+                maskedTextBox.Mask = "";
+            }
+        }
+
+        private static string MaskedPhoneNumber(string phoneNumber)
+        {
+            if (phoneNumber.Length == 10)
+            {
+                string maskedPhoneNumber = "0 (" + phoneNumber.Substring(0, 3) + ") " + phoneNumber.Substring(3, 3) + " " + phoneNumber.Substring(6, 2) + " " + phoneNumber.Substring(8);
+                return maskedPhoneNumber;
+            }
+            else
+                return string.Empty;
         }
     }
 }

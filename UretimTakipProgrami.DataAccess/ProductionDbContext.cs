@@ -82,7 +82,7 @@ namespace UretimTakipProgrami.DataAccess
 
         private void SeedMaterialTypes(ModelBuilder modelBuilder)
         {
-            var materialTypeNames = new List<string> { "DEMİR", "ÇELİK", "BAKIR", "PİRİNÇ", "ALÜMİNYUM", "DERLİN" };
+            var materialTypeNames = new List<string> { "DEMİR", "ÇELİK", "BAKIR", "PİRİNÇ", "ALÜMİNYUM", "DERLİN", "DÖKÜM", "OTOMAT" };
 
             foreach (var name in materialTypeNames)
             {
