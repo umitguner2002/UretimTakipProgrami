@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using System.Xml.Linq;
 using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Abstractions;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Entities;
 
@@ -9,7 +11,45 @@ namespace UretimTakipProgrami.Business.Validators
     {
         private MachineProgramRepository _machineProgramRepository;
 
+        private string _editMachineProgramId;
+
         public MachineProgramValidator()
+        {
+            SetValidateRules();
+        }
+
+        public MachineProgramValidator(string editMachineProgramId)
+        {
+            _editMachineProgramId = editMachineProgramId;
+
+            SetValidateRules();
+        }
+
+        private bool IsUniqueCode(string code)
+        {
+            bool isUnique;
+
+            if (string.IsNullOrEmpty(_editMachineProgramId))
+                isUnique = !_machineProgramRepository.GetAll().Any(mp => mp.Code == code);
+            else
+                isUnique = !_machineProgramRepository.GetWhere(mp => mp.Id != Guid.Parse(_editMachineProgramId)).Any(mp => mp.Code == code);
+
+            return isUnique;
+        }
+
+        private bool IsUniqueName(string name)
+        {
+            bool isUnique;
+
+            if (string.IsNullOrEmpty(_editMachineProgramId))
+                isUnique = !_machineProgramRepository.GetAll().Any(mp => mp.Name == name);
+            else
+                isUnique = !_machineProgramRepository.GetWhere(mp => mp.Id != Guid.Parse(_editMachineProgramId)).Any(mp => mp.Name == name);
+
+            return isUnique;
+        }
+
+        private void SetValidateRules()
         {
             RuleFor(mp => mp.Code)
             .NotEmpty().WithMessage("Program Kodu boş olamaz.")
@@ -24,23 +64,6 @@ namespace UretimTakipProgrami.Business.Validators
             _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
         }
 
-        private bool IsUniqueCode(string code)
-        {
-            // Veritabanında aynı isme sahip müşteri olup olmadığını kontrol ediyor.
 
-            bool isUnique = !_machineProgramRepository.GetAll().Any(mp => mp.Code == code);
-
-            return isUnique;
-        }
-
-        private bool IsUniqueName(string name)
-        {
-            // Veritabanında aynı isme sahip müşteri olup olmadığını kontrol ediyor.
-
-            bool isUnique = !_machineProgramRepository.GetAll().Any(mp => mp.Name == name);
-
-            return isUnique;
-        }
-        
     }
 }

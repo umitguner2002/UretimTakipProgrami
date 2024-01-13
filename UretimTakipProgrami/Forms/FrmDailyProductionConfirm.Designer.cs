@@ -125,7 +125,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(175, 174, 209);
+            BackColor = Color.FromArgb(115, 147, 179);
             ClientSize = new Size(308, 195);
             Controls.Add(txtSifre);
             Controls.Add(label2);

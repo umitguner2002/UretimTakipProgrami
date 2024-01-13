@@ -44,7 +44,6 @@
             txtMail = new TextBox();
             panel5 = new Panel();
             btnGeriDon = new FontAwesome.Sharp.IconButton();
-            btnSil = new FontAwesome.Sharp.IconButton();
             btnIptal = new FontAwesome.Sharp.IconButton();
             btnYeni = new FontAwesome.Sharp.IconButton();
             btnKaydet = new FontAwesome.Sharp.IconButton();
@@ -91,7 +90,6 @@
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Tahoma", 8F, FontStyle.Bold, GraphicsUnit.Point);
@@ -100,7 +98,7 @@
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -117,6 +115,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1047, 324);
@@ -170,7 +169,7 @@
             txtTelefonNoAra.Name = "txtTelefonNoAra";
             txtTelefonNoAra.Size = new Size(280, 22);
             txtTelefonNoAra.TabIndex = 1;
-            txtTelefonNoAra.Enter += txtTelefonNoAra_Enter;
+            txtTelefonNoAra.KeyPress += txtTelefonNoAra_KeyPress;
             txtTelefonNoAra.Leave += txtTelefonNoAra_Leave;
             // 
             // btnUrunAdiSil
@@ -224,7 +223,7 @@
             btnMusteriBul.TabIndex = 7;
             btnMusteriBul.Text = "Müşteri Bul ";
             btnMusteriBul.TextAlign = ContentAlignment.MiddleRight;
-            btnMusteriBul.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnMusteriBul.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnMusteriBul.UseVisualStyleBackColor = false;
             btnMusteriBul.Click += btnMusteriBul_Click;
             // 
@@ -279,7 +278,6 @@
             // 
             panel5.BackColor = Color.FromArgb(43, 84, 126);
             panel5.Controls.Add(btnGeriDon);
-            panel5.Controls.Add(btnSil);
             panel5.Controls.Add(btnIptal);
             panel5.Controls.Add(btnYeni);
             panel5.Controls.Add(btnKaydet);
@@ -316,32 +314,6 @@
             btnGeriDon.UseVisualStyleBackColor = false;
             btnGeriDon.Visible = false;
             btnGeriDon.Click += btnGeriDon_Click;
-            // 
-            // btnSil
-            // 
-            btnSil.AutoSize = true;
-            btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSil.BackColor = Color.FromArgb(43, 84, 126);
-            btnSil.Cursor = Cursors.Hand;
-            btnSil.FlatAppearance.BorderSize = 0;
-            btnSil.FlatStyle = FlatStyle.Flat;
-            btnSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSil.ForeColor = Color.WhiteSmoke;
-            btnSil.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
-            btnSil.IconColor = Color.WhiteSmoke;
-            btnSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnSil.IconSize = 23;
-            btnSil.Location = new Point(381, 3);
-            btnSil.Margin = new Padding(4, 3, 4, 3);
-            btnSil.Name = "btnSil";
-            btnSil.Size = new Size(51, 29);
-            btnSil.TabIndex = 3;
-            btnSil.TabStop = false;
-            btnSil.Text = "Sil";
-            btnSil.TextAlign = ContentAlignment.MiddleRight;
-            btnSil.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSil.UseVisualStyleBackColor = false;
-            btnSil.Click += btnSil_Click;
             // 
             // btnIptal
             // 
@@ -636,7 +608,6 @@
         private Label label6;
         private TextBox txtMail;
         private Panel panel5;
-        private FontAwesome.Sharp.IconButton btnSil;
         private FontAwesome.Sharp.IconButton btnIptal;
         private FontAwesome.Sharp.IconButton btnYeni;
         private FontAwesome.Sharp.IconButton btnKaydet;

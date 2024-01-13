@@ -30,27 +30,28 @@ namespace UretimTakipProgrami.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmProduct));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             txtUrunAdi = new TextBox();
             label1 = new Label();
             btnKaydet = new FontAwesome.Sharp.IconButton();
-            resimKutusu = new FontAwesome.Sharp.IconPictureBox();
             groupBox1 = new GroupBox();
-            btnOpenFormProgram = new Button();
-            btnOpenFormMaterial = new Button();
             listMalzeme = new ComboBox();
             listProgramAdi = new ComboBox();
+            label3 = new Label();
+            label4 = new Label();
+            panel3 = new Panel();
+            btnOpenFormProgram = new Button();
+            btnOpenFormMaterial = new Button();
+            resimKutusu = new PictureBox();
+            btnResimKaldir = new FontAwesome.Sharp.IconButton();
+            btnResimEkle = new FontAwesome.Sharp.IconButton();
             panel5 = new Panel();
             btnGeriDon = new FontAwesome.Sharp.IconButton();
-            btnSil = new FontAwesome.Sharp.IconButton();
             btnIptal = new FontAwesome.Sharp.IconButton();
             btnYeni = new FontAwesome.Sharp.IconButton();
             btnDuzenle = new FontAwesome.Sharp.IconButton();
-            btnResimKaldir = new FontAwesome.Sharp.IconButton();
-            btnResimEkle = new FontAwesome.Sharp.IconButton();
-            label3 = new Label();
-            label4 = new Label();
             label6 = new Label();
             grpboxUrunAra = new GroupBox();
             dataGridView1 = new DataGridView();
@@ -64,9 +65,9 @@ namespace UretimTakipProgrami.Forms
             label2 = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
-            panel3 = new Panel();
-            ((System.ComponentModel.ISupportInitialize)resimKutusu).BeginInit();
             groupBox1.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)resimKutusu).BeginInit();
             panel5.SuspendLayout();
             grpboxUrunAra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -81,7 +82,7 @@ namespace UretimTakipProgrami.Forms
             txtUrunAdi.Location = new Point(20, 85);
             txtUrunAdi.Margin = new Padding(4, 3, 4, 3);
             txtUrunAdi.Name = "txtUrunAdi";
-            txtUrunAdi.Size = new Size(279, 22);
+            txtUrunAdi.Size = new Size(360, 22);
             txtUrunAdi.TabIndex = 0;
             // 
             // label1
@@ -121,35 +122,11 @@ namespace UretimTakipProgrami.Forms
             btnKaydet.UseVisualStyleBackColor = false;
             btnKaydet.Click += btnKaydet_Click;
             // 
-            // resimKutusu
-            // 
-            resimKutusu.BackColor = Color.Gray;
-            resimKutusu.BackgroundImageLayout = ImageLayout.Center;
-            resimKutusu.BorderStyle = BorderStyle.FixedSingle;
-            resimKutusu.ForeColor = Color.Gainsboro;
-            resimKutusu.IconChar = FontAwesome.Sharp.IconChar.Image;
-            resimKutusu.IconColor = Color.Gainsboro;
-            resimKutusu.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            resimKutusu.IconSize = 230;
-            resimKutusu.InitialImage = null;
-            resimKutusu.Location = new Point(338, 85);
-            resimKutusu.Margin = new Padding(4, 3, 4, 3);
-            resimKutusu.Name = "resimKutusu";
-            resimKutusu.Size = new Size(230, 230);
-            resimKutusu.SizeMode = PictureBoxSizeMode.StretchImage;
-            resimKutusu.TabIndex = 4;
-            resimKutusu.TabStop = false;
-            // 
             // groupBox1
             // 
-            groupBox1.Controls.Add(btnOpenFormProgram);
-            groupBox1.Controls.Add(btnOpenFormMaterial);
             groupBox1.Controls.Add(listMalzeme);
             groupBox1.Controls.Add(listProgramAdi);
-            groupBox1.Controls.Add(btnResimKaldir);
-            groupBox1.Controls.Add(btnResimEkle);
             groupBox1.Controls.Add(txtUrunAdi);
-            groupBox1.Controls.Add(resimKutusu);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label1);
@@ -166,11 +143,67 @@ namespace UretimTakipProgrami.Forms
             groupBox1.TabStop = false;
             groupBox1.Text = "Ürün Tanımlama";
             // 
+            // listMalzeme
+            // 
+            listMalzeme.Enabled = false;
+            listMalzeme.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            listMalzeme.FormattingEnabled = true;
+            listMalzeme.Location = new Point(20, 135);
+            listMalzeme.Name = "listMalzeme";
+            listMalzeme.Size = new Size(360, 22);
+            listMalzeme.TabIndex = 7;
+            // 
+            // listProgramAdi
+            // 
+            listProgramAdi.Enabled = false;
+            listProgramAdi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            listProgramAdi.FormattingEnabled = true;
+            listProgramAdi.Location = new Point(20, 185);
+            listProgramAdi.Name = "listProgramAdi";
+            listProgramAdi.Size = new Size(360, 22);
+            listProgramAdi.TabIndex = 7;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(20, 168);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(98, 14);
+            label3.TabIndex = 2;
+            label3.Text = "Tezgah Programı";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.Location = new Point(20, 118);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(108, 14);
+            label4.TabIndex = 2;
+            label4.Text = "İşlenecek Malzeme";
+            // 
+            // panel3
+            // 
+            panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(btnOpenFormProgram);
+            panel3.Controls.Add(btnOpenFormMaterial);
+            panel3.Controls.Add(resimKutusu);
+            panel3.Controls.Add(btnResimKaldir);
+            panel3.Controls.Add(btnResimEkle);
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(4, 53);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(1016, 273);
+            panel3.TabIndex = 9;
+            // 
             // btnOpenFormProgram
             // 
             btnOpenFormProgram.Enabled = false;
             btnOpenFormProgram.Font = new Font("Tahoma", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnOpenFormProgram.Location = new Point(300, 184);
+            btnOpenFormProgram.Location = new Point(376, 130);
             btnOpenFormProgram.Name = "btnOpenFormProgram";
             btnOpenFormProgram.Size = new Size(26, 24);
             btnOpenFormProgram.TabIndex = 8;
@@ -185,7 +218,7 @@ namespace UretimTakipProgrami.Forms
             btnOpenFormMaterial.FlatAppearance.BorderSize = 0;
             btnOpenFormMaterial.FlatStyle = FlatStyle.System;
             btnOpenFormMaterial.Font = new Font("Tahoma", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnOpenFormMaterial.Location = new Point(300, 134);
+            btnOpenFormMaterial.Location = new Point(376, 80);
             btnOpenFormMaterial.Name = "btnOpenFormMaterial";
             btnOpenFormMaterial.Size = new Size(26, 24);
             btnOpenFormMaterial.TabIndex = 8;
@@ -193,31 +226,75 @@ namespace UretimTakipProgrami.Forms
             btnOpenFormMaterial.UseVisualStyleBackColor = false;
             btnOpenFormMaterial.Click += btnOpenFormMaterial_Click;
             // 
-            // listMalzeme
+            // resimKutusu
             // 
-            listMalzeme.Enabled = false;
-            listMalzeme.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            listMalzeme.FormattingEnabled = true;
-            listMalzeme.Location = new Point(20, 135);
-            listMalzeme.Name = "listMalzeme";
-            listMalzeme.Size = new Size(280, 22);
-            listMalzeme.TabIndex = 7;
+            resimKutusu.BackColor = Color.Gray;
+            resimKutusu.BackgroundImage = (Image)resources.GetObject("resimKutusu.BackgroundImage");
+            resimKutusu.BackgroundImageLayout = ImageLayout.Stretch;
+            resimKutusu.BorderStyle = BorderStyle.FixedSingle;
+            resimKutusu.InitialImage = null;
+            resimKutusu.Location = new Point(413, 31);
+            resimKutusu.Name = "resimKutusu";
+            resimKutusu.Size = new Size(230, 230);
+            resimKutusu.SizeMode = PictureBoxSizeMode.StretchImage;
+            resimKutusu.TabIndex = 0;
+            resimKutusu.TabStop = false;
+            resimKutusu.DoubleClick += resimKutusu_DoubleClick;
             // 
-            // listProgramAdi
+            // btnResimKaldir
             // 
-            listProgramAdi.Enabled = false;
-            listProgramAdi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            listProgramAdi.FormattingEnabled = true;
-            listProgramAdi.Location = new Point(20, 185);
-            listProgramAdi.Name = "listProgramAdi";
-            listProgramAdi.Size = new Size(280, 22);
-            listProgramAdi.TabIndex = 7;
+            btnResimKaldir.AutoSize = true;
+            btnResimKaldir.BackColor = Color.FromArgb(43, 84, 126);
+            btnResimKaldir.Cursor = Cursors.Hand;
+            btnResimKaldir.Enabled = false;
+            btnResimKaldir.FlatAppearance.BorderSize = 0;
+            btnResimKaldir.FlatStyle = FlatStyle.Flat;
+            btnResimKaldir.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnResimKaldir.ForeColor = Color.WhiteSmoke;
+            btnResimKaldir.IconChar = FontAwesome.Sharp.IconChar.SquareFull;
+            btnResimKaldir.IconColor = Color.WhiteSmoke;
+            btnResimKaldir.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnResimKaldir.IconSize = 20;
+            btnResimKaldir.Location = new Point(650, 62);
+            btnResimKaldir.Margin = new Padding(4, 3, 4, 3);
+            btnResimKaldir.Name = "btnResimKaldir";
+            btnResimKaldir.Size = new Size(112, 26);
+            btnResimKaldir.TabIndex = 5;
+            btnResimKaldir.Text = "Çizim Kaldır";
+            btnResimKaldir.TextAlign = ContentAlignment.MiddleRight;
+            btnResimKaldir.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnResimKaldir.UseVisualStyleBackColor = false;
+            btnResimKaldir.Click += btnResimKaldir_Click;
+            // 
+            // btnResimEkle
+            // 
+            btnResimEkle.AutoSize = true;
+            btnResimEkle.BackColor = Color.FromArgb(43, 84, 126);
+            btnResimEkle.Cursor = Cursors.Hand;
+            btnResimEkle.Enabled = false;
+            btnResimEkle.FlatAppearance.BorderSize = 0;
+            btnResimEkle.FlatStyle = FlatStyle.Flat;
+            btnResimEkle.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnResimEkle.ForeColor = Color.WhiteSmoke;
+            btnResimEkle.IconChar = FontAwesome.Sharp.IconChar.Images;
+            btnResimEkle.IconColor = Color.WhiteSmoke;
+            btnResimEkle.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnResimEkle.IconSize = 20;
+            btnResimEkle.Location = new Point(650, 31);
+            btnResimEkle.Margin = new Padding(4, 3, 4, 3);
+            btnResimEkle.Name = "btnResimEkle";
+            btnResimEkle.Size = new Size(112, 26);
+            btnResimEkle.TabIndex = 5;
+            btnResimEkle.Text = "Çizim Ekle";
+            btnResimEkle.TextAlign = ContentAlignment.MiddleRight;
+            btnResimEkle.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnResimEkle.UseVisualStyleBackColor = false;
+            btnResimEkle.Click += btnResimEkle_Click;
             // 
             // panel5
             // 
             panel5.BackColor = Color.FromArgb(43, 84, 126);
             panel5.Controls.Add(btnGeriDon);
-            panel5.Controls.Add(btnSil);
             panel5.Controls.Add(btnIptal);
             panel5.Controls.Add(btnYeni);
             panel5.Controls.Add(btnKaydet);
@@ -254,32 +331,6 @@ namespace UretimTakipProgrami.Forms
             btnGeriDon.UseVisualStyleBackColor = false;
             btnGeriDon.Visible = false;
             btnGeriDon.Click += btnGeriDon_Click;
-            // 
-            // btnSil
-            // 
-            btnSil.AutoSize = true;
-            btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSil.BackColor = Color.FromArgb(43, 84, 126);
-            btnSil.Cursor = Cursors.Hand;
-            btnSil.FlatAppearance.BorderSize = 0;
-            btnSil.FlatStyle = FlatStyle.Flat;
-            btnSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSil.ForeColor = Color.WhiteSmoke;
-            btnSil.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
-            btnSil.IconColor = Color.WhiteSmoke;
-            btnSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnSil.IconSize = 23;
-            btnSil.Location = new Point(355, 3);
-            btnSil.Margin = new Padding(4, 3, 4, 3);
-            btnSil.Name = "btnSil";
-            btnSil.Size = new Size(51, 29);
-            btnSil.TabIndex = 3;
-            btnSil.TabStop = false;
-            btnSil.Text = "Sil";
-            btnSil.TextAlign = ContentAlignment.MiddleRight;
-            btnSil.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSil.UseVisualStyleBackColor = false;
-            btnSil.Click += btnSil_Click;
             // 
             // btnIptal
             // 
@@ -361,78 +412,6 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.UseVisualStyleBackColor = false;
             btnDuzenle.Click += btnDuzenle_Click;
             // 
-            // btnResimKaldir
-            // 
-            btnResimKaldir.AutoSize = true;
-            btnResimKaldir.BackColor = Color.FromArgb(43, 84, 126);
-            btnResimKaldir.Cursor = Cursors.Hand;
-            btnResimKaldir.Enabled = false;
-            btnResimKaldir.FlatAppearance.BorderSize = 0;
-            btnResimKaldir.FlatStyle = FlatStyle.Flat;
-            btnResimKaldir.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnResimKaldir.ForeColor = Color.WhiteSmoke;
-            btnResimKaldir.IconChar = FontAwesome.Sharp.IconChar.SquareFull;
-            btnResimKaldir.IconColor = Color.WhiteSmoke;
-            btnResimKaldir.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnResimKaldir.IconSize = 20;
-            btnResimKaldir.Location = new Point(576, 116);
-            btnResimKaldir.Margin = new Padding(4, 3, 4, 3);
-            btnResimKaldir.Name = "btnResimKaldir";
-            btnResimKaldir.Size = new Size(112, 26);
-            btnResimKaldir.TabIndex = 5;
-            btnResimKaldir.Text = "Çizim Kaldır";
-            btnResimKaldir.TextAlign = ContentAlignment.MiddleRight;
-            btnResimKaldir.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnResimKaldir.UseVisualStyleBackColor = false;
-            btnResimKaldir.Click += btnResimKaldir_Click;
-            // 
-            // btnResimEkle
-            // 
-            btnResimEkle.AutoSize = true;
-            btnResimEkle.BackColor = Color.FromArgb(43, 84, 126);
-            btnResimEkle.Cursor = Cursors.Hand;
-            btnResimEkle.Enabled = false;
-            btnResimEkle.FlatAppearance.BorderSize = 0;
-            btnResimEkle.FlatStyle = FlatStyle.Flat;
-            btnResimEkle.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnResimEkle.ForeColor = Color.WhiteSmoke;
-            btnResimEkle.IconChar = FontAwesome.Sharp.IconChar.Images;
-            btnResimEkle.IconColor = Color.WhiteSmoke;
-            btnResimEkle.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnResimEkle.IconSize = 20;
-            btnResimEkle.Location = new Point(576, 85);
-            btnResimEkle.Margin = new Padding(4, 3, 4, 3);
-            btnResimEkle.Name = "btnResimEkle";
-            btnResimEkle.Size = new Size(112, 26);
-            btnResimEkle.TabIndex = 5;
-            btnResimEkle.Text = "Çizim Ekle";
-            btnResimEkle.TextAlign = ContentAlignment.MiddleRight;
-            btnResimEkle.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnResimEkle.UseVisualStyleBackColor = false;
-            btnResimEkle.Click += btnResimEkle_Click;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(20, 168);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(98, 14);
-            label3.TabIndex = 2;
-            label3.Text = "Tezgah Programı";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(20, 118);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(108, 14);
-            label4.TabIndex = 2;
-            label4.Text = "İşlenecek Malzeme";
-            // 
             // label6
             // 
             label6.AutoSize = true;
@@ -465,7 +444,6 @@ namespace UretimTakipProgrami.Forms
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AllowUserToResizeRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Tahoma", 8F, FontStyle.Bold, GraphicsUnit.Point);
@@ -474,7 +452,7 @@ namespace UretimTakipProgrami.Forms
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -491,6 +469,7 @@ namespace UretimTakipProgrami.Forms
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1016, 275);
@@ -527,7 +506,7 @@ namespace UretimTakipProgrami.Forms
             btnMalzemeAdiSil.IconColor = Color.WhiteSmoke;
             btnMalzemeAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnMalzemeAdiSil.IconSize = 18;
-            btnMalzemeAdiSil.Location = new Point(377, 35);
+            btnMalzemeAdiSil.Location = new Point(419, 35);
             btnMalzemeAdiSil.Margin = new Padding(4, 3, 4, 3);
             btnMalzemeAdiSil.Name = "btnMalzemeAdiSil";
             btnMalzemeAdiSil.Size = new Size(23, 23);
@@ -550,7 +529,7 @@ namespace UretimTakipProgrami.Forms
             btnUrunAdiSil.IconColor = Color.WhiteSmoke;
             btnUrunAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunAdiSil.IconSize = 18;
-            btnUrunAdiSil.Location = new Point(377, 7);
+            btnUrunAdiSil.Location = new Point(419, 7);
             btnUrunAdiSil.Margin = new Padding(4, 3, 4, 3);
             btnUrunAdiSil.Name = "btnUrunAdiSil";
             btnUrunAdiSil.Size = new Size(23, 23);
@@ -565,7 +544,7 @@ namespace UretimTakipProgrami.Forms
             txtMalzemeAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtMalzemeAra.Location = new Point(131, 35);
             txtMalzemeAra.Name = "txtMalzemeAra";
-            txtMalzemeAra.Size = new Size(246, 22);
+            txtMalzemeAra.Size = new Size(287, 22);
             txtMalzemeAra.TabIndex = 6;
             // 
             // txtUrunAdiAra
@@ -573,7 +552,7 @@ namespace UretimTakipProgrami.Forms
             txtUrunAdiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtUrunAdiAra.Location = new Point(131, 7);
             txtUrunAdiAra.Name = "txtUrunAdiAra";
-            txtUrunAdiAra.Size = new Size(246, 22);
+            txtUrunAdiAra.Size = new Size(287, 22);
             txtUrunAdiAra.TabIndex = 6;
             // 
             // btnUrunBul
@@ -589,10 +568,10 @@ namespace UretimTakipProgrami.Forms
             btnUrunBul.IconColor = Color.WhiteSmoke;
             btnUrunBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunBul.IconSize = 18;
-            btnUrunBul.Location = new Point(477, 7);
+            btnUrunBul.Location = new Point(474, 7);
             btnUrunBul.Margin = new Padding(4, 3, 4, 3);
             btnUrunBul.Name = "btnUrunBul";
-            btnUrunBul.Size = new Size(87, 22);
+            btnUrunBul.Size = new Size(100, 22);
             btnUrunBul.TabIndex = 8;
             btnUrunBul.Text = "Ürün Bul ";
             btnUrunBul.TextAlign = ContentAlignment.MiddleRight;
@@ -643,15 +622,6 @@ namespace UretimTakipProgrami.Forms
             panel2.Size = new Size(1024, 10);
             panel2.TabIndex = 6;
             // 
-            // panel3
-            // 
-            panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(4, 53);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(1016, 273);
-            panel3.TabIndex = 9;
-            // 
             // FrmProduct
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -667,9 +637,11 @@ namespace UretimTakipProgrami.Forms
             FormClosed += FrmProduct_FormClosed;
             Load += FrmProduct_Load;
             Resize += FrmProduct_Resize;
-            ((System.ComponentModel.ISupportInitialize)resimKutusu).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
+            panel3.ResumeLayout(false);
+            panel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)resimKutusu).EndInit();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
             grpboxUrunAra.ResumeLayout(false);
@@ -684,7 +656,6 @@ namespace UretimTakipProgrami.Forms
         private TextBox txtUrunAdi;
         private Label label1;
         private FontAwesome.Sharp.IconButton btnKaydet;
-        private FontAwesome.Sharp.IconPictureBox resimKutusu;
         private GroupBox groupBox1;
         private GroupBox grpboxUrunAra;
         private Panel panel1;
@@ -702,7 +673,6 @@ namespace UretimTakipProgrami.Forms
         private FontAwesome.Sharp.IconButton btnUrunBul;
         private Label label3;
         private FontAwesome.Sharp.IconButton btnUrunAdiSil;
-        private FontAwesome.Sharp.IconButton btnSil;
         private FontAwesome.Sharp.IconButton btnResimKaldir;
         private ComboBox listProgramAdi;
         private ComboBox listMalzeme;
@@ -714,5 +684,6 @@ namespace UretimTakipProgrami.Forms
         private TextBox txtMalzemeAra;
         private Label label2;
         private Panel panel3;
+        private PictureBox resimKutusu;
     }
 }

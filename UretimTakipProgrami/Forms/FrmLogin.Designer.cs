@@ -30,6 +30,7 @@ namespace UretimTakipProgrami
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLogin));
             btnGiris = new Button();
             txtKullaniciAdi = new TextBox();
             label1 = new Label();
@@ -38,11 +39,14 @@ namespace UretimTakipProgrami
             label3 = new Label();
             btnIptal = new Button();
             panel1 = new Panel();
+            label4 = new Label();
+            pictureBox1 = new PictureBox();
             panel2 = new Panel();
             ıconPictureBox2 = new FontAwesome.Sharp.IconPictureBox();
             ıconPictureBox3 = new FontAwesome.Sharp.IconPictureBox();
             ıconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ıconPictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ıconPictureBox3).BeginInit();
@@ -57,7 +61,7 @@ namespace UretimTakipProgrami
             btnGiris.FlatStyle = FlatStyle.Flat;
             btnGiris.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             btnGiris.ForeColor = Color.Transparent;
-            btnGiris.Location = new Point(49, 293);
+            btnGiris.Location = new Point(49, 281);
             btnGiris.Margin = new Padding(4, 3, 4, 3);
             btnGiris.Name = "btnGiris";
             btnGiris.Size = new Size(279, 40);
@@ -82,12 +86,12 @@ namespace UretimTakipProgrami
             label1.AutoSize = true;
             label1.Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(34, 209);
+            label1.Location = new Point(84, 328);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(252, 29);
+            label1.Size = new Size(173, 29);
             label1.TabIndex = 2;
-            label1.Text = "Üretim Takip Programı";
+            label1.Text = "Takip Programı";
             // 
             // txtSifre
             // 
@@ -131,7 +135,7 @@ namespace UretimTakipProgrami
             btnIptal.FlatStyle = FlatStyle.Flat;
             btnIptal.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             btnIptal.ForeColor = Color.Transparent;
-            btnIptal.Location = new Point(49, 340);
+            btnIptal.Location = new Point(49, 328);
             btnIptal.Margin = new Padding(4, 3, 4, 3);
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(279, 40);
@@ -143,13 +147,39 @@ namespace UretimTakipProgrami
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(31, 30, 68);
+            panel1.Controls.Add(label4);
             panel1.Controls.Add(label1);
+            panel1.Controls.Add(pictureBox1);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(341, 417);
+            panel1.Size = new Size(341, 396);
             panel1.TabIndex = 4;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Tahoma", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            label4.ForeColor = Color.White;
+            label4.Location = new Point(60, 292);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(221, 29);
+            label4.TabIndex = 2;
+            label4.Text = "CNC Tezgah Üretim";
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox1.Dock = DockStyle.Top;
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(341, 256);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 3;
+            pictureBox1.TabStop = false;
             // 
             // panel2
             // 
@@ -167,7 +197,7 @@ namespace UretimTakipProgrami
             panel2.Location = new Point(341, 0);
             panel2.Margin = new Padding(4, 3, 4, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(349, 417);
+            panel2.Size = new Size(349, 396);
             panel2.TabIndex = 4;
             // 
             // ıconPictureBox2
@@ -187,14 +217,15 @@ namespace UretimTakipProgrami
             // ıconPictureBox3
             // 
             ıconPictureBox3.BackColor = Color.FromArgb(192, 210, 235);
+            ıconPictureBox3.BackgroundImageLayout = ImageLayout.Center;
             ıconPictureBox3.ForeColor = Color.SteelBlue;
-            ıconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.UsersRectangle;
+            ıconPictureBox3.IconChar = FontAwesome.Sharp.IconChar.UserLock;
             ıconPictureBox3.IconColor = Color.SteelBlue;
             ıconPictureBox3.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            ıconPictureBox3.IconSize = 96;
-            ıconPictureBox3.Location = new Point(129, 35);
+            ıconPictureBox3.IconSize = 80;
+            ıconPictureBox3.Location = new Point(138, 46);
             ıconPictureBox3.Name = "ıconPictureBox3";
-            ıconPictureBox3.Size = new Size(96, 96);
+            ıconPictureBox3.Size = new Size(80, 80);
             ıconPictureBox3.TabIndex = 4;
             ıconPictureBox3.TabStop = false;
             // 
@@ -218,11 +249,12 @@ namespace UretimTakipProgrami
             AutoScaleMode = AutoScaleMode.Font;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.FromArgb(202, 224, 252);
-            ClientSize = new Size(690, 417);
+            ClientSize = new Size(690, 396);
             Controls.Add(panel2);
             Controls.Add(panel1);
             ForeColor = Color.Transparent;
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             Name = "FrmLogin";
             StartPosition = FormStartPosition.CenterScreen;
@@ -231,6 +263,7 @@ namespace UretimTakipProgrami
             Shown += FrmLogin_Shown;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)ıconPictureBox2).EndInit();
@@ -253,6 +286,8 @@ namespace UretimTakipProgrami
         private FontAwesome.Sharp.IconPictureBox ıconPictureBox1;
         private FontAwesome.Sharp.IconPictureBox ıconPictureBox2;
         private FontAwesome.Sharp.IconPictureBox ıconPictureBox3;
+        private PictureBox pictureBox1;
+        private Label label4;
     }
 }
 

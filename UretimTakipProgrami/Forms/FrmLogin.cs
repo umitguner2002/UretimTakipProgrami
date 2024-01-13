@@ -60,8 +60,8 @@ namespace UretimTakipProgrami
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.ToString());
-            }            
+                MessageBox.Show($"Error! Database is not exist.\n{err.ToString()}");
+            }
         }
 
         private string SHA256Hash(string text)
@@ -79,7 +79,7 @@ namespace UretimTakipProgrami
         private void FrmLogin_Shown(object sender, EventArgs e)
         {
             txtKullaniciAdi.Text = "umt";
-            txtSifre.Text = "dev";            
+            txtSifre.Text = "dev";
             txtKullaniciAdi.Focus();
         }
     }

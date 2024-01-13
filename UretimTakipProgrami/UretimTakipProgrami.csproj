@@ -6,10 +6,28 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>ark_productbox_arc_6255.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ark_productbox_arc_6255.ico" />
+    <None Remove="spur-gear-icon.ico" />
+    <None Remove="spur-gear-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="CsvHelper" Version="30.0.1" />
     <PackageReference Include="FontAwesome.Sharp" Version="6.3.0" />
+    <PackageReference Include="Microsoft.ML" Version="3.0.0" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>

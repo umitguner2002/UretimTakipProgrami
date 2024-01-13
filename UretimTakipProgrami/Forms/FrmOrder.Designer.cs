@@ -41,7 +41,6 @@
             dataGridView1 = new DataGridView();
             label6 = new Label();
             panel5 = new Panel();
-            btnSil = new FontAwesome.Sharp.IconButton();
             btnIptal = new FontAwesome.Sharp.IconButton();
             btnYeni = new FontAwesome.Sharp.IconButton();
             btnKaydet = new FontAwesome.Sharp.IconButton();
@@ -252,6 +251,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
+            dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1126, 293);
@@ -273,7 +273,6 @@
             // panel5
             // 
             panel5.BackColor = Color.FromArgb(43, 84, 126);
-            panel5.Controls.Add(btnSil);
             panel5.Controls.Add(btnIptal);
             panel5.Controls.Add(btnYeni);
             panel5.Controls.Add(btnKaydet);
@@ -283,30 +282,6 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(1126, 35);
             panel5.TabIndex = 6;
-            // 
-            // btnSil
-            // 
-            btnSil.AutoSize = true;
-            btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnSil.BackColor = Color.FromArgb(43, 84, 126);
-            btnSil.Cursor = Cursors.Hand;
-            btnSil.FlatAppearance.BorderSize = 0;
-            btnSil.FlatStyle = FlatStyle.Flat;
-            btnSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSil.ForeColor = Color.WhiteSmoke;
-            btnSil.IconChar = FontAwesome.Sharp.IconChar.TrashAlt;
-            btnSil.IconColor = Color.WhiteSmoke;
-            btnSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            btnSil.IconSize = 23;
-            btnSil.Location = new Point(390, 3);
-            btnSil.Margin = new Padding(4, 3, 4, 3);
-            btnSil.Name = "btnSil";
-            btnSil.Size = new Size(51, 29);
-            btnSil.TabIndex = 3;
-            btnSil.Text = "Sil";
-            btnSil.TextAlign = ContentAlignment.MiddleRight;
-            btnSil.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btnSil.UseVisualStyleBackColor = false;
             // 
             // btnIptal
             // 
@@ -365,6 +340,7 @@
             btnKaydet.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnKaydet.BackColor = Color.FromArgb(43, 84, 126);
             btnKaydet.Cursor = Cursors.Hand;
+            btnKaydet.Enabled = false;
             btnKaydet.FlatAppearance.BorderSize = 0;
             btnKaydet.FlatStyle = FlatStyle.Flat;
             btnKaydet.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -390,7 +366,6 @@
             btnDuzenle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnDuzenle.BackColor = Color.FromArgb(43, 84, 126);
             btnDuzenle.Cursor = Cursors.Hand;
-            btnDuzenle.Enabled = false;
             btnDuzenle.FlatAppearance.BorderSize = 0;
             btnDuzenle.FlatStyle = FlatStyle.Flat;
             btnDuzenle.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -839,7 +814,6 @@
             listUrunAdi.Size = new Size(279, 22);
             listUrunAdi.TabIndex = 0;
             listUrunAdi.SelectedValueChanged += listUrunAdi_SelectedValueChanged;
-            listUrunAdi.TextChanged += listUrunAdi_TextChanged;
             // 
             // txtIsEmriNo
             // 
@@ -1018,7 +992,6 @@
             MinimumSize = new Size(1150, 650);
             Name = "FrmOrder";
             Text = "Siparişler";
-            Load += FrmOrder_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
@@ -1045,7 +1018,6 @@
         private DataGridView dataGridView1;
         private Label label6;
         private Panel panel5;
-        private FontAwesome.Sharp.IconButton btnSil;
         private FontAwesome.Sharp.IconButton btnIptal;
         private FontAwesome.Sharp.IconButton btnYeni;
         private FontAwesome.Sharp.IconButton btnKaydet;

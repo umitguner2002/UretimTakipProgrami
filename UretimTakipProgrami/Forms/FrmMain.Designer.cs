@@ -15,6 +15,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             pnlSideBar = new Panel();
             btnKullanici = new FontAwesome.Sharp.IconButton();
             btnTezgahOperator = new FontAwesome.Sharp.IconButton();
@@ -24,10 +25,11 @@
             btnUrun = new FontAwesome.Sharp.IconButton();
             btnAnaEkran = new FontAwesome.Sharp.IconButton();
             pnlLogo = new Panel();
+            pictureBox1 = new PictureBox();
             label1 = new Label();
-            ıconPictureBox1 = new FontAwesome.Sharp.IconPictureBox();
             pnlContent = new Panel();
             pnlDesktop = new Panel();
+            button1 = new Button();
             panel3 = new Panel();
             label10 = new Label();
             lblNumberOfWaitingSelectMachine = new Label();
@@ -65,7 +67,7 @@
             btnTamEkran = new FontAwesome.Sharp.IconButton();
             pnlSideBar.SuspendLayout();
             pnlLogo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ıconPictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             pnlContent.SuspendLayout();
             pnlDesktop.SuspendLayout();
             panel3.SuspendLayout();
@@ -268,14 +270,24 @@
             // 
             // pnlLogo
             // 
+            pnlLogo.Controls.Add(pictureBox1);
             pnlLogo.Controls.Add(label1);
-            pnlLogo.Controls.Add(ıconPictureBox1);
             pnlLogo.Dock = DockStyle.Top;
             pnlLogo.Location = new Point(0, 0);
             pnlLogo.Margin = new Padding(4, 3, 4, 3);
             pnlLogo.Name = "pnlLogo";
             pnlLogo.Size = new Size(244, 113);
             pnlLogo.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(30, 34);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(48, 48);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 11;
+            pictureBox1.TabStop = false;
             // 
             // label1
             // 
@@ -289,21 +301,6 @@
             label1.TabIndex = 0;
             label1.Text = "Üretim Takip Programı";
             label1.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // ıconPictureBox1
-            // 
-            ıconPictureBox1.BackColor = Color.FromArgb(31, 30, 68);
-            ıconPictureBox1.ForeColor = Color.Gainsboro;
-            ıconPictureBox1.IconChar = FontAwesome.Sharp.IconChar.Pushed;
-            ıconPictureBox1.IconColor = Color.Gainsboro;
-            ıconPictureBox1.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            ıconPictureBox1.IconSize = 58;
-            ıconPictureBox1.Location = new Point(18, 28);
-            ıconPictureBox1.Margin = new Padding(4, 3, 4, 3);
-            ıconPictureBox1.Name = "ıconPictureBox1";
-            ıconPictureBox1.Size = new Size(58, 58);
-            ıconPictureBox1.TabIndex = 0;
-            ıconPictureBox1.TabStop = false;
             // 
             // pnlContent
             // 
@@ -319,6 +316,7 @@
             // pnlDesktop
             // 
             pnlDesktop.BackColor = Color.FromArgb(41, 40, 99);
+            pnlDesktop.Controls.Add(button1);
             pnlDesktop.Controls.Add(panel3);
             pnlDesktop.Controls.Add(panel8);
             pnlDesktop.Controls.Add(panel2);
@@ -333,6 +331,16 @@
             pnlDesktop.Name = "pnlDesktop";
             pnlDesktop.Size = new Size(1110, 520);
             pnlDesktop.TabIndex = 1;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(83, 306);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 10;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // panel3
             // 
@@ -407,7 +415,7 @@
             panel2.BackColor = Color.DimGray;
             panel2.Controls.Add(lblNumberOfProgram);
             panel2.Controls.Add(label6);
-            panel2.Location = new Point(763, 20);
+            panel2.Location = new Point(577, 146);
             panel2.Name = "panel2";
             panel2.Size = new Size(180, 120);
             panel2.TabIndex = 4;
@@ -509,7 +517,7 @@
             panel9.BackColor = Color.DarkGreen;
             panel9.Controls.Add(lblNumberOfPOrder);
             panel9.Controls.Add(label8);
-            panel9.Location = new Point(392, 146);
+            panel9.Location = new Point(391, 146);
             panel9.Name = "panel9";
             panel9.Size = new Size(180, 120);
             panel9.TabIndex = 6;
@@ -769,6 +777,7 @@
             Controls.Add(pnlStatus);
             Controls.Add(pnlFooter);
             Controls.Add(pnlSideBar);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
             MinimumSize = new Size(1370, 700);
             Name = "FrmMain";
@@ -779,7 +788,8 @@
             Resize += FrmMain_Resize;
             pnlSideBar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ıconPictureBox1).EndInit();
+            pnlLogo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             pnlContent.ResumeLayout(false);
             pnlDesktop.ResumeLayout(false);
             panel3.ResumeLayout(false);
@@ -813,7 +823,6 @@
         private Label label1;
         private Panel pnlDesktop;
         private Panel pnlShadow;
-        private FontAwesome.Sharp.IconPictureBox ıconPictureBox1;
         private FontAwesome.Sharp.IconButton btnKullanici;
         private Button btnLogout;
         private Label lblUsername;
@@ -846,5 +855,7 @@
         private Label lblNumberOfWaitingSelectMachine;
         private Label label10;
         private FontAwesome.Sharp.IconPictureBox ıconPictureBox2;
+        private Button button1;
+        private PictureBox pictureBox1;
     }
 }

@@ -58,7 +58,7 @@ namespace UretimTakipProgrami.Forms
             }
             else
             {
-                MessageBox.Show("Kullanıcı Adı veya Şifre Hatalı", "Kullanıcı Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
+                MessageBox.Show("Kullanıcı Adı veya Şifre Hatalı", "Kullanıcı Doğrulama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             txtKullaniciAdi.Focus();

@@ -6,6 +6,7 @@ using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Entities;
+using UretimTakipProgrami.Messages;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -15,6 +16,7 @@ namespace UretimTakipProgrami.Forms
 
         private int selectedIndex;
         private bool editMode = false;
+        private AppMessage _appMessage;
 
         public FrmUser()
         {
@@ -25,11 +27,13 @@ namespace UretimTakipProgrami.Forms
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
             this.ControlBox = false;
+
+            _appMessage = new AppMessage();
         }
 
         private void FrmUser_Load(object sender, EventArgs e)
         {
-            GetUserList();
+
         }
 
         private void SetDataGridSettings()
@@ -39,20 +43,29 @@ namespace UretimTakipProgrami.Forms
                 dataGridView1.ColumnHeadersHeight = 25;
 
                 dataGridView1.Columns[0].HeaderText = "Adı Soyadı";
-                dataGridView1.Columns[0].Width = 250;
+                dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[1].HeaderText = "Kullanıcı Adı";
-                dataGridView1.Columns[1].Width = 150;
+                dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[2].HeaderText = "Telefon";
-                dataGridView1.Columns[2].Width = 150;
+                dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[3].HeaderText = "E-Mail";
-                dataGridView1.Columns[3].Width = 250;
+                dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[4].HeaderText = "Yönetici";
-                dataGridView1.Columns[4].Width = 80;
+                dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
                 dataGridView1.Columns[5].HeaderText = "Sorumlu";
-                dataGridView1.Columns[5].Width = 80;
+                dataGridView1.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
                 dataGridView1.Columns[6].HeaderText = "Operatör";
-                dataGridView1.Columns[6].Width = 80;
-                dataGridView1.Columns[7].Visible = false;
+                dataGridView1.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+                dataGridView1.Columns[7].HeaderText = "Durumu Aktif";
+                dataGridView1.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
                 dataGridView1.Columns[8].Visible = false;
             }
         }
@@ -66,20 +79,27 @@ namespace UretimTakipProgrami.Forms
                 {
                     user.Name, // 0
                     user.Username, // 1
-                    user.Phone, // 2
+                    userPhone = MaskedPhoneNumber(user.Phone), //2
                     user.Email, // 3                    
                     user.IsAdmin, // 4
                     user.IsManager, // 5
                     user.IsOperator, // 6
                     user.IsActive, // 7
                     user.Id, // 8
-                }).ToList();
+                }).OrderBy(x => x.Name).ToList();
 
             dataGridView1.DataSource = userList;
 
+            SetDataGridSettings();
+
+            if (dataGridView1.RowCount > 0)
+            {
+                selectedIndex = 0;
+                dataGridView1.Rows[selectedIndex].Selected = true;
+            }
+
             //lblKayitSayisi.Text = $"Kayıt Sayısı: {filteredList.Count.ToString()}";
 
-            SetDataGridSettings();
         }
 
         private void EnableButtonAndText()
@@ -115,6 +135,7 @@ namespace UretimTakipProgrami.Forms
             txtSifre.Clear();
             txtEmail.Clear();
             txtTelefon.Clear();
+            txtSifre.Clear();
 
             txtAdiSoyadi.Focus();
 
@@ -127,20 +148,31 @@ namespace UretimTakipProgrami.Forms
             editMode = false;
             DisableButtonAndText();
             ClearText();
+            txtAdiSoyadi.Focus();
         }
 
         private async void btnKaydet_Click(object sender, EventArgs e)
         {
-            bool editStatus = false;
+            UserValidator userValidation;
 
-            User u = new User
+            var u = new User
             {
                 Name = txtAdiSoyadi.Text.ToUpper(),
                 Username = txtKullaniciAdi.Text,
-                Email = txtEmail.Text
+                Email = txtEmail.Text,
+                Password = txtSifre.Text
             };
 
-            UserValidator userValidation = new UserValidator();
+            if (!editMode)
+            {
+                userValidation = new UserValidator();
+            }
+            else
+            {
+                string editUserId = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
+                userValidation = new UserValidator(editUserId, u.Password);
+            }
+
             ValidationResult result = userValidation.Validate(u);
             IList<ValidationFailure> errors = result.Errors;
 
@@ -153,6 +185,10 @@ namespace UretimTakipProgrami.Forms
                 }
             }
 
+            var phoneNumber = txtTelefon.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
+            if (txtTelefon.Text != "")
+                phoneNumber = phoneNumber.Substring(1);
+
             if (!editMode)
             {
                 var newUser = new User
@@ -160,7 +196,7 @@ namespace UretimTakipProgrami.Forms
                     Name = txtAdiSoyadi.Text.ToUpper(),
                     Username = txtKullaniciAdi.Text,
                     Password = SHA256Hash(txtSifre.Text),
-                    Phone = txtTelefon.Text,
+                    Phone = phoneNumber,
                     Email = txtEmail.Text,
                     IsAdmin = checkAdmin.Checked,
                     IsManager = checkManager.Checked,
@@ -169,42 +205,110 @@ namespace UretimTakipProgrami.Forms
                 };
 
                 _userRepository.AddAsync(newUser);
+                await _userRepository.SaveAsync();
+
+                _appMessage.SaveSuccessMessage();
             }
             else
             {
-                editStatus = _userRepository.Update(new()
-                {
-                    Id = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString()),
-                    Name = txtAdiSoyadi.Text.ToUpper(),
-                    Username = txtKullaniciAdi.Text,
-                    Password = SHA256Hash(txtSifre.Text),
-                    Phone = txtTelefon.Text,
-                    Email = txtEmail.Text
-                });
+                var userId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString());
+                var user = _userRepository.GetWhere(u => u.Id == userId).FirstOrDefault();
+
+                user.CreatedDate = user.CreatedDate;
+                user.Name = txtAdiSoyadi.Text.ToUpper();
+                user.Username = txtKullaniciAdi.Text;
+                user.Password = !string.IsNullOrEmpty(txtSifre.Text) ? SHA256Hash(txtSifre.Text) : user.Password;
+                user.Phone = phoneNumber;
+                user.Email = txtEmail.Text;
+                user.IsAdmin = checkAdmin.Checked;
+                user.IsManager = checkManager.Checked;
+                user.IsOperator = checkOperator.Checked;
+                user.IsActive = checkActive.Checked;
+
+                await _userRepository.SaveAsync();
+                _appMessage.UpdateSuccessMessage();
+
             }
 
-            await _userRepository.SaveAsync();
             EnableButtonAndText();
             editMode = false;
+            txtSifre.Clear();
 
             GetUserList();
         }
 
-        private string SHA256Hash(string text)
+        public string SHA256Hash(string text)
         {
             string source = text;
             using (SHA256 sha1Hash = SHA256.Create())
             {
                 byte[] sourceBytes = Encoding.UTF8.GetBytes(source);
                 byte[] hashBytes = sha1Hash.ComputeHash(sourceBytes);
-                string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
+                string hash = BitConverter.ToString(hashBytes).Replace("-", string.Empty);
                 return hash;
+            }
+        }
+
+        private void MaskedTextBoxEnter(MaskedTextBox maskedTextBox)
+        {
+            if (maskedTextBox.Text == string.Empty)
+            {
+                maskedTextBox.Mask = "9 (999) 000 00 00";
+                maskedTextBox.Text = "0";
+                maskedTextBox.Focus();
+                maskedTextBox.Select(3, 0);
+            }
+        }
+
+        private void SetPhoneNumber(MaskedTextBox maskedTextBox)
+        {
+            string phoneNumber = maskedTextBox.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
+
+            if (phoneNumber.Length < 11)
+            {
+                maskedTextBox.Clear();
+                maskedTextBox.Mask = "";
             }
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             selectedIndex = dataGridView1.CurrentCell.RowIndex;
+            UserDataGridTextAktar();
+        }
+
+        private void btnIptal_Click(object sender, EventArgs e)
+        {
+            EnableButtonAndText();
+            ClearText();
+        }
+
+        private void btnDuzenle_Click(object sender, EventArgs e)
+        {
+            editMode = true;
+            DisableButtonAndText();
+            txtAdiSoyadi.Focus();
+        }
+
+        private static string MaskedPhoneNumber(string phoneNumber)
+        {
+            if (phoneNumber.Length == 10)
+            {
+                string maskedPhoneNumber = "0 (" + phoneNumber.Substring(0, 3) + ") " + phoneNumber.Substring(3, 3) + " " + phoneNumber.Substring(6, 2) + " " + phoneNumber.Substring(8);
+                return maskedPhoneNumber;
+            }
+            else
+                return string.Empty;
+        }
+
+        private void FrmUser_Shown(object sender, EventArgs e)
+        {
+            GetUserList();
+            UserDataGridTextAktar();
+        }
+
+        private void UserDataGridTextAktar()
+        {
             if (selectedIndex != -1)
             {
                 txtAdiSoyadi.Text = dataGridView1.Rows[selectedIndex].Cells[0].Value.ToString();
@@ -219,15 +323,19 @@ namespace UretimTakipProgrami.Forms
 
                 dataGridView1.Rows[selectedIndex].Selected = true;
             }
-
         }
 
-        private void btnIptal_Click(object sender, EventArgs e)
+        private void txtTelefon_Enter(object sender, EventArgs e)
         {
-
+            MaskedTextBoxEnter(txtTelefon);
         }
 
-        private void btnDuzenle_Click(object sender, EventArgs e)
+        private void txtTelefon_Leave(object sender, EventArgs e)
+        {
+            SetPhoneNumber(txtTelefon);
+        }
+
+        private void btnSil_Click(object sender, EventArgs e)
         {
 
         }

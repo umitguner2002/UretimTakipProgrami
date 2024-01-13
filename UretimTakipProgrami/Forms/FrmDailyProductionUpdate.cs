@@ -14,12 +14,13 @@ namespace UretimTakipProgrami.Forms
         private Order order;
 
         private int remainQuantity = 0;
+        private int wastageQuantity = 0;
 
         private ProductionRepository _productionRepository;
         private UserRepository _userRepository;
         private OrderRepository _orderRepository;
 
-        public FrmDailyProductionUpdate(bool EditMode, Production pr, int remainQuantity)
+        public FrmDailyProductionUpdate(bool EditMode, Production pr, int remainQuantity, int wastageQuantity)
         {
             InitializeComponent();
 
@@ -33,7 +34,9 @@ namespace UretimTakipProgrami.Forms
 
             this.editMode = EditMode;
             this.production = pr;
+
             this.remainQuantity = remainQuantity;
+            this.wastageQuantity = wastageQuantity;
         }
 
         private void FrmDailyProductionUpdate_Load(object sender, EventArgs e)
@@ -41,7 +44,8 @@ namespace UretimTakipProgrami.Forms
             var user = _userRepository.GetWhere(u => u.Id == production.UserId).FirstOrDefault();
 
             txtKullaniciAdi.Text = user.Name.ToString();
-            txtDefoluMiktarı.Value = txtDefoluMiktarı.Minimum;
+
+            txtDefoluMiktarı.Value = wastageQuantity;
 
             if (editMode)
             {
@@ -56,6 +60,8 @@ namespace UretimTakipProgrami.Forms
                 dateTimePicker1.Value = DateTime.UtcNow.ToLocalTime();
                 dateTimePicker1.Enabled = false;
             }
+
+            txtUretimMiktarı.Focus();
         }
 
         private async void btnKaydet_Click(object sender, EventArgs e)
@@ -63,6 +69,13 @@ namespace UretimTakipProgrami.Forms
             order = _orderRepository.GetWhere(x => x.Id == production.OrderId).FirstOrDefault();
 
             var user = _userRepository.GetWhere(u => u.Id == production.UserId && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
+            
+            if (editMode)
+            {
+                int orderQuantity = _orderRepository.GetWhere(o => o.Id == production.OrderId).FirstOrDefault().Quantity;
+                int totalProductionQuantity = _productionRepository.GetWhere(pr => pr.OrderId == production.OrderId).Sum(o => o.Quantity) - remainQuantity;
+                remainQuantity = orderQuantity - totalProductionQuantity;
+            }
 
             if ((remainQuantity - txtUretimMiktarı.Value) > -1)
             {
@@ -74,8 +87,8 @@ namespace UretimTakipProgrami.Forms
                         {
                             Id = production.Id,
                             OrderId = production.OrderId,
-                            Quantity = Convert.ToInt32(txtUretimMiktarı.Value),
-                            Wastage = Convert.ToInt32(txtDefoluMiktarı.Value),
+                            Quantity = Convert.ToInt16(txtUretimMiktarı.Value),
+                            Wastage = Convert.ToInt16(txtDefoluMiktarı.Value),
                             FinishDate = Convert.ToDateTime(dateTimePicker1.Value).ToUniversalTime(),
                             CreatedDate = production.CreatedDate,
                             UserId = production.UserId,
@@ -102,14 +115,11 @@ namespace UretimTakipProgrami.Forms
                         await _productionRepository.SaveAsync();
                     }
 
-                    //var sumProduction = _productionRepository.GetWhere(pr => pr.OrderId == production.OrderId).Sum(pr => pr.Quantity);
-
-                    //int remainQuantity = order.Quantity - sumProduction;
-
-                    if (remainQuantity == 0)
+                    if ((remainQuantity - txtUretimMiktarı.Value) == 0)
                     {
                         order.IsReady = true;
                         order.IsProduction = false;
+                        order.FinishDate = DateTime.UtcNow;
                         _orderRepository.Save();
                     }
 

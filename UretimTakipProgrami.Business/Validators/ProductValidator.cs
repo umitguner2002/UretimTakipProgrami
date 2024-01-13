@@ -26,8 +26,6 @@ namespace UretimTakipProgrami.Business.Validators
 
         private bool IsUniqueName(string name)
         {
-            // Veritabanında aynı isme sahip müşteri olup olmadığını kontrol ediyor.
-
             bool isUnique = !_productRepository.GetAll().Any(p => p.Name == name);
 
             return isUnique;

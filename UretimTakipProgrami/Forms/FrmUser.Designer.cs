@@ -167,7 +167,7 @@ namespace UretimTakipProgrami.Forms
             txtAdiSoyadi.Margin = new Padding(4, 3, 4, 3);
             txtAdiSoyadi.Name = "txtAdiSoyadi";
             txtAdiSoyadi.Size = new Size(230, 22);
-            txtAdiSoyadi.TabIndex = 8;
+            txtAdiSoyadi.TabIndex = 0;
             // 
             // label8
             // 
@@ -184,10 +184,11 @@ namespace UretimTakipProgrami.Forms
             // 
             txtTelefon.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             txtTelefon.Location = new Point(81, 54);
-            txtTelefon.Mask = "9 (999) 000 00 00";
             txtTelefon.Name = "txtTelefon";
             txtTelefon.Size = new Size(230, 22);
-            txtTelefon.TabIndex = 9;
+            txtTelefon.TabIndex = 1;
+            txtTelefon.Enter += txtTelefon_Enter;
+            txtTelefon.Leave += txtTelefon_Leave;
             // 
             // label2
             // 
@@ -207,7 +208,7 @@ namespace UretimTakipProgrami.Forms
             txtEmail.Margin = new Padding(4, 3, 4, 3);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(230, 22);
-            txtEmail.TabIndex = 8;
+            txtEmail.TabIndex = 2;
             // 
             // label3
             // 
@@ -257,7 +258,7 @@ namespace UretimTakipProgrami.Forms
             checkAdmin.Location = new Point(10, 21);
             checkAdmin.Name = "checkAdmin";
             checkAdmin.Size = new Size(70, 18);
-            checkAdmin.TabIndex = 10;
+            checkAdmin.TabIndex = 6;
             checkAdmin.Text = "Yönetici";
             checkAdmin.UseVisualStyleBackColor = true;
             // 
@@ -268,7 +269,7 @@ namespace UretimTakipProgrami.Forms
             checkManager.Location = new Point(97, 21);
             checkManager.Name = "checkManager";
             checkManager.Size = new Size(122, 18);
-            checkManager.TabIndex = 10;
+            checkManager.TabIndex = 7;
             checkManager.Text = "Üretim Sorumlusu";
             checkManager.UseVisualStyleBackColor = true;
             // 
@@ -279,7 +280,7 @@ namespace UretimTakipProgrami.Forms
             checkOperator.Location = new Point(235, 21);
             checkOperator.Name = "checkOperator";
             checkOperator.Size = new Size(75, 18);
-            checkOperator.TabIndex = 10;
+            checkOperator.TabIndex = 8;
             checkOperator.Text = "Operatör";
             checkOperator.UseVisualStyleBackColor = true;
             // 
@@ -290,7 +291,7 @@ namespace UretimTakipProgrami.Forms
             checkActive.Location = new Point(103, 84);
             checkActive.Name = "checkActive";
             checkActive.Size = new Size(51, 18);
-            checkActive.TabIndex = 10;
+            checkActive.TabIndex = 5;
             checkActive.Text = "Aktif";
             checkActive.UseVisualStyleBackColor = true;
             // 
@@ -301,7 +302,7 @@ namespace UretimTakipProgrami.Forms
             txtKullaniciAdi.Margin = new Padding(4, 3, 4, 3);
             txtKullaniciAdi.Name = "txtKullaniciAdi";
             txtKullaniciAdi.Size = new Size(230, 22);
-            txtKullaniciAdi.TabIndex = 8;
+            txtKullaniciAdi.TabIndex = 3;
             // 
             // label5
             // 
@@ -332,8 +333,7 @@ namespace UretimTakipProgrami.Forms
             txtSifre.Margin = new Padding(4, 3, 4, 3);
             txtSifre.Name = "txtSifre";
             txtSifre.Size = new Size(230, 22);
-            txtSifre.TabIndex = 8;
-            txtSifre.UseSystemPasswordChar = true;
+            txtSifre.TabIndex = 4;
             // 
             // label1
             // 
@@ -379,10 +379,12 @@ namespace UretimTakipProgrami.Forms
             btnSil.Name = "btnSil";
             btnSil.Size = new Size(51, 29);
             btnSil.TabIndex = 3;
+            btnSil.TabStop = false;
             btnSil.Text = "Sil";
             btnSil.TextAlign = ContentAlignment.MiddleRight;
             btnSil.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnSil.UseVisualStyleBackColor = false;
+            btnSil.Click += btnSil_Click;
             // 
             // btnIptal
             // 
@@ -404,6 +406,7 @@ namespace UretimTakipProgrami.Forms
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(64, 29);
             btnIptal.TabIndex = 3;
+            btnIptal.TabStop = false;
             btnIptal.Text = "İptal";
             btnIptal.TextAlign = ContentAlignment.MiddleRight;
             btnIptal.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -429,6 +432,7 @@ namespace UretimTakipProgrami.Forms
             btnYeni.Name = "btnYeni";
             btnYeni.Size = new Size(64, 29);
             btnYeni.TabIndex = 3;
+            btnYeni.TabStop = false;
             btnYeni.Text = "Yeni";
             btnYeni.TextAlign = ContentAlignment.MiddleRight;
             btnYeni.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -454,7 +458,7 @@ namespace UretimTakipProgrami.Forms
             btnKaydet.Margin = new Padding(4, 3, 4, 3);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(78, 29);
-            btnKaydet.TabIndex = 3;
+            btnKaydet.TabIndex = 9;
             btnKaydet.Text = "Kaydet";
             btnKaydet.TextAlign = ContentAlignment.MiddleRight;
             btnKaydet.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -480,6 +484,7 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.Name = "btnDuzenle";
             btnDuzenle.Size = new Size(86, 29);
             btnDuzenle.TabIndex = 3;
+            btnDuzenle.TabStop = false;
             btnDuzenle.Text = "Güncelle";
             btnDuzenle.TextAlign = ContentAlignment.MiddleRight;
             btnDuzenle.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -514,6 +519,7 @@ namespace UretimTakipProgrami.Forms
             Name = "FrmUser";
             Text = "FrmUser";
             Load += FrmUser_Load;
+            Shown += FrmUser_Shown;
             grpboxTezgahTanimla.ResumeLayout(false);
             pnlArama.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();

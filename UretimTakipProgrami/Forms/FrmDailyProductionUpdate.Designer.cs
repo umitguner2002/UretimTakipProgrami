@@ -86,7 +86,7 @@
             // 
             // panel1
             // 
-            panel1.BackColor = Color.FromArgb(175, 174, 209);
+            panel1.BackColor = Color.FromArgb(115, 147, 179);
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(txtSifre);
             panel1.Controls.Add(txtKullaniciAdi);

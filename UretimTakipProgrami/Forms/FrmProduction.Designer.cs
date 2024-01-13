@@ -38,6 +38,8 @@ namespace UretimTakipProgrami.Forms
             DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             panel1 = new Panel();
@@ -48,13 +50,9 @@ namespace UretimTakipProgrami.Forms
             label16 = new Label();
             btnOnayaGönder = new FontAwesome.Sharp.IconButton();
             panel2 = new Panel();
-            groupBox2 = new GroupBox();
-            radioButton1 = new RadioButton();
-            listTezgah = new ComboBox();
-            label7 = new Label();
-            label8 = new Label();
-            listAyarOperator = new ComboBox();
             groupBox1 = new GroupBox();
+            txtIsEmriNo1 = new TextBox();
+            label8 = new Label();
             label5 = new Label();
             txtUrunAdi = new TextBox();
             label1 = new Label();
@@ -101,7 +99,9 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle = new FontAwesome.Sharp.IconButton();
             panel7 = new Panel();
             groupBox3 = new GroupBox();
+            txtIsEmriNo3 = new TextBox();
             txtUrunAdi3 = new TextBox();
+            label7 = new Label();
             label13 = new Label();
             label21 = new Label();
             label19 = new Label();
@@ -121,6 +121,7 @@ namespace UretimTakipProgrami.Forms
             monthCalendar1 = new MonthCalendar();
             dataListSearchDailyProduction = new DataGridView();
             pnlArama = new Panel();
+            btnExcelRapor = new FontAwesome.Sharp.IconButton();
             btnBul = new FontAwesome.Sharp.IconButton();
             btnBitisSil = new FontAwesome.Sharp.IconButton();
             btnBaslangicSil = new FontAwesome.Sharp.IconButton();
@@ -143,15 +144,12 @@ namespace UretimTakipProgrami.Forms
             label37 = new Label();
             label30 = new Label();
             label31 = new Label();
-            radioButton2 = new RadioButton();
-            groupBox4 = new GroupBox();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataListOrder).BeginInit();
             pnlStatus1.SuspendLayout();
             panel2.SuspendLayout();
-            groupBox2.SuspendLayout();
             groupBox1.SuspendLayout();
             tabPage2.SuspendLayout();
             panel4.SuspendLayout();
@@ -175,7 +173,6 @@ namespace UretimTakipProgrami.Forms
             grpboxUrunAra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataListSearchDailyProduction).BeginInit();
             pnlArama.SuspendLayout();
-            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -193,8 +190,6 @@ namespace UretimTakipProgrami.Forms
             tabControl1.TabIndex = 0;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
-            tabControl1.Selecting += tabControl1_Selecting;
-            tabControl1.Leave += tabControl1_Leave;
             // 
             // tabPage1
             // 
@@ -248,6 +243,7 @@ namespace UretimTakipProgrami.Forms
             dataListOrder.Name = "dataListOrder";
             dataListOrder.ReadOnly = true;
             dataListOrder.RowHeadersVisible = false;
+            dataListOrder.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataListOrder.RowTemplate.Height = 25;
             dataListOrder.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataListOrder.Size = new Size(1112, 262);
@@ -339,12 +335,12 @@ namespace UretimTakipProgrami.Forms
             btnOnayaGönder.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnOnayaGönder.UseVisualStyleBackColor = false;
             btnOnayaGönder.Click += btnOnayaGönder_Click;
+            btnOnayaGönder.MouseHover += btnOnayaGönder_MouseHover;
             // 
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(175, 174, 209);
             panel2.BorderStyle = BorderStyle.FixedSingle;
-            panel2.Controls.Add(groupBox2);
             panel2.Controls.Add(groupBox1);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(3, 3);
@@ -352,82 +348,10 @@ namespace UretimTakipProgrami.Forms
             panel2.Size = new Size(1112, 234);
             panel2.TabIndex = 6;
             // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(groupBox4);
-            groupBox2.Controls.Add(listTezgah);
-            groupBox2.Controls.Add(label7);
-            groupBox2.Controls.Add(label8);
-            groupBox2.Controls.Add(listAyarOperator);
-            groupBox2.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            groupBox2.Location = new Point(691, 3);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(296, 224);
-            groupBox2.TabIndex = 14;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Tezgah / Operatör Seçimi";
-            // 
-            // radioButton1
-            // 
-            radioButton1.AutoSize = true;
-            radioButton1.Checked = true;
-            radioButton1.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            radioButton1.Location = new Point(6, 22);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(66, 20);
-            radioButton1.TabIndex = 5;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "Manuel";
-            radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // listTezgah
-            // 
-            listTezgah.BackColor = SystemColors.Window;
-            listTezgah.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            listTezgah.FormattingEnabled = true;
-            listTezgah.Location = new Point(9, 42);
-            listTezgah.Name = "listTezgah";
-            listTezgah.Size = new Size(275, 22);
-            listTezgah.TabIndex = 4;
-            listTezgah.DropDown += listTezgah_DropDown;
-            listTezgah.KeyPress += listTezgah_KeyPress;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.BackColor = Color.FromArgb(175, 174, 209);
-            label7.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.Location = new Point(9, 25);
-            label7.Name = "label7";
-            label7.Size = new Size(120, 14);
-            label7.TabIndex = 1;
-            label7.Text = "Tezgah / Makina Seç";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.FromArgb(175, 174, 209);
-            label8.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.Location = new Point(9, 71);
-            label8.Name = "label8";
-            label8.Size = new Size(157, 14);
-            label8.TabIndex = 1;
-            label8.Text = "Ayar Yapacak Operatör Seç";
-            // 
-            // listAyarOperator
-            // 
-            listAyarOperator.BackColor = SystemColors.Window;
-            listAyarOperator.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            listAyarOperator.FormattingEnabled = true;
-            listAyarOperator.Location = new Point(9, 87);
-            listAyarOperator.Name = "listAyarOperator";
-            listAyarOperator.Size = new Size(275, 22);
-            listAyarOperator.TabIndex = 4;
-            listAyarOperator.DropDown += listAyarOperator_DropDown;
-            listAyarOperator.KeyPress += listAyarOperator_KeyPress;
-            // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(txtIsEmriNo1);
+            groupBox1.Controls.Add(label8);
             groupBox1.Controls.Add(label5);
             groupBox1.Controls.Add(txtUrunAdi);
             groupBox1.Controls.Add(label1);
@@ -447,17 +371,38 @@ namespace UretimTakipProgrami.Forms
             groupBox1.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             groupBox1.Location = new Point(4, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(681, 224);
+            groupBox1.Size = new Size(721, 224);
             groupBox1.TabIndex = 13;
             groupBox1.TabStop = false;
             groupBox1.Text = "İş Emri Bilgileri";
+            // 
+            // txtIsEmriNo1
+            // 
+            txtIsEmriNo1.BackColor = Color.LightYellow;
+            txtIsEmriNo1.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            txtIsEmriNo1.Location = new Point(16, 42);
+            txtIsEmriNo1.Name = "txtIsEmriNo1";
+            txtIsEmriNo1.ReadOnly = true;
+            txtIsEmriNo1.Size = new Size(110, 22);
+            txtIsEmriNo1.TabIndex = 14;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.BackColor = Color.Transparent;
+            label8.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label8.Location = new Point(16, 25);
+            label8.Name = "label8";
+            label8.Size = new Size(62, 14);
+            label8.TabIndex = 13;
+            label8.Text = "İş Emri No";
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.BackColor = Color.FromArgb(175, 174, 209);
             label5.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label5.Location = new Point(132, 26);
+            label5.Location = new Point(238, 26);
             label5.Name = "label5";
             label5.Size = new Size(74, 14);
             label5.TabIndex = 1;
@@ -479,7 +424,7 @@ namespace UretimTakipProgrami.Forms
             label1.AutoSize = true;
             label1.BackColor = Color.FromArgb(175, 174, 209);
             label1.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(16, 25);
+            label1.Location = new Point(132, 25);
             label1.Name = "label1";
             label1.Size = new Size(73, 14);
             label1.TabIndex = 1;
@@ -500,7 +445,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtProgramAdi.BackColor = Color.LightYellow;
             txtProgramAdi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtProgramAdi.Location = new Point(16, 192);
+            txtProgramAdi.Location = new Point(347, 142);
             txtProgramAdi.Name = "txtProgramAdi";
             txtProgramAdi.ReadOnly = true;
             txtProgramAdi.Size = new Size(323, 22);
@@ -510,10 +455,10 @@ namespace UretimTakipProgrami.Forms
             // 
             txtTeslimTarihi.BackColor = Color.LightYellow;
             txtTeslimTarihi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtTeslimTarihi.Location = new Point(132, 42);
+            txtTeslimTarihi.Location = new Point(238, 42);
             txtTeslimTarihi.Name = "txtTeslimTarihi";
             txtTeslimTarihi.ReadOnly = true;
-            txtTeslimTarihi.Size = new Size(110, 22);
+            txtTeslimTarihi.Size = new Size(100, 22);
             txtTeslimTarihi.TabIndex = 2;
             // 
             // label9
@@ -542,7 +487,7 @@ namespace UretimTakipProgrami.Forms
             label23.AutoSize = true;
             label23.BackColor = Color.Transparent;
             label23.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label23.Location = new Point(16, 175);
+            label23.Location = new Point(347, 125);
             label23.Name = "label23";
             label23.Size = new Size(73, 14);
             label23.TabIndex = 11;
@@ -553,7 +498,7 @@ namespace UretimTakipProgrami.Forms
             label4.AutoSize = true;
             label4.BackColor = Color.FromArgb(175, 174, 209);
             label4.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.Location = new Point(250, 26);
+            label4.Location = new Point(348, 26);
             label4.Name = "label4";
             label4.Size = new Size(39, 14);
             label4.TabIndex = 1;
@@ -574,7 +519,7 @@ namespace UretimTakipProgrami.Forms
             label6.AutoSize = true;
             label6.BackColor = Color.FromArgb(175, 174, 209);
             label6.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label6.Location = new Point(346, 127);
+            label6.Location = new Point(16, 175);
             label6.Name = "label6";
             label6.Size = new Size(53, 14);
             label6.TabIndex = 1;
@@ -584,7 +529,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtMiktar.BackColor = Color.LightYellow;
             txtMiktar.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMiktar.Location = new Point(248, 42);
+            txtMiktar.Location = new Point(346, 42);
             txtMiktar.Name = "txtMiktar";
             txtMiktar.ReadOnly = true;
             txtMiktar.Size = new Size(93, 22);
@@ -594,7 +539,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtAciklama.BackColor = Color.LightYellow;
             txtAciklama.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtAciklama.Location = new Point(346, 142);
+            txtAciklama.Location = new Point(16, 190);
             txtAciklama.Name = "txtAciklama";
             txtAciklama.ReadOnly = true;
             txtAciklama.Size = new Size(324, 22);
@@ -604,10 +549,10 @@ namespace UretimTakipProgrami.Forms
             // 
             txtSiparisTarihi.BackColor = Color.LightYellow;
             txtSiparisTarihi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtSiparisTarihi.Location = new Point(16, 42);
+            txtSiparisTarihi.Location = new Point(132, 42);
             txtSiparisTarihi.Name = "txtSiparisTarihi";
             txtSiparisTarihi.ReadOnly = true;
-            txtSiparisTarihi.Size = new Size(110, 22);
+            txtSiparisTarihi.Size = new Size(100, 22);
             txtSiparisTarihi.TabIndex = 2;
             // 
             // label2
@@ -815,6 +760,7 @@ namespace UretimTakipProgrami.Forms
             tabPage3.Controls.Add(panel7);
             tabPage3.Location = new Point(4, 44);
             tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(1118, 535);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Üretime Alınan İş Emirleri";
@@ -822,7 +768,7 @@ namespace UretimTakipProgrami.Forms
             // splitContainer2
             // 
             splitContainer2.Dock = DockStyle.Fill;
-            splitContainer2.Location = new Point(0, 241);
+            splitContainer2.Location = new Point(3, 244);
             splitContainer2.Name = "splitContainer2";
             splitContainer2.Orientation = Orientation.Horizontal;
             // 
@@ -833,8 +779,8 @@ namespace UretimTakipProgrami.Forms
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(panel5);
-            splitContainer2.Size = new Size(1118, 294);
-            splitContainer2.SplitterDistance = 160;
+            splitContainer2.Size = new Size(1112, 288);
+            splitContainer2.SplitterDistance = 156;
             splitContainer2.TabIndex = 16;
             // 
             // pnlProductions
@@ -844,7 +790,7 @@ namespace UretimTakipProgrami.Forms
             pnlProductions.Dock = DockStyle.Fill;
             pnlProductions.Location = new Point(0, 0);
             pnlProductions.Name = "pnlProductions";
-            pnlProductions.Size = new Size(1118, 160);
+            pnlProductions.Size = new Size(1112, 156);
             pnlProductions.TabIndex = 1;
             // 
             // dataListProduction
@@ -852,7 +798,6 @@ namespace UretimTakipProgrami.Forms
             dataListProduction.AllowUserToAddRows = false;
             dataListProduction.AllowUserToDeleteRows = false;
             dataListProduction.AllowUserToResizeRows = false;
-            dataListProduction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = SystemColors.Control;
             dataGridViewCellStyle5.Font = new Font("Tahoma", 8F, FontStyle.Bold, GraphicsUnit.Point);
@@ -861,7 +806,7 @@ namespace UretimTakipProgrami.Forms
             dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
             dataListProduction.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            dataListProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataListProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = SystemColors.Window;
             dataGridViewCellStyle6.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -878,9 +823,10 @@ namespace UretimTakipProgrami.Forms
             dataListProduction.Name = "dataListProduction";
             dataListProduction.ReadOnly = true;
             dataListProduction.RowHeadersVisible = false;
+            dataListProduction.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataListProduction.RowTemplate.Height = 25;
             dataListProduction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataListProduction.Size = new Size(1118, 127);
+            dataListProduction.Size = new Size(1112, 123);
             dataListProduction.TabIndex = 0;
             dataListProduction.CellClick += dataListProduction_CellClick;
             // 
@@ -896,7 +842,7 @@ namespace UretimTakipProgrami.Forms
             pnlStatus3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             pnlStatus3.Location = new Point(0, 0);
             pnlStatus3.Name = "pnlStatus3";
-            pnlStatus3.Size = new Size(1118, 33);
+            pnlStatus3.Size = new Size(1112, 33);
             pnlStatus3.TabIndex = 2;
             // 
             // lblKayitSayisi3
@@ -905,7 +851,7 @@ namespace UretimTakipProgrami.Forms
             lblKayitSayisi3.AutoSize = true;
             lblKayitSayisi3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblKayitSayisi3.ForeColor = Color.WhiteSmoke;
-            lblKayitSayisi3.Location = new Point(971, 9);
+            lblKayitSayisi3.Location = new Point(965, 9);
             lblKayitSayisi3.Margin = new Padding(4, 0, 4, 0);
             lblKayitSayisi3.Name = "lblKayitSayisi3";
             lblKayitSayisi3.Size = new Size(129, 14);
@@ -918,7 +864,7 @@ namespace UretimTakipProgrami.Forms
             label12.AutoSize = true;
             label12.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label12.ForeColor = Color.WhiteSmoke;
-            label12.Location = new Point(467, 9);
+            label12.Location = new Point(461, 9);
             label12.Name = "label12";
             label12.Size = new Size(187, 16);
             label12.TabIndex = 8;
@@ -930,7 +876,7 @@ namespace UretimTakipProgrami.Forms
             label10.AutoSize = true;
             label10.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label10.ForeColor = Color.WhiteSmoke;
-            label10.Location = new Point(1918, 7);
+            label10.Location = new Point(1912, 7);
             label10.Margin = new Padding(4, 0, 4, 0);
             label10.Name = "label10";
             label10.Size = new Size(129, 14);
@@ -967,7 +913,7 @@ namespace UretimTakipProgrami.Forms
             label11.AutoSize = true;
             label11.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label11.ForeColor = Color.WhiteSmoke;
-            label11.Location = new Point(1356, 7);
+            label11.Location = new Point(1350, 7);
             label11.Name = "label11";
             label11.Size = new Size(187, 16);
             label11.TabIndex = 1;
@@ -981,7 +927,7 @@ namespace UretimTakipProgrami.Forms
             panel5.Dock = DockStyle.Fill;
             panel5.Location = new Point(0, 0);
             panel5.Name = "panel5";
-            panel5.Size = new Size(1118, 130);
+            panel5.Size = new Size(1112, 128);
             panel5.TabIndex = 1;
             // 
             // dataListDailyProduction
@@ -989,10 +935,23 @@ namespace UretimTakipProgrami.Forms
             dataListDailyProduction.AllowUserToAddRows = false;
             dataListDailyProduction.AllowUserToDeleteRows = false;
             dataListDailyProduction.AllowUserToResizeRows = false;
-            dataListDailyProduction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataListDailyProduction.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            dataListDailyProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataListDailyProduction.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Control;
+            dataGridViewCellStyle7.Font = new Font("Tahoma", 8F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dataListDailyProduction.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataListDailyProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = SystemColors.Window;
+            dataGridViewCellStyle8.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = Color.Orange;
+            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dataListDailyProduction.DefaultCellStyle = dataGridViewCellStyle8;
             dataListDailyProduction.Dock = DockStyle.Fill;
             dataListDailyProduction.EnableHeadersVisualStyles = false;
             dataListDailyProduction.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1003,7 +962,7 @@ namespace UretimTakipProgrami.Forms
             dataListDailyProduction.RowHeadersVisible = false;
             dataListDailyProduction.RowTemplate.Height = 25;
             dataListDailyProduction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataListDailyProduction.Size = new Size(1116, 95);
+            dataListDailyProduction.Size = new Size(1110, 93);
             dataListDailyProduction.TabIndex = 0;
             dataListDailyProduction.CellClick += dataListDailyProduction_CellClick;
             // 
@@ -1017,7 +976,7 @@ namespace UretimTakipProgrami.Forms
             pnlStatus4.Dock = DockStyle.Top;
             pnlStatus4.Location = new Point(0, 0);
             pnlStatus4.Name = "pnlStatus4";
-            pnlStatus4.Size = new Size(1116, 33);
+            pnlStatus4.Size = new Size(1110, 33);
             pnlStatus4.TabIndex = 7;
             // 
             // btnSil
@@ -1026,6 +985,7 @@ namespace UretimTakipProgrami.Forms
             btnSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnSil.BackColor = Color.FromArgb(43, 84, 126);
             btnSil.Cursor = Cursors.Hand;
+            btnSil.Enabled = false;
             btnSil.FlatAppearance.BorderSize = 0;
             btnSil.FlatStyle = FlatStyle.Flat;
             btnSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1052,7 +1012,7 @@ namespace UretimTakipProgrami.Forms
             label22.AutoSize = true;
             label22.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label22.ForeColor = Color.WhiteSmoke;
-            label22.Location = new Point(487, 8);
+            label22.Location = new Point(481, 8);
             label22.Name = "label22";
             label22.Size = new Size(140, 16);
             label22.TabIndex = 8;
@@ -1064,7 +1024,7 @@ namespace UretimTakipProgrami.Forms
             label15.AutoSize = true;
             label15.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label15.ForeColor = Color.WhiteSmoke;
-            label15.Location = new Point(1533, 8);
+            label15.Location = new Point(1527, 8);
             label15.Name = "label15";
             label15.Size = new Size(112, 16);
             label15.TabIndex = 8;
@@ -1076,6 +1036,7 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnDuzenle.BackColor = Color.FromArgb(43, 84, 126);
             btnDuzenle.Cursor = Cursors.Hand;
+            btnDuzenle.Enabled = false;
             btnDuzenle.FlatAppearance.BorderSize = 0;
             btnDuzenle.FlatStyle = FlatStyle.Flat;
             btnDuzenle.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1104,14 +1065,16 @@ namespace UretimTakipProgrami.Forms
             panel7.Controls.Add(lblProductionState);
             panel7.Controls.Add(btnStart);
             panel7.Dock = DockStyle.Top;
-            panel7.Location = new Point(0, 0);
+            panel7.Location = new Point(3, 3);
             panel7.Name = "panel7";
-            panel7.Size = new Size(1118, 241);
+            panel7.Size = new Size(1112, 241);
             panel7.TabIndex = 15;
             // 
             // groupBox3
             // 
+            groupBox3.Controls.Add(txtIsEmriNo3);
             groupBox3.Controls.Add(txtUrunAdi3);
+            groupBox3.Controls.Add(label7);
             groupBox3.Controls.Add(label13);
             groupBox3.Controls.Add(label21);
             groupBox3.Controls.Add(label19);
@@ -1131,22 +1094,43 @@ namespace UretimTakipProgrami.Forms
             groupBox3.TabStop = false;
             groupBox3.Text = "İş Emri Bilgileri";
             // 
+            // txtIsEmriNo3
+            // 
+            txtIsEmriNo3.BackColor = Color.LightYellow;
+            txtIsEmriNo3.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            txtIsEmriNo3.Location = new Point(6, 40);
+            txtIsEmriNo3.Name = "txtIsEmriNo3";
+            txtIsEmriNo3.ReadOnly = true;
+            txtIsEmriNo3.Size = new Size(122, 22);
+            txtIsEmriNo3.TabIndex = 12;
+            // 
             // txtUrunAdi3
             // 
             txtUrunAdi3.BackColor = Color.LightYellow;
             txtUrunAdi3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtUrunAdi3.Location = new Point(9, 40);
+            txtUrunAdi3.Location = new Point(6, 87);
             txtUrunAdi3.Name = "txtUrunAdi3";
             txtUrunAdi3.ReadOnly = true;
             txtUrunAdi3.Size = new Size(300, 22);
             txtUrunAdi3.TabIndex = 12;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.BackColor = Color.Transparent;
+            label7.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label7.Location = new Point(6, 23);
+            label7.Name = "label7";
+            label7.Size = new Size(62, 14);
+            label7.TabIndex = 6;
+            label7.Text = "İş Emri No";
             // 
             // label13
             // 
             label13.AutoSize = true;
             label13.BackColor = Color.Transparent;
             label13.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label13.Location = new Point(9, 173);
+            label13.Location = new Point(312, 170);
             label13.Name = "label13";
             label13.Size = new Size(53, 14);
             label13.TabIndex = 6;
@@ -1157,7 +1141,7 @@ namespace UretimTakipProgrami.Forms
             label21.AutoSize = true;
             label21.BackColor = Color.Transparent;
             label21.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label21.Location = new Point(9, 23);
+            label21.Location = new Point(6, 70);
             label21.Name = "label21";
             label21.Size = new Size(54, 14);
             label21.TabIndex = 6;
@@ -1168,7 +1152,7 @@ namespace UretimTakipProgrami.Forms
             label19.AutoSize = true;
             label19.BackColor = Color.Transparent;
             label19.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label19.Location = new Point(315, 23);
+            label19.Location = new Point(312, 70);
             label19.Name = "label19";
             label19.Size = new Size(67, 14);
             label19.TabIndex = 4;
@@ -1178,7 +1162,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtTezgah3.BackColor = Color.LightYellow;
             txtTezgah3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtTezgah3.Location = new Point(315, 90);
+            txtTezgah3.Location = new Point(312, 137);
             txtTezgah3.Name = "txtTezgah3";
             txtTezgah3.ReadOnly = true;
             txtTezgah3.Size = new Size(300, 22);
@@ -1188,7 +1172,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtAyarYapan3.BackColor = Color.LightYellow;
             txtAyarYapan3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtAyarYapan3.Location = new Point(9, 140);
+            txtAyarYapan3.Location = new Point(6, 187);
             txtAyarYapan3.Name = "txtAyarYapan3";
             txtAyarYapan3.ReadOnly = true;
             txtAyarYapan3.Size = new Size(300, 22);
@@ -1198,7 +1182,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtAciklama3.BackColor = Color.LightYellow;
             txtAciklama3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtAciklama3.Location = new Point(9, 190);
+            txtAciklama3.Location = new Point(312, 187);
             txtAciklama3.Name = "txtAciklama3";
             txtAciklama3.ReadOnly = true;
             txtAciklama3.Size = new Size(300, 22);
@@ -1208,7 +1192,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtProgramNo3.BackColor = Color.LightYellow;
             txtProgramNo3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtProgramNo3.Location = new Point(9, 90);
+            txtProgramNo3.Location = new Point(6, 137);
             txtProgramNo3.Name = "txtProgramNo3";
             txtProgramNo3.ReadOnly = true;
             txtProgramNo3.Size = new Size(300, 22);
@@ -1219,7 +1203,7 @@ namespace UretimTakipProgrami.Forms
             label24.AutoSize = true;
             label24.BackColor = Color.Transparent;
             label24.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label24.Location = new Point(315, 74);
+            label24.Location = new Point(312, 121);
             label24.Name = "label24";
             label24.Size = new Size(88, 14);
             label24.TabIndex = 6;
@@ -1229,7 +1213,7 @@ namespace UretimTakipProgrami.Forms
             // 
             txtMusteriAdi3.BackColor = Color.LightYellow;
             txtMusteriAdi3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMusteriAdi3.Location = new Point(315, 40);
+            txtMusteriAdi3.Location = new Point(312, 87);
             txtMusteriAdi3.Name = "txtMusteriAdi3";
             txtMusteriAdi3.ReadOnly = true;
             txtMusteriAdi3.Size = new Size(300, 22);
@@ -1240,7 +1224,7 @@ namespace UretimTakipProgrami.Forms
             label20.AutoSize = true;
             label20.BackColor = Color.Transparent;
             label20.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label20.Location = new Point(10, 74);
+            label20.Location = new Point(7, 121);
             label20.Name = "label20";
             label20.Size = new Size(73, 14);
             label20.TabIndex = 4;
@@ -1251,7 +1235,7 @@ namespace UretimTakipProgrami.Forms
             label14.AutoSize = true;
             label14.BackColor = Color.Transparent;
             label14.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label14.Location = new Point(9, 123);
+            label14.Location = new Point(6, 170);
             label14.Name = "label14";
             label14.Size = new Size(122, 14);
             label14.TabIndex = 6;
@@ -1327,6 +1311,7 @@ namespace UretimTakipProgrami.Forms
             tabPage4.Controls.Add(grpboxUrunAra);
             tabPage4.Location = new Point(4, 44);
             tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
             tabPage4.Size = new Size(1118, 535);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Günlük Üretim Raporları";
@@ -1339,11 +1324,11 @@ namespace UretimTakipProgrami.Forms
             grpboxUrunAra.Controls.Add(pnlArama);
             grpboxUrunAra.Dock = DockStyle.Fill;
             grpboxUrunAra.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            grpboxUrunAra.Location = new Point(0, 0);
+            grpboxUrunAra.Location = new Point(3, 3);
             grpboxUrunAra.Margin = new Padding(4, 3, 4, 3);
             grpboxUrunAra.Name = "grpboxUrunAra";
             grpboxUrunAra.Padding = new Padding(4, 3, 4, 3);
-            grpboxUrunAra.Size = new Size(1118, 535);
+            grpboxUrunAra.Size = new Size(1112, 529);
             grpboxUrunAra.TabIndex = 8;
             grpboxUrunAra.TabStop = false;
             grpboxUrunAra.Text = "Günlük Üretim Ara";
@@ -1365,23 +1350,23 @@ namespace UretimTakipProgrami.Forms
             dataListSearchDailyProduction.AllowUserToDeleteRows = false;
             dataListSearchDailyProduction.AllowUserToResizeRows = false;
             dataListSearchDailyProduction.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = SystemColors.Control;
-            dataGridViewCellStyle7.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Control;
-            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
-            dataListSearchDailyProduction.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = SystemColors.Control;
+            dataGridViewCellStyle9.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle9.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = SystemColors.Control;
+            dataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = DataGridViewTriState.True;
+            dataListSearchDailyProduction.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             dataListSearchDailyProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = SystemColors.Window;
-            dataGridViewCellStyle8.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle8.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = Color.Orange;
-            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
-            dataListSearchDailyProduction.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = SystemColors.Window;
+            dataGridViewCellStyle10.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle10.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = Color.Orange;
+            dataGridViewCellStyle10.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.False;
+            dataListSearchDailyProduction.DefaultCellStyle = dataGridViewCellStyle10;
             dataListSearchDailyProduction.Dock = DockStyle.Fill;
             dataListSearchDailyProduction.EnableHeadersVisualStyles = false;
             dataListSearchDailyProduction.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1392,13 +1377,14 @@ namespace UretimTakipProgrami.Forms
             dataListSearchDailyProduction.RowHeadersVisible = false;
             dataListSearchDailyProduction.RowTemplate.Height = 25;
             dataListSearchDailyProduction.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataListSearchDailyProduction.Size = new Size(1110, 421);
+            dataListSearchDailyProduction.Size = new Size(1104, 415);
             dataListSearchDailyProduction.TabIndex = 0;
             dataListSearchDailyProduction.CellClick += dataListSearchDailyProduction_CellClick;
             // 
             // pnlArama
             // 
             pnlArama.BackColor = Color.FromArgb(43, 84, 126);
+            pnlArama.Controls.Add(btnExcelRapor);
             pnlArama.Controls.Add(btnBul);
             pnlArama.Controls.Add(btnBitisSil);
             pnlArama.Controls.Add(btnBaslangicSil);
@@ -1424,8 +1410,29 @@ namespace UretimTakipProgrami.Forms
             pnlArama.Dock = DockStyle.Top;
             pnlArama.Location = new Point(4, 18);
             pnlArama.Name = "pnlArama";
-            pnlArama.Size = new Size(1110, 93);
+            pnlArama.Size = new Size(1104, 93);
             pnlArama.TabIndex = 1;
+            // 
+            // btnExcelRapor
+            // 
+            btnExcelRapor.BackColor = Color.FromArgb(66, 115, 29);
+            btnExcelRapor.FlatAppearance.BorderSize = 0;
+            btnExcelRapor.FlatStyle = FlatStyle.Flat;
+            btnExcelRapor.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnExcelRapor.ForeColor = Color.WhiteSmoke;
+            btnExcelRapor.IconChar = FontAwesome.Sharp.IconChar.FileExcel;
+            btnExcelRapor.IconColor = Color.WhiteSmoke;
+            btnExcelRapor.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnExcelRapor.IconSize = 22;
+            btnExcelRapor.Location = new Point(712, 43);
+            btnExcelRapor.Name = "btnExcelRapor";
+            btnExcelRapor.Size = new Size(132, 30);
+            btnExcelRapor.TabIndex = 13;
+            btnExcelRapor.Text = "Excel Rapor Al";
+            btnExcelRapor.TextAlign = ContentAlignment.MiddleRight;
+            btnExcelRapor.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnExcelRapor.UseVisualStyleBackColor = false;
+            btnExcelRapor.Click += btnExcelRapor_Click;
             // 
             // btnBul
             // 
@@ -1440,10 +1447,10 @@ namespace UretimTakipProgrami.Forms
             btnBul.IconColor = Color.WhiteSmoke;
             btnBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnBul.IconSize = 18;
-            btnBul.Location = new Point(933, 7);
+            btnBul.Location = new Point(712, 7);
             btnBul.Margin = new Padding(4, 3, 4, 3);
             btnBul.Name = "btnBul";
-            btnBul.Size = new Size(100, 21);
+            btnBul.Size = new Size(132, 30);
             btnBul.TabIndex = 12;
             btnBul.Text = "Bul ";
             btnBul.TextAlign = ContentAlignment.MiddleRight;
@@ -1675,7 +1682,7 @@ namespace UretimTakipProgrami.Forms
             label25.AutoSize = true;
             label25.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label25.ForeColor = Color.Gainsboro;
-            label25.Location = new Point(1923, 11);
+            label25.Location = new Point(1917, 11);
             label25.Margin = new Padding(4, 0, 4, 0);
             label25.Name = "label25";
             label25.Size = new Size(69, 14);
@@ -1754,28 +1761,6 @@ namespace UretimTakipProgrami.Forms
             label31.TabIndex = 2;
             label31.Text = "Ürün Adı:";
             // 
-            // radioButton2
-            // 
-            radioButton2.AutoSize = true;
-            radioButton2.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            radioButton2.Location = new Point(105, 22);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(64, 20);
-            radioButton2.TabIndex = 5;
-            radioButton2.Text = "Sistem";
-            radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            groupBox4.Controls.Add(radioButton1);
-            groupBox4.Controls.Add(radioButton2);
-            groupBox4.Location = new Point(55, 125);
-            groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(181, 55);
-            groupBox4.TabIndex = 6;
-            groupBox4.TabStop = false;
-            groupBox4.Text = "Onaya Gönderme Seçimi";
-            // 
             // FrmProduction
             // 
             AutoScaleDimensions = new SizeF(7F, 14F);
@@ -1797,8 +1782,6 @@ namespace UretimTakipProgrami.Forms
             pnlStatus1.ResumeLayout(false);
             pnlStatus1.PerformLayout();
             panel2.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             tabPage2.ResumeLayout(false);
@@ -1830,8 +1813,6 @@ namespace UretimTakipProgrami.Forms
             ((System.ComponentModel.ISupportInitialize)dataListSearchDailyProduction).EndInit();
             pnlArama.ResumeLayout(false);
             pnlArama.PerformLayout();
-            groupBox4.ResumeLayout(false);
-            groupBox4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1858,10 +1839,6 @@ namespace UretimTakipProgrami.Forms
         private Label label4;
         private Panel panel1;
         private Panel pnlStatus1;
-        private ComboBox listAyarOperator;
-        private ComboBox listTezgah;
-        private Label label8;
-        private Label label7;
         private FontAwesome.Sharp.IconButton btnOnayaGönder;
         private Panel panel2;
         private FontAwesome.Sharp.IconButton btnYenile;
@@ -1910,7 +1887,6 @@ namespace UretimTakipProgrami.Forms
         private TextBox txtProgramAdi;
         private Label label23;
         private GroupBox groupBox1;
-        private GroupBox groupBox2;
         private GroupBox groupBox3;
         private GroupBox grpboxUrunAra;
         private MonthCalendar monthCalendar1;
@@ -1941,8 +1917,10 @@ namespace UretimTakipProgrami.Forms
         private TextBox txtOperatorAdiAra;
         private TextBox txtIslenecekMalzeme;
         private Label label9;
-        private RadioButton radioButton1;
-        private GroupBox groupBox4;
-        private RadioButton radioButton2;
+        private FontAwesome.Sharp.IconButton btnExcelRapor;
+        private TextBox txtIsEmriNo3;
+        private Label label7;
+        private TextBox txtIsEmriNo1;
+        private Label label8;
     }
 }

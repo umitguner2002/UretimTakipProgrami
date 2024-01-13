@@ -4,6 +4,11 @@ using UretimTakipProgrami.Entities;
 using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.DependencyResolver;
+using System.Diagnostics;
+using UretimTakipProgrami.Business.Repositories.Abstractions;
+using UretimTakipProgrami.Messages;
+using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -12,11 +17,14 @@ namespace UretimTakipProgrami.Forms
         private ProductRepository _productRepository;
         private MachineProgramRepository _machineProgramRepository;
         private MaterialRepository _materialRepository;
+        private AppMessage _appMessage;
 
         private int selectedIndex;
         private bool editMode = false;
 
         private string imageName, imageSourcePath, imageTargetPath;
+
+        FrmProductionDefinitions frmDef;
 
         public FrmProduct()
         {
@@ -29,85 +37,174 @@ namespace UretimTakipProgrami.Forms
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
             this.ControlBox = false;
+
+            _appMessage = new AppMessage();
+        }
+
+        private void DataGridTextAktar()
+        {
+            if (selectedIndex >= 0)
+            {
+                txtUrunAdi.Text = dataGridView1.Rows[selectedIndex].Cells[0].Value.ToString();
+                listMalzeme.Text = dataGridView1.Rows[selectedIndex].Cells[1].Value.ToString();
+                listProgramAdi.Text = dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString();
+
+                if (dataGridView1.Rows[selectedIndex].Cells[6].Value != null)
+                {
+                    imageTargetPath = dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString();
+
+                    if (imageTargetPath != null && imageTargetPath != "")
+                        resimKutusu.ImageLocation = dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString();
+                    else
+                        resimKutusu.ImageLocation = "";
+                }
+            }
         }
 
         private async void btnKaydet_Click(object sender, EventArgs e)
         {
-
-            Product pr = new Product
+            try
             {
-                Name = txtUrunAdi.Text.ToUpper(),
-                MachineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString())
-            };
+                object selectedProgramValue = listProgramAdi.SelectedValue;
+                object selectedMaterialValue = listMalzeme.SelectedValue;
 
-            ProductValidator productValidation = new ProductValidator();
-            ValidationResult result = productValidation.Validate(pr);
-            IList<ValidationFailure> errors = result.Errors;
+                bool isValidMachineProgram = selectedProgramValue != null && !string.IsNullOrEmpty(selectedProgramValue.ToString());
+                bool isValidMaterial = selectedMaterialValue != null && !string.IsNullOrEmpty(selectedMaterialValue.ToString());
 
-            if (!result.IsValid)
-            {
-                foreach (ValidationFailure failure in errors)
+                if (!isValidMaterial)
                 {
-                    MessageBox.Show(failure.ErrorMessage, "Mevcut Veri Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
+                    MessageBox.Show("Geçersiz Malzeme Adı", "Malzeme Adı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    listMalzeme.Focus();
                 }
-            }
-
-            if (_materialRepository.GetById(listMalzeme.SelectedValue.ToString()) == null)
-            {
-                MessageBox.Show("Geçerli bir malzeme adı seçiniz.", "Malzeme Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                listMalzeme.Focus();
-                return;
-            }
-            else if (_machineProgramRepository.GetById(listProgramAdi.SelectedValue.ToString()) == null)
-            {
-                MessageBox.Show("Geçerli bir program adı seçiniz.", "Program Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                listProgramAdi.Focus();
-                return;
-            }
-            else
-            {
-                bool editStatus = false;
-
-                if (!string.IsNullOrEmpty(imageSourcePath))
+                else if (!isValidMachineProgram)
                 {
-                    imageName = $"{txtUrunAdi.Text}.jpg";
-                    imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
-                }
-
-                var materialId = Guid.Parse(listMalzeme.SelectedValue.ToString());
-                var machineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString());
-
-                if (!editMode)
-                {
-                    var x = await _productRepository.AddAsync(new()
-                    {
-                        Name = txtUrunAdi.Text.ToUpper(),
-                        MaterialId = materialId,
-                        MachineProgramId = machineProgramId,
-                        ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
-                        ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
-                    });
-
-                    if (!string.IsNullOrEmpty(imageSourcePath) && !string.IsNullOrEmpty(imageTargetPath))
-                        File.Copy(imageSourcePath, imageTargetPath);
+                    MessageBox.Show("Geçersiz Program Adı", "Program Adı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    listProgramAdi.Focus();
                 }
                 else
                 {
-                    editStatus = _productRepository.Update(new()
+                    Product pr = new Product
                     {
                         Name = txtUrunAdi.Text.ToUpper(),
-                        MaterialId = materialId,
-                        MachineProgramId = machineProgramId,
-                        ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
-                        ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
-                    });
-                }
+                        MachineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString())
+                    };
 
-                await _productRepository.SaveAsync();
-                EnableButtonAndText();
-                editMode = false;
+                    ProductValidator productValidation = new ProductValidator();
+                    ValidationResult result = productValidation.Validate(pr);
+                    IList<ValidationFailure> errors = result.Errors;
+
+                    if (!result.IsValid && !editMode)
+                    {
+                        foreach (ValidationFailure failure in errors)
+                        {
+                            MessageBox.Show(failure.ErrorMessage, "Mevcut Veri Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    if (_materialRepository.GetById(listMalzeme.SelectedValue.ToString()) == null)
+                    {
+                        MessageBox.Show("Geçerli bir malzeme adı seçiniz.", "Malzeme Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        listMalzeme.Focus();
+                        return;
+                    }
+                    else if (_machineProgramRepository.GetById(listProgramAdi.SelectedValue.ToString()) == null)
+                    {
+                        MessageBox.Show("Geçerli bir program adı seçiniz.", "Program Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        listProgramAdi.Focus();
+                        return;
+                    }
+                    else
+                    {
+                        bool editStatus = false;
+
+                        if (!string.IsNullOrEmpty(imageSourcePath))
+                        {
+                            imageName = $"{txtUrunAdi.Text}.jpg";
+                            imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
+                        }
+
+                        var materialId = Guid.Parse(listMalzeme.SelectedValue.ToString());
+                        var machineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString());
+
+                        if (!editMode)
+                        {
+                            var x = await _productRepository.AddAsync(new()
+                            {
+                                Name = txtUrunAdi.Text.ToUpper(),
+                                MaterialId = materialId,
+                                MachineProgramId = machineProgramId,
+                                ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
+                                ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
+                            });
+
+                            if (!string.IsNullOrEmpty(imageSourcePath) && !string.IsNullOrEmpty(imageTargetPath))
+                                File.Copy(imageSourcePath, imageTargetPath);
+
+                            await _productRepository.SaveAsync();
+                        }
+                        else
+                        {
+                            if (!result.IsValid)
+                            {
+                                foreach (ValidationFailure failure in errors)
+                                {
+                                    MessageBox.Show(failure.ErrorMessage, "Mevcut Veri Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    return;
+                                }
+                            }
+
+                            var productId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[5].Value.ToString());
+                            var product = _productRepository.GetWhere(p => p.Id == productId).FirstOrDefault();
+
+                            product.CreatedDate = product.CreatedDate;
+                            product.Name = txtUrunAdi.Text.ToUpper();
+                            product.MaterialId = materialId;
+                            product.MachineProgramId = machineProgramId;
+                            product.ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "";
+                            product.ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : "";
+
+                            await _productRepository.SaveAsync();
+
+                            txtUrunAdiAra.Text = product.Name;
+                            GetProductList();
+                            SetDataGridSettings();
+
+                            selectedIndex = 0;
+                            dataGridView1.Rows[selectedIndex].Selected = true;
+                            DataGridTextAktar();
+
+
+                            if (!string.IsNullOrEmpty(imageSourcePath) && !string.IsNullOrEmpty(imageTargetPath))
+                            {
+                                if (File.Exists(imageTargetPath))
+                                {
+                                    File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil
+                                }
+                                File.Copy(imageSourcePath, imageTargetPath); // Dosyayı kopyala
+                            }
+                            else
+                            {
+                                if (File.Exists(imageTargetPath))
+                                {
+                                    File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil
+                                }
+                            }
+
+                            _appMessage.UpdateSuccessMessage();
+                        }
+
+                        EnableButtonAndText();
+                        editMode = false;
+                    }
+                }
             }
+            catch (Exception err)
+            {
+                MessageBox.Show($"Error: {err.ToString()}");
+            }
+
+
         }
 
         private void FrmProduct_Load(object sender, EventArgs e)
@@ -152,7 +249,11 @@ namespace UretimTakipProgrami.Forms
                 SetDataGridSettings();
             }
             else
+            {
                 lblKayitSayisi.Text = "Gösterilecek kayıt yok";
+                MessageBox.Show("Aranan değer bulunamadı.", "Arama Sonucu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
 
             LblKayitSayisiYerlestir();
 
@@ -165,10 +266,20 @@ namespace UretimTakipProgrami.Forms
                 dataGridView1.ColumnHeadersHeight = 25;
 
                 dataGridView1.Columns[0].HeaderText = "Ürün / Parça Adı";
+                dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[1].HeaderText = "İşlenecek Malzeme";
+                dataGridView1.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[2].HeaderText = "Tezgah Program Adı";
+                dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataGridView1.Columns[3].HeaderText = "Çizim Dosya Adı";
+                dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
                 dataGridView1.Columns[4].HeaderText = "Kayıt Tarihi";
+                dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+
                 dataGridView1.Columns[5].Visible = false;
                 dataGridView1.Columns[6].Visible = false;
             }
@@ -244,20 +355,12 @@ namespace UretimTakipProgrami.Forms
         {
             selectedIndex = dataGridView1.CurrentCell.RowIndex;
 
-            if (selectedIndex >= 0)
-            {
-                txtUrunAdi.Text = dataGridView1.Rows[selectedIndex].Cells[0].Value.ToString();
-                listMalzeme.Text = dataGridView1.Rows[selectedIndex].Cells[1].Value.ToString();
-                listProgramAdi.Text = dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString();
-
-                if (dataGridView1.Rows[selectedIndex].Cells[6].Value != null)
-                    resimKutusu.ImageLocation = dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString();
-            }
+            DataGridTextAktar();
         }
 
         private void btnResimEkle_Click(object sender, EventArgs e)
         {
-            var dialog = new OpenFileDialog();
+            var dialog = new System.Windows.Forms.OpenFileDialog();
 
             dialog.Title = "Ürün Resim / Çizim Seç";
             dialog.Filter = "Resim Dosyası (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG";
@@ -278,6 +381,9 @@ namespace UretimTakipProgrami.Forms
         {
             DisableButtonAndText();
             ClearText();
+            txtUrunAdiAra.Clear();
+            txtMalzemeAra.Clear();
+            dataGridView1.DataSource = null;
             txtUrunAdi.Focus();
         }
 
@@ -287,7 +393,6 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.Enabled = true;
             btnKaydet.Enabled = false;
             btnIptal.Enabled = false;
-            btnSil.Enabled = true;
             btnResimEkle.Enabled = false;
             btnResimKaldir.Enabled = false;
 
@@ -308,7 +413,6 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.Enabled = false;
             btnKaydet.Enabled = true;
             btnIptal.Enabled = true;
-            btnSil.Enabled = false;
             btnResimEkle.Enabled = true;
             btnResimKaldir.Enabled = true;
 
@@ -325,8 +429,7 @@ namespace UretimTakipProgrami.Forms
 
         private void ClearText()
         {
-            txtUrunAdi.Clear();
-            txtUrunAdiAra.Clear();
+            txtUrunAdi.Clear();            
 
             if (listMalzeme.Items.Count > 0)
                 listMalzeme.SelectedIndex = 0;
@@ -344,6 +447,7 @@ namespace UretimTakipProgrami.Forms
         {
             EnableButtonAndText();
             ClearText();
+            dataGridView1.DataSource = null;
         }
 
         private void btnUrunAdiSil_Click(object sender, EventArgs e)
@@ -353,18 +457,22 @@ namespace UretimTakipProgrami.Forms
 
         private void btnUrunBul_Click(object sender, EventArgs e)
         {
-            GetProductList();
-            if (dataGridView1.RowCount > 0)
-                dataGridView1.Rows[0].Selected = true;
-        }
-
-        private async void btnSil_Click(object sender, EventArgs e)
-        {
-            if (selectedIndex > -1 && dataGridView1.ColumnCount > 0)
+            if (!string.IsNullOrEmpty(txtUrunAdiAra.Text.Trim()) || !string.IsNullOrEmpty(txtMalzemeAra.Text.Trim()))
             {
-                selectedIndex = dataGridView1.CurrentCell.RowIndex;
-                await _productRepository.RemoveAsync(dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString());
                 GetProductList();
+                if (dataGridView1.RowCount > 0)
+                {
+                    dataGridView1.Rows[0].Selected = true;
+                    selectedIndex = 0;
+
+                    DataGridTextAktar();
+                }
+            }
+            else
+            {
+                dataGridView1.DataSource = null;
+                MessageBox.Show("Arama için en az bir alanı doldurun.", "Arama Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtUrunAdiAra.Focus();
             }
         }
 
@@ -377,23 +485,27 @@ namespace UretimTakipProgrami.Forms
         private void btnResimKaldir_Click(object sender, EventArgs e)
         {
             resimKutusu.Image = null;
+            imageName = "";
+            imageSourcePath = "";
         }
 
         private void btnOpenFormMaterial_Click(object sender, EventArgs e)
         {
-            OpenDefitinitionForms(1);
+            OpenDefitinitionForms(0);
             GetMaterialList();
         }
 
         private void btnOpenFormProgram_Click(object sender, EventArgs e)
         {
-            OpenDefitinitionForms(2);
+            OpenDefitinitionForms(1);
             GetMachineProgramList();
+            if (!string.IsNullOrEmpty(frmDef.selectedMachineProgramName))
+                listProgramAdi.Text = frmDef.selectedMachineProgramName;
         }
 
         private void OpenDefitinitionForms(int formNumber)
         {
-            FrmProductionDefinitions frmDef = new FrmProductionDefinitions();
+            frmDef = new FrmProductionDefinitions();
 
             TabControl tabControl = frmDef.Controls.Find("tabControl1", true).FirstOrDefault() as TabControl;
 
@@ -403,9 +515,6 @@ namespace UretimTakipProgrami.Forms
 
                 Button button1 = frmDef.Controls.Find("btnFormuKapat1", true).FirstOrDefault() as Button;
                 button1.Visible = true;
-
-                Button button2 = frmDef.Controls.Find("btnFormuKapat2", true).FirstOrDefault() as Button;
-                button2.Visible = true;
 
                 Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
                 button3.Visible = true;
@@ -437,6 +546,15 @@ namespace UretimTakipProgrami.Forms
         private void LblKayitSayisiYerlestir()
         {
             lblKayitSayisi.Left = pnlArama.Width - lblKayitSayisi.Width - 10;
+        }
+
+        private void resimKutusu_DoubleClick(object sender, EventArgs e)
+        {
+            if (resimKutusu.ImageLocation != "" && resimKutusu.ImageLocation != null)
+            {
+                FrmDisplayProductImage frmDisplayProductImage = new FrmDisplayProductImage(resimKutusu.ImageLocation);
+                frmDisplayProductImage.ShowDialog();
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Entities;
+using UretimTakipProgrami.Messages;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -14,6 +15,7 @@ namespace UretimTakipProgrami.Forms
         private MaterialTypeRepository _materialTypeRepository;
         private MaterialShapeRepository _materialShapeRepository;
         private MaterialRepository _materialRepository;
+        private AppMessage _appMessage;
 
         private int groupIndex = 0;
         private int countIndex = 0;
@@ -24,6 +26,10 @@ namespace UretimTakipProgrami.Forms
         private int selectedIndex5 = 0;
         private bool editMode = false;
         private int kodListIndex = 0;
+
+        public string? selectedMachineProgramName;
+
+        System.Windows.Forms.ToolTip buttonToolTip;
 
         Dictionary<string, string> hedefList = new Dictionary<string, string>();
 
@@ -40,119 +46,19 @@ namespace UretimTakipProgrami.Forms
             this.FormBorderStyle = FormBorderStyle.Sizable;
             this.Text = string.Empty;
             this.ControlBox = false;
-        }
 
-        private void SetMachineDataGridSettings()
-        {
-            if (listTezgah.Rows.Count > 0)
-            {
-                listTezgah.Columns[0].HeaderText = "Tezgah / Makina Adı";
-                listTezgah.Columns[0].Width = 250;
-                listTezgah.Columns[1].Visible = false;
-                listTezgah.Columns[2].HeaderText = "";
-            }
-        }
-
-        private void SetOperatorDataGridSettings()
-        {
-
-        }
-
-        private void MachineTextDoldur()
-        {
-            selectedIndex = listTezgah.CurrentCell.RowIndex;
-
-            if (selectedIndex >= 0)
-            {
-                txtTezgahAdi.Text = listTezgah.Rows[selectedIndex].Cells[0].Value.ToString();
-            }
-        }
-
-        private void OperatorTextDoldur()
-        {
-
-        }
-
-        private void GetMachineList()
-        {
-            listTezgah.DataSource = null;
-            List<object> filteredList = new List<object>();
-
-            var machineList = _machineRepository.GetAll()
-                .Select(cs => new
-                {
-                    cs.Name,
-                    cs.Id,
-                    emptyColumn = ""
-                })
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            listTezgah.DataSource = machineList;
-
-            if (countIndex == 0)
-            {
-                listTezgah.DataSource = machineList;
-                listTezgah.Columns[0].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
-                countIndex = 1;
-            }
-            else
-            {
-                listTezgah.DataSource = machineList.OrderByDescending(x => x.Name).ToList();
-                listTezgah.Columns[0].HeaderCell.SortGlyphDirection = SortOrder.Descending;
-                countIndex = 0;
-            }
-
-            SetMachineDataGridSettings();
-
-            if (listTezgah.RowCount > 0)
-            {
-                selectedIndex = 0;
-                listTezgah.Rows[selectedIndex].Selected = true;
-                MachineTextDoldur();
-            }
-
-        }
-
-        private void GetOperatorList()
-        {
-
+            _appMessage = new AppMessage();
+            buttonToolTip = new System.Windows.Forms.ToolTip();
         }
 
         private void EnableButtonAndText(int _groupIndex)
         {
-            if (_groupIndex == 0)
-            {
-                btnYeniTezgah.Enabled = true;
-                btnDuzenleTezgah.Enabled = true;
-                btnKaydetTezgah.Enabled = false;
-                btnIptalTezgah.Enabled = false;
-                btnSilTezgah.Enabled = true;
-                txtTezgahAdi.Enabled = false;
-
-                GetMachineList();
-            }
-            else if (_groupIndex == 1)
-            {
-                btnYeniMalzeme.Enabled = true;
-                btnDuzenleMalzeme.Enabled = true;
-                btnKaydetMalzeme.Enabled = false;
-                btnIptalMalzeme.Enabled = false;
-                btnSilMalzeme.Enabled = true;
-
-                listMalzemeTuru.Enabled = false;
-                listMalzemeSekli.Enabled = false;
-                txtMalzemeBoy.Enabled = false;
-                txtMalzemeDisCap.Enabled = false;
-                txtMalzemeDelikCap.Enabled = false;
-            }
-            else if (_groupIndex == 2)
+            if (_groupIndex == 1)
             {
                 btnYeniProgram.Enabled = true;
                 btnProgramGuncelle.Enabled = true;
                 btnProgramKaydet.Enabled = false;
                 btnProgramIptal.Enabled = false;
-                btnProgramSil.Enabled = true;
                 btnProgramEkle.Enabled = false;
                 txtProgramKodu.Enabled = false;
                 txtProgramAdi.Enabled = false;
@@ -170,38 +76,12 @@ namespace UretimTakipProgrami.Forms
 
         private void DisableButtonAndText(int _groupIndex)
         {
-            if (_groupIndex == 0)
-            {
-                btnYeniTezgah.Enabled = false;
-                btnDuzenleTezgah.Enabled = false;
-                btnKaydetTezgah.Enabled = true;
-                btnIptalTezgah.Enabled = true;
-                btnSilTezgah.Enabled = false;
-                txtTezgahAdi.Enabled = true;
-            }
-            else if (_groupIndex == 1)
-            {
-                btnYeniMalzeme.Enabled = false;
-                btnDuzenleMalzeme.Enabled = false;
-                btnKaydetMalzeme.Enabled = true;
-                btnIptalMalzeme.Enabled = true;
-                btnSilMalzeme.Enabled = false;
-
-                listMalzemeTuru.Enabled = true;
-                listMalzemeSekli.Enabled = true;
-                txtMalzemeBoy.Enabled = true;
-                txtMalzemeDisCap.Enabled = true;
-                txtMalzemeDelikCap.Enabled = true;
-
-                listMalzemeTuru.Text = "";
-            }
-            else if (_groupIndex == 2)
+            if (_groupIndex == 1)
             {
                 btnYeniProgram.Enabled = false;
                 btnProgramGuncelle.Enabled = false;
                 btnProgramKaydet.Enabled = true;
                 btnProgramIptal.Enabled = true;
-                btnProgramSil.Enabled = false;
                 btnProgramEkle.Enabled = true;
                 txtProgramKodu.Enabled = true;
                 txtProgramAdi.Enabled = true;
@@ -211,127 +91,6 @@ namespace UretimTakipProgrami.Forms
                 btnKodDeğiştir.Enabled = true;
             }
 
-        }
-
-        private void ClearText()
-        {
-            txtTezgahAdi.Clear();
-        }
-
-        private void btnYeniTezgah_Click(object sender, EventArgs e)
-        {
-            DisableButtonAndText(groupIndex = 0);
-            txtTezgahAdi.Focus();
-        }
-
-        private void btnYeniOperator_Click(object sender, EventArgs e)
-        {
-            DisableButtonAndText(groupIndex = 1);
-        }
-
-        private void btnIptalTezgah_Click(object sender, EventArgs e)
-        {
-            txtTezgahAdi.Clear();
-            EnableButtonAndText(groupIndex = 0);
-        }
-
-        private async void btnKaydetOperator_Click(object sender, EventArgs e)
-        {
-            /*
-            bool editStatus = false;
-
-            Entity.Entities.Operator op = new Entity.Entities.Operator
-            {
-                Name = txtOperatorAdi.Text.ToUpper()
-            };
-
-            OperatorValidator operatorValidation = new OperatorValidator();
-            ValidationResult result = operatorValidation.Validate(op);
-            IList<ValidationFailure> errors = result.Errors;
-
-            if (!result.IsValid)
-            {
-                foreach (ValidationFailure failure in errors)
-                {
-                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-            if (!editMode)
-            {
-                await _operatorRepository.AddAsync(new()
-                {
-                    Name = txtOperatorAdi.Text.ToUpper()
-                    //CreatedDate = DateTime.UtcNow,
-                    //IsDeleted = false
-                });
-            }
-            else
-            {
-                editStatus = _operatorRepository.Update(new()
-                {
-                    Id = Guid.Parse(listOperator.Rows[selectedIndex].Cells[1].Value.ToString()),
-                    Name = txtOperatorAdi.Text.ToUpper()
-                });
-            }
-
-            await _operatorRepository.SaveAsync();
-            EnableButtonAndText(1);
-            GetOperatorList();
-            editMode = false;
-
-            */
-        }
-
-        private void btnDuzenleTezgah_Click(object sender, EventArgs e)
-        {
-            if (selectedIndex > -1)
-            {
-                editMode = true;
-                DisableButtonAndText(0);
-            }
-            else
-                MessageBox.Show("Listeden Bir Tezgah / Makina Seçiniz.");
-        }
-
-        private void FrmMachineOperator_Load(object sender, EventArgs e)
-        {
-            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
-            listMalzemeTuru.Items.AddRange(new string[] { "DOLU", "DELİKLİ", "BOYDAN" });
-            GetMachineList();
-            GetOperatorList();
-        }
-
-        private void listTezgah_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            MachineTextDoldur();
-        }
-
-        private void listOperator_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            OperatorTextDoldur();
-        }
-
-        private void listTezgah_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            GetMachineList();
-        }
-
-        private void listOperator_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            GetOperatorList();
-        }
-
-        private void btnDuzenleOperator_Click(object sender, EventArgs e)
-        {
-            if (selectedIndex > -1)
-            {
-                editMode = true;
-                DisableButtonAndText(1);
-            }
-            else
-                MessageBox.Show("Listeden Bir Operatör Seçiniz.");
         }
 
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
@@ -368,8 +127,6 @@ namespace UretimTakipProgrami.Forms
             // İletişim kutusunun başlık ve filtre ayarlarını yapın
             openFileDialog.Title = "Dosya Seç";
             openFileDialog.Filter = "Tüm Dosyalar|*.*";
-
-
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -457,26 +214,35 @@ namespace UretimTakipProgrami.Forms
 
         private void btnYeniProgram_Click(object sender, EventArgs e)
         {
-            DisableButtonAndText(groupIndex = 2);
+            DisableButtonAndText(groupIndex = 1);
             txtProgramKodu.Focus();
         }
 
         private void btnProgramIptal_Click(object sender, EventArgs e)
         {
-            EnableButtonAndText(groupIndex = 2);
+            EnableButtonAndText(groupIndex = 1);
         }
 
         private async void btnProgramKaydet_Click(object sender, EventArgs e)
         {
-            bool editStatus = false;
+            MachineProgramValidator machineProgramValidation; ;
 
-            MachineProgram mp = new MachineProgram
+            var mp = new MachineProgram
             {
                 Code = txtProgramKodu.Text,
                 Name = txtProgramAdi.Text.ToUpper()
             };
 
-            MachineProgramValidator machineProgramValidation = new MachineProgramValidator();
+            if (!editMode)
+            {
+                machineProgramValidation = new MachineProgramValidator();
+            }
+            else
+            {
+                string editMachineProgramId = dataListProgramDef.Rows[selectedIndex2].Cells[2].Value.ToString();
+                machineProgramValidation = new MachineProgramValidator(editMachineProgramId);
+            }
+
             ValidationResult result = machineProgramValidation.Validate(mp);
             IList<ValidationFailure> errors = result.Errors;
 
@@ -488,6 +254,8 @@ namespace UretimTakipProgrami.Forms
                     return;
                 }
             }
+
+            selectedMachineProgramName = txtProgramAdi.Text;
 
             string filePath = CopyProgramToFolder();
 
@@ -504,20 +272,19 @@ namespace UretimTakipProgrami.Forms
                 }
                 else
                 {
-                    editStatus = _machineProgramRepository.Update(new()
-                    {
-                        Id = Guid.Parse(dataListProgramDef.Rows[selectedIndex3].Cells[1].Value.ToString()),
-                        Code = txtProgramKodu.Text,
-                        Name = txtProgramAdi.Text.ToUpper()
-                    });
+                    MachineProgram m = _machineProgramRepository
+                        .GetWhere(x => x.Id == Guid.Parse(dataListProgramDef.Rows[selectedIndex2].Cells[2].Value.ToString())).FirstOrDefault();
+
+                    m.Code = txtProgramKodu.Text;
+                    m.Name = txtProgramAdi.Text.ToUpper();
+                    m.Path = m.Path;
                 }
 
                 await _machineProgramRepository.SaveAsync();
 
-                //GetMachineList();
                 editMode = false;
 
-                EnableButtonAndText(groupIndex = 2);
+                EnableButtonAndText(groupIndex = 1);
             }
         }
 
@@ -568,7 +335,6 @@ namespace UretimTakipProgrami.Forms
                 dataListProgramDef.Rows[0].Selected = true;
                 //lblKayitSayisi.Text = $"Kayıt Sayısı: {orderList.Count.ToString()}";
             }
-
         }
 
         private List<object> GetProgramList(string arananProgram)
@@ -587,7 +353,6 @@ namespace UretimTakipProgrami.Forms
                 .ToList();
 
             return programList.Cast<object>().ToList();
-
         }
 
         private void SetDataListProgramGridSettings()
@@ -797,7 +562,7 @@ namespace UretimTakipProgrami.Forms
             if (listMalzemeTuru.Text != "")
             {
                 string malzemeAdi = $"{listMalzemeTuru.Text}";
-                malzemeAdi += listMalzemeSekli.Text !="" ? $" {listMalzemeSekli.Text}" : "";
+                malzemeAdi += listMalzemeSekli.Text != "" ? $" {listMalzemeSekli.Text}" : "";
                 malzemeAdi += txtMalzemeBoy.Value > 0 ? $"_BOY={txtMalzemeBoy.Value.ToString()}" : "";
                 malzemeAdi += txtMalzemeDisCap.Value > 0 ? $"_DIŞ={txtMalzemeDisCap.Value.ToString()}" : "";
                 malzemeAdi += txtMalzemeDelikCap.Value > 0 ? $"_İÇ={txtMalzemeDelikCap.Value.ToString()}" : "";
@@ -843,41 +608,49 @@ namespace UretimTakipProgrami.Forms
 
         private async void btnKaydetMalzeme_Click(object sender, EventArgs e)
         {
-            bool editStatus = false;
+            Material mt = new Material
+            {
+                Name = txtMalzemeAdi.Text.ToUpper()
+            };
 
-            if (!editMode)
+            MaterialValidator machineValidation = new MaterialValidator();
+            ValidationResult result = machineValidation.Validate(mt);
+            IList<ValidationFailure> errors = result.Errors;
+
+            if (!result.IsValid)
             {
-                await _materialRepository.AddAsync(new()
+                foreach (ValidationFailure failure in errors)
                 {
-                    Name = txtMalzemeAdi.Text.ToUpper(),
-                    Length = Convert.ToInt32(txtMalzemeBoy.Value),
-                    OuterDiameter = Convert.ToInt32(txtMalzemeDisCap.Value),
-                    HoleDiameter = Convert.ToInt32(txtMalzemeDisCap.Value),
-                    MaterialTypeId = Guid.Parse(listMalzemeTuru.SelectedValue.ToString()),
-                    MaterialShapeId = Guid.Parse(listMalzemeSekli.SelectedValue.ToString())
-                });
+                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
-            else
+
+            await _materialRepository.AddAsync(new()
             {
-                /*
-                editStatus = _machineRepository.Update(new()
-                {
-                    Id = Guid.Parse(listTezgah.Rows[selectedIndex].Cells[1].Value.ToString()),
-                    Name = txtTezgahAdi.Text.ToUpper()
-                });
-                */
-            }
+                Name = txtMalzemeAdi.Text.ToUpper(),
+                Length = Convert.ToInt32(txtMalzemeBoy.Value),
+                OuterDiameter = Convert.ToInt32(txtMalzemeDisCap.Value),
+                HoleDiameter = Convert.ToInt32(txtMalzemeDisCap.Value),
+                MaterialTypeId = Guid.Parse(listMalzemeTuru.SelectedValue.ToString()),
+                MaterialShapeId = Guid.Parse(listMalzemeSekli.SelectedValue.ToString())
+            });
 
             await _materialRepository.SaveAsync();
-            EnableButtonAndText(1);
+            _appMessage.SaveSuccessMessage();
 
-            editMode = false;
+            txtMalzemeBoy.Value = 0;
+            txtMalzemeDisCap.Value = 0;
+            txtMalzemeDelikCap.Value = 0;
+            listMalzemeTuru.DataSource = null;
+            listMalzemeSekli.DataSource = null;
+            txtMalzemeAdi.Clear();
+
+            RefreshLabels();
         }
 
         private async void btnKaydetTezgah_Click(object sender, EventArgs e)
         {
-            bool editStatus = false;
-
             Machine mc = new Machine
             {
                 Name = txtTezgahAdi.Text.ToUpper()
@@ -896,43 +669,22 @@ namespace UretimTakipProgrami.Forms
                 }
             }
 
-            if (!editMode)
+            await _machineRepository.AddAsync(new()
             {
-                await _machineRepository.AddAsync(new()
-                {
-                    Name = txtTezgahAdi.Text.ToUpper()
-                    //CreatedDate = DateTime.UtcNow,
-                    //IsDeleted = false
-                });
-            }
-            else
-            {
-                editStatus = _machineRepository.Update(new()
-                {
-                    Id = Guid.Parse(listTezgah.Rows[selectedIndex].Cells[1].Value.ToString()),
-                    Name = txtTezgahAdi.Text.ToUpper()
-                });
-            }
+                Name = txtTezgahAdi.Text.ToUpper()
+            });
 
             await _machineRepository.SaveAsync();
-            EnableButtonAndText(0);
-            GetMachineList();
-            editMode = false;
-        }
+            _appMessage.SaveSuccessMessage();
 
-        private void btnYeniMalzeme_Click(object sender, EventArgs e)
-        {
-            DisableButtonAndText(groupIndex = 1);
+            RefreshLabels();
+
+            txtTezgahAdi.Clear();
         }
 
         private void listMalzemeTuru_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
-        }
-
-        private void btnDuzenleMalzeme_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void btnIptalMalzeme_Click(object sender, EventArgs e)
@@ -949,7 +701,6 @@ namespace UretimTakipProgrami.Forms
         private void FrmProductionDefinitions_FormClosed(object sender, FormClosedEventArgs e)
         {
             btnFormuKapat1.Visible = false;
-            btnFormuKapat2.Visible = false;
             btnFormuKapat3.Visible = false;
         }
 
@@ -971,6 +722,136 @@ namespace UretimTakipProgrami.Forms
         private void listMalzemeSekli_SelectedIndexChanged(object sender, EventArgs e)
         {
             MalzemeAdiYaz();
+        }
+
+        private async void btnKaydetMalzemeTuru_Click(object sender, EventArgs e)
+        {
+            MaterialType mt = new MaterialType
+            {
+                Name = txtMalzemeTuru.Text.ToUpper()
+            };
+
+            MaterialTypeValidator materialTypeValidation = new MaterialTypeValidator();
+            ValidationResult result = materialTypeValidation.Validate(mt);
+            IList<ValidationFailure> errors = result.Errors;
+
+            if (!result.IsValid)
+            {
+                foreach (ValidationFailure failure in errors)
+                {
+                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            await _materialTypeRepository.AddAsync(new()
+            {
+                Name = txtMalzemeTuru.Text.ToUpper()
+            });
+
+            await _materialTypeRepository.SaveAsync();
+            _appMessage.SaveSuccessMessage();
+
+            RefreshLabels();
+            txtMalzemeTuru.Clear();
+        }
+
+        private async void btnKaydetMalzemeSekli_Click(object sender, EventArgs e)
+        {
+            MaterialShape ms = new MaterialShape
+            {
+                Name = txtMalzemeSekli.Text.ToUpper()
+            };
+
+            MaterialShapeValidator materialShapeValidation = new MaterialShapeValidator();
+            ValidationResult result = materialShapeValidation.Validate(ms);
+            IList<ValidationFailure> errors = result.Errors;
+
+            if (!result.IsValid)
+            {
+                foreach (ValidationFailure failure in errors)
+                {
+                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
+            await _materialShapeRepository.AddAsync(new()
+            {
+                Name = txtMalzemeSekli.Text.ToUpper()
+            });
+
+            await _materialShapeRepository.SaveAsync();
+            _appMessage.SaveSuccessMessage();
+
+            RefreshLabels();
+            txtMalzemeSekli.Clear();
+        }
+
+        private void FrmProductionDefinitions_Load(object sender, EventArgs e)
+        {
+            tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
+
+            RefreshLabels();
+        }
+
+        private void RefreshLabels()
+        {
+            int machineCount = _machineRepository.GetAll().Select(x => x.Name).ToList().Count();
+            int materialTypeCount = _materialTypeRepository.GetAll().Select(x => x.Name).ToList().Count();
+            int materialShapeCount = _materialShapeRepository.GetAll().Select(x => x.Name).ToList().Count();
+            int materialCount = _materialRepository.GetAll().Select(x => x.Name).ToList().Count();
+
+            if (machineCount > 0)
+                lblTezgahSayisi.Text = "Tezgah Sayısı: " + machineCount.ToString();
+            else
+                lblTezgahSayisi.Text = "Tanımlı Tezgah Yok.";
+
+            if (materialTypeCount > 0)
+                lblMalzemeTuruSayisi.Text = "Malzeme Türü Sayısı: " + materialTypeCount.ToString();
+            else
+                lblMalzemeTuruSayisi.Text = "Tanımlı Malzeme Türü Yok.";
+
+            if (materialShapeCount > 0)
+                lblMalzemeSekliSayisi.Text = "Malzeme Şekli Sayısı: " + materialShapeCount.ToString();
+            else
+                lblMalzemeSekliSayisi.Text = "Tanımlı Malzeme Şekli Yok.";
+
+            if (materialCount > 0)
+                lblMalzemeSayisi.Text = "Malzeme Sayısı: " + materialCount.ToString();
+            else
+                lblMalzemeSekliSayisi.Text = "Tanımlı Malzeme Yok.";
+        }
+
+        private void btnProgramGuncelle_Click(object sender, EventArgs e)
+        {
+            if (dataListProgramDef.RowCount > 0)
+            {
+                editMode = true;
+                DisableButtonAndText(1);
+            }
+            else
+                MessageBox.Show("Güncellenecek kaydı seçin.", "Güncelleme Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void btnKaydetTezgah_MouseHover(object sender, EventArgs e)
+        {
+            buttonToolTip.SetToolTip(btnKaydetTezgah, "Tezgah Kaydet");
+        }
+
+        private void btnKaydetMalzemeTuru_MouseHover(object sender, EventArgs e)
+        {
+            buttonToolTip.SetToolTip(btnKaydetMalzemeTuru, "Malzeme Türü Kaydet");
+        }
+
+        private void btnKaydetMalzemeSekli_MouseHover(object sender, EventArgs e)
+        {
+            buttonToolTip.SetToolTip(btnKaydetMalzemeSekli, "Malzeme Şekli Kaydet");
+        }
+
+        private void btnKaydetMalzeme_MouseHover(object sender, EventArgs e)
+        {
+            buttonToolTip.SetToolTip(btnKaydetMalzeme, "Malzeme Kaydet");
         }
     }
 }
