@@ -80,6 +80,7 @@ namespace UretimTakipProgrami
             txtKullaniciAdi.Name = "txtKullaniciAdi";
             txtKullaniciAdi.Size = new Size(280, 23);
             txtKullaniciAdi.TabIndex = 1;
+            txtKullaniciAdi.KeyPress += txtKullaniciAdi_KeyPress;
             // 
             // label1
             // 
@@ -102,6 +103,7 @@ namespace UretimTakipProgrami
             txtSifre.Size = new Size(279, 23);
             txtSifre.TabIndex = 1;
             txtSifre.UseSystemPasswordChar = true;
+            txtSifre.KeyPress += txtSifre_KeyPress;
             // 
             // label2
             // 
@@ -259,8 +261,8 @@ namespace UretimTakipProgrami
             Name = "FrmLogin";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Kullanıcı Girişi";
+            Activated += FrmLogin_Activated;
             Load += FrmLogin_Load;
-            Shown += FrmLogin_Shown;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

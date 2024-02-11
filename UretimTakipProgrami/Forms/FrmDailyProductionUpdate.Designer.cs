@@ -114,6 +114,7 @@
             txtSifre.Size = new Size(244, 29);
             txtSifre.TabIndex = 7;
             txtSifre.UseSystemPasswordChar = true;
+            txtSifre.KeyPress += txtSifre_KeyPress;
             // 
             // txtKullaniciAdi
             // 
@@ -225,7 +226,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmDailyProductionUpdate";
             Load += FrmDailyProductionUpdate_Load;
-            Shown += FrmDailyProductionUpdate_Shown;
             ((System.ComponentModel.ISupportInitialize)txtUretimMiktarı).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtDefoluMiktarı).EndInit();
             panel1.ResumeLayout(false);

@@ -60,7 +60,6 @@ namespace UretimTakipProgrami.Forms
                 dateTimePicker1.Value = DateTime.UtcNow.ToLocalTime();
                 dateTimePicker1.Enabled = false;
             }
-
             txtUretimMiktarı.Focus();
         }
 
@@ -69,7 +68,7 @@ namespace UretimTakipProgrami.Forms
             order = _orderRepository.GetWhere(x => x.Id == production.OrderId).FirstOrDefault();
 
             var user = _userRepository.GetWhere(u => u.Id == production.UserId && u.Password == SHA256Hash(txtSifre.Text)).FirstOrDefault();
-            
+
             if (editMode)
             {
                 int orderQuantity = _orderRepository.GetWhere(o => o.Id == production.OrderId).FirstOrDefault().Quantity;
@@ -138,19 +137,12 @@ namespace UretimTakipProgrami.Forms
                 txtUretimMiktarı.Value = remainQuantity;
                 txtUretimMiktarı.Focus();
             }
-
-
         }
 
         private void btnIptal_Click(object sender, EventArgs e)
         {
             cancelSaving = true;
             this.Close();
-        }
-
-        private void FrmDailyProductionUpdate_Shown(object sender, EventArgs e)
-        {
-
         }
 
         private string SHA256Hash(string text)
@@ -163,6 +155,14 @@ namespace UretimTakipProgrami.Forms
                 string hash = BitConverter.ToString(hashBytes).Replace("-", String.Empty);
                 return hash;
             }
+        }
+
+        private void txtSifre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+                btnKaydet_Click(sender, e);
+            else if (e.KeyChar == (char)Keys.Escape)
+                btnIptal_Click(sender, e);
         }
     }
 }

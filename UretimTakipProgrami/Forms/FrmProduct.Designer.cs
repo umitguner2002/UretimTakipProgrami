@@ -114,8 +114,7 @@ namespace UretimTakipProgrami.Forms
             btnKaydet.Margin = new Padding(4, 3, 4, 3);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(78, 29);
-            btnKaydet.TabIndex = 3;
-            btnKaydet.TabStop = false;
+            btnKaydet.TabIndex = 8;
             btnKaydet.Text = "Kaydet";
             btnKaydet.TextAlign = ContentAlignment.MiddleRight;
             btnKaydet.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -151,7 +150,7 @@ namespace UretimTakipProgrami.Forms
             listMalzeme.Location = new Point(20, 135);
             listMalzeme.Name = "listMalzeme";
             listMalzeme.Size = new Size(360, 22);
-            listMalzeme.TabIndex = 7;
+            listMalzeme.TabIndex = 1;
             // 
             // listProgramAdi
             // 
@@ -161,7 +160,7 @@ namespace UretimTakipProgrami.Forms
             listProgramAdi.Location = new Point(20, 185);
             listProgramAdi.Name = "listProgramAdi";
             listProgramAdi.Size = new Size(360, 22);
-            listProgramAdi.TabIndex = 7;
+            listProgramAdi.TabIndex = 3;
             // 
             // label3
             // 
@@ -197,7 +196,8 @@ namespace UretimTakipProgrami.Forms
             panel3.Location = new Point(4, 53);
             panel3.Name = "panel3";
             panel3.Size = new Size(1016, 273);
-            panel3.TabIndex = 9;
+            panel3.TabIndex = 0;
+            panel3.TabStop = true;
             // 
             // btnOpenFormProgram
             // 
@@ -206,7 +206,7 @@ namespace UretimTakipProgrami.Forms
             btnOpenFormProgram.Location = new Point(376, 130);
             btnOpenFormProgram.Name = "btnOpenFormProgram";
             btnOpenFormProgram.Size = new Size(26, 24);
-            btnOpenFormProgram.TabIndex = 8;
+            btnOpenFormProgram.TabIndex = 4;
             btnOpenFormProgram.Text = "...";
             btnOpenFormProgram.UseVisualStyleBackColor = true;
             btnOpenFormProgram.Click += btnOpenFormProgram_Click;
@@ -221,7 +221,7 @@ namespace UretimTakipProgrami.Forms
             btnOpenFormMaterial.Location = new Point(376, 80);
             btnOpenFormMaterial.Name = "btnOpenFormMaterial";
             btnOpenFormMaterial.Size = new Size(26, 24);
-            btnOpenFormMaterial.TabIndex = 8;
+            btnOpenFormMaterial.TabIndex = 2;
             btnOpenFormMaterial.Text = "...";
             btnOpenFormMaterial.UseVisualStyleBackColor = false;
             btnOpenFormMaterial.Click += btnOpenFormMaterial_Click;
@@ -259,7 +259,7 @@ namespace UretimTakipProgrami.Forms
             btnResimKaldir.Margin = new Padding(4, 3, 4, 3);
             btnResimKaldir.Name = "btnResimKaldir";
             btnResimKaldir.Size = new Size(112, 26);
-            btnResimKaldir.TabIndex = 5;
+            btnResimKaldir.TabIndex = 6;
             btnResimKaldir.Text = "Çizim Kaldır";
             btnResimKaldir.TextAlign = ContentAlignment.MiddleRight;
             btnResimKaldir.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -303,7 +303,8 @@ namespace UretimTakipProgrami.Forms
             panel5.Location = new Point(4, 18);
             panel5.Name = "panel5";
             panel5.Size = new Size(1016, 35);
-            panel5.TabIndex = 6;
+            panel5.TabIndex = 7;
+            panel5.TabStop = true;
             // 
             // btnGeriDon
             // 
@@ -351,8 +352,7 @@ namespace UretimTakipProgrami.Forms
             btnIptal.Margin = new Padding(4, 3, 4, 3);
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(64, 29);
-            btnIptal.TabIndex = 3;
-            btnIptal.TabStop = false;
+            btnIptal.TabIndex = 9;
             btnIptal.Text = "İptal";
             btnIptal.TextAlign = ContentAlignment.MiddleRight;
             btnIptal.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -377,7 +377,7 @@ namespace UretimTakipProgrami.Forms
             btnYeni.Margin = new Padding(4, 3, 4, 3);
             btnYeni.Name = "btnYeni";
             btnYeni.Size = new Size(94, 29);
-            btnYeni.TabIndex = 3;
+            btnYeni.TabIndex = 0;
             btnYeni.TabStop = false;
             btnYeni.Text = "Yeni Ürün";
             btnYeni.TextAlign = ContentAlignment.MiddleRight;
@@ -404,7 +404,7 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.Margin = new Padding(4, 3, 4, 3);
             btnDuzenle.Name = "btnDuzenle";
             btnDuzenle.Size = new Size(116, 29);
-            btnDuzenle.TabIndex = 3;
+            btnDuzenle.TabIndex = 0;
             btnDuzenle.TabStop = false;
             btnDuzenle.Text = "Ürün Güncelle";
             btnDuzenle.TextAlign = ContentAlignment.MiddleRight;
@@ -568,10 +568,10 @@ namespace UretimTakipProgrami.Forms
             btnUrunBul.IconColor = Color.WhiteSmoke;
             btnUrunBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunBul.IconSize = 18;
-            btnUrunBul.Location = new Point(474, 7);
+            btnUrunBul.Location = new Point(450, 7);
             btnUrunBul.Margin = new Padding(4, 3, 4, 3);
             btnUrunBul.Name = "btnUrunBul";
-            btnUrunBul.Size = new Size(100, 22);
+            btnUrunBul.Size = new Size(120, 22);
             btnUrunBul.TabIndex = 8;
             btnUrunBul.Text = "Ürün Bul ";
             btnUrunBul.TextAlign = ContentAlignment.MiddleRight;

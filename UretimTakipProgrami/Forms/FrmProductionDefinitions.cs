@@ -1,10 +1,20 @@
-﻿using FluentValidation.Results;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using FluentValidation.Results;
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Data;
+using System.Windows.Forms;
+using System.Windows.Media;
 using UretimTakipProgrami.Business.DependencyResolver;
 using UretimTakipProgrami.Business.Repositories.Concretes;
 using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Entities;
 using UretimTakipProgrami.Messages;
+using Brush = System.Drawing.Brush;
+using Brushes = System.Drawing.Brushes;
+using Color = System.Drawing.Color;
+using Font = System.Drawing.Font;
+using User = UretimTakipProgrami.Entities.User;
 
 namespace UretimTakipProgrami.Forms
 {
@@ -15,7 +25,9 @@ namespace UretimTakipProgrami.Forms
         private MaterialTypeRepository _materialTypeRepository;
         private MaterialShapeRepository _materialShapeRepository;
         private MaterialRepository _materialRepository;
+        private UserRepository _userRepository;
         private AppMessage _appMessage;
+        private User _user;
 
         private int groupIndex = 0;
         private int countIndex = 0;
@@ -27,6 +39,7 @@ namespace UretimTakipProgrami.Forms
         private bool editMode = false;
         private int kodListIndex = 0;
 
+        public string? selectedMaterialName;
         public string? selectedMachineProgramName;
 
         System.Windows.Forms.ToolTip buttonToolTip;
@@ -51,6 +64,28 @@ namespace UretimTakipProgrami.Forms
             buttonToolTip = new System.Windows.Forms.ToolTip();
         }
 
+        public FrmProductionDefinitions(User user)
+        {
+            InitializeComponent();
+
+            _machineRepository = InstanceFactory.GetInstance<MachineRepository>();
+            _machineProgramRepository = InstanceFactory.GetInstance<MachineProgramRepository>();
+            _materialTypeRepository = InstanceFactory.GetInstance<MaterialTypeRepository>();
+            _materialShapeRepository = InstanceFactory.GetInstance<MaterialShapeRepository>();
+            _materialRepository = InstanceFactory.GetInstance<MaterialRepository>();
+            _userRepository = InstanceFactory.GetInstance<UserRepository>();
+
+            this.FormBorderStyle = FormBorderStyle.Sizable;
+            this.Text = string.Empty;
+            this.ControlBox = false;
+
+            _user = _userRepository.GetWhere(u => u.Id == user.Id).FirstOrDefault();
+            CheckUserAuth(_user);
+
+            _appMessage = new AppMessage();
+            buttonToolTip = new System.Windows.Forms.ToolTip();
+        }
+
         private void EnableButtonAndText(int _groupIndex)
         {
             if (_groupIndex == 1)
@@ -68,7 +103,20 @@ namespace UretimTakipProgrami.Forms
                 txtKodSatir.Clear();
                 listKod.Items.Clear();
 
-                //listKod.Enabled = false;
+                txtKodSatir.Enabled = false;
+                btnKodDeğiştir.Enabled = false;
+            }
+
+            if (_groupIndex == 2)
+            {
+                btnYeniProgram.Enabled = true;
+                btnProgramGuncelle.Enabled = true;
+                btnProgramKaydet.Enabled = false;
+                btnProgramIptal.Enabled = false;
+                btnProgramEkle.Enabled = false;
+                txtProgramKodu.Enabled = false;
+                txtProgramAdi.Enabled = false;
+
                 txtKodSatir.Enabled = false;
                 btnKodDeğiştir.Enabled = false;
             }
@@ -86,7 +134,6 @@ namespace UretimTakipProgrami.Forms
                 txtProgramKodu.Enabled = true;
                 txtProgramAdi.Enabled = true;
 
-                //listKod.Enabled = true;
                 txtKodSatir.Enabled = true;
                 btnKodDeğiştir.Enabled = true;
             }
@@ -118,25 +165,25 @@ namespace UretimTakipProgrami.Forms
             Rectangle recTab = e.Bounds;
             recTab = new Rectangle(recTab.X, recTab.Y + 4, recTab.Width, recTab.Height - 4);
             e.Graphics.DrawString(tabName, fntTab, bshFore, recTab, sftTab);
+
+            SolidBrush fillbrush = new SolidBrush(Color.FromArgb(175, 174, 209));
+            Rectangle lasttabrect = tabControl1.GetTabRect(tabControl1.TabPages.Count - 1);
+            Rectangle background = new Rectangle();
+            background.Location = new Point(lasttabrect.Right, 0);
+            background.Size = new Size(tabControl1.Right - background.Left, lasttabrect.Height + 1);
+            e.Graphics.FillRectangle(fillbrush, background);
         }
 
         private void btnProgramEkle_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
-            // İletişim kutusunun başlık ve filtre ayarlarını yapın
             openFileDialog.Title = "Dosya Seç";
             openFileDialog.Filter = "Tüm Dosyalar|*.*";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string dosyaYolu = openFileDialog.FileName;
-                // Kopyalanacak hedef klasörü belirleyin
-                //string hedefKlasor = @"C:\Users\umitg\Desktop\deneme";
-
-                //string dosyaAdi = Path.Combine(hedefKlasor, Path.GetFileName(dosyaYolu));
-
-                //string hedefDosyaYolu = Path.Combine(hedefKlasor, dosyaAdi);
 
                 listKod.Items.Clear();
 
@@ -158,20 +205,14 @@ namespace UretimTakipProgrami.Forms
                         rowNumber++;
                     }
                 }
-                /*
-                if (File.Exists(dosyaAdi))
-                {
-                    DialogResult cvp = MessageBox.Show("Dosya var silmek istiyor musun", "Dosya Mevcut", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (cvp == DialogResult.Yes)
-                    {
-                        File.Delete(dosyaAdi);
-                        File.Copy(openFileDialog.FileName, hedefDosyaYolu);
-                    }
+                if (!string.IsNullOrEmpty(listKod.Items[1].ToString()))
+                {
+                    kodListIndex = 1;
+                    listKod.SelectedIndex = 1;
+                    txtKodSatir.Text = listKod.Items[kodListIndex].ToString();
                 }
-                else
-                    File.Copy(openFileDialog.FileName, hedefDosyaYolu);
-                */
+
             }
         }
 
@@ -184,7 +225,7 @@ namespace UretimTakipProgrami.Forms
 
         private void btnKodDeğiştir_Click(object sender, EventArgs e)
         {
-            if (kodListIndex > -1 && listKod.SelectedItem.ToString() != "")
+            if (kodListIndex > -1 && !string.IsNullOrEmpty(listKod.SelectedItem.ToString()))
             {
                 if (listKod.SelectedItem.ToString().CompareTo(txtKodSatir.Text) != 0)
                 {
@@ -196,6 +237,8 @@ namespace UretimTakipProgrami.Forms
                         if (kodListIndex == 1)
                             EditProgramCodeTextBox(txtKodSatir.Text);
                     }
+                    else
+                        txtKodSatir.Text = listKod.Items[kodListIndex].ToString();
                 }
             }
         }
@@ -215,12 +258,19 @@ namespace UretimTakipProgrami.Forms
         private void btnYeniProgram_Click(object sender, EventArgs e)
         {
             DisableButtonAndText(groupIndex = 1);
+            dataListProgramDef.DataSource = null;
+            txtProgramKodu.Clear();
+            txtProgramAdi.Clear();
+            txtKodSatir.Clear();
+            listKod.Items.Clear();
+            txtProgramAra.Clear();
             txtProgramKodu.Focus();
         }
 
         private void btnProgramIptal_Click(object sender, EventArgs e)
         {
             EnableButtonAndText(groupIndex = 1);
+            DataGridProgramTextAktar();
         }
 
         private async void btnProgramKaydet_Click(object sender, EventArgs e)
@@ -255,6 +305,7 @@ namespace UretimTakipProgrami.Forms
                 }
             }
 
+            selectedMaterialName = txtMalzemeAdi.Text;
             selectedMachineProgramName = txtProgramAdi.Text;
 
             string filePath = CopyProgramToFolder();
@@ -269,6 +320,9 @@ namespace UretimTakipProgrami.Forms
                         Name = txtProgramAdi.Text.ToUpper(),
                         Path = filePath
                     });
+
+                    _machineProgramRepository.Save();
+                    EnableButtonAndText(groupIndex = 1);
                 }
                 else
                 {
@@ -277,14 +331,33 @@ namespace UretimTakipProgrami.Forms
 
                     m.Code = txtProgramKodu.Text;
                     m.Name = txtProgramAdi.Text.ToUpper();
-                    m.Path = m.Path;
-                }
+                    m.Path = filePath;
 
-                await _machineProgramRepository.SaveAsync();
+                    txtProgramAra.Text = m.Name;
+
+                    _machineProgramRepository.Save();
+
+                    List<object> programList = GetProgramList(txtProgramAra.Text);
+
+                    if (programList.Count > 0)
+                    {
+                        dataListProgramDef.DataSource = programList.ToList();
+                        selectedIndex2 = 0;
+                        dataListProgramDef.Rows[0].Selected = true;
+                        SetDataListProgramGridSettings();
+                        DataGridProgramTextAktar();
+                    }
+
+                    EnableButtonAndText(groupIndex = 2);
+                }
 
                 editMode = false;
 
-                EnableButtonAndText(groupIndex = 1);
+                int machineProgramCount = _machineProgramRepository.GetAll().Select(x => x.Name).ToList().Count();
+                if (machineProgramCount > 0)
+                    lblProgramSayisi.Text = "Program Sayısı: " + machineProgramCount.ToString();
+                else
+                    lblProgramSayisi.Text = "Program Sayısı: 0";
             }
         }
 
@@ -333,12 +406,14 @@ namespace UretimTakipProgrami.Forms
                 dataListProgramDef.DataSource = programList.ToList();
                 SetDataListProgramGridSettings();
                 dataListProgramDef.Rows[0].Selected = true;
-                //lblKayitSayisi.Text = $"Kayıt Sayısı: {orderList.Count.ToString()}";
+                DataGridProgramTextAktar();
             }
         }
 
         private List<object> GetProgramList(string arananProgram)
         {
+            arananProgram = arananProgram.Trim();
+
             var programList = _machineProgramRepository.GetAll()
                 .Select(program => new
                 {
@@ -348,7 +423,7 @@ namespace UretimTakipProgrami.Forms
                     program.Path
                 })
                 .Where(prg =>
-                    (string.IsNullOrEmpty(arananProgram) || prg.Name.ToLower().Contains(arananProgram.ToLower())))
+                    (string.IsNullOrEmpty(arananProgram) || prg.Name.ToUpper().Contains(arananProgram.ToUpper())))
                 .OrderBy(prg => prg.Name)
                 .ToList();
 
@@ -360,8 +435,11 @@ namespace UretimTakipProgrami.Forms
             if (dataListProgramDef.Rows.Count > 0)
             {
                 dataListProgramDef.Columns[0].HeaderText = "Program Kodu";
-                dataListProgramDef.Columns[0].Width = 65;
+                dataListProgramDef.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataListProgramDef.Columns[1].HeaderText = "Program Adı";
+                dataListProgramDef.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
                 dataListProgramDef.Columns[2].Visible = false; // Id
                 dataListProgramDef.Columns[3].Visible = false; // Program Path
             }
@@ -410,6 +488,9 @@ namespace UretimTakipProgrami.Forms
                         rowNumber++;
                     }
                 }
+
+                if (listKod.Items.Count > 0)
+                    txtKodSatir.Text = listKod.Items[1].ToString();
             }
         }
 
@@ -561,11 +642,11 @@ namespace UretimTakipProgrami.Forms
         {
             if (listMalzemeTuru.Text != "")
             {
-                string malzemeAdi = $"{listMalzemeTuru.Text}";
-                malzemeAdi += listMalzemeSekli.Text != "" ? $" {listMalzemeSekli.Text}" : "";
-                malzemeAdi += txtMalzemeBoy.Value > 0 ? $"_BOY={txtMalzemeBoy.Value.ToString()}" : "";
-                malzemeAdi += txtMalzemeDisCap.Value > 0 ? $"_DIŞ={txtMalzemeDisCap.Value.ToString()}" : "";
-                malzemeAdi += txtMalzemeDelikCap.Value > 0 ? $"_İÇ={txtMalzemeDelikCap.Value.ToString()}" : "";
+                string malzemeAdi = listMalzemeSekli.Text != "" ? $"{listMalzemeSekli.Text}" : "";
+                malzemeAdi += $" {listMalzemeTuru.Text}";
+                malzemeAdi += txtMalzemeDelikCap.Value > 0 ? $" İç={txtMalzemeDelikCap.Value.ToString()}" : "";
+                malzemeAdi += txtMalzemeDisCap.Value > 0 ? $" Dış={txtMalzemeDisCap.Value.ToString()}" : "";
+                malzemeAdi += txtMalzemeBoy.Value > 0 ? $" L={txtMalzemeBoy.Value.ToString()}" : "";
 
                 txtMalzemeAdi.Text = malzemeAdi;
             }
@@ -625,6 +706,8 @@ namespace UretimTakipProgrami.Forms
                     return;
                 }
             }
+
+            selectedMaterialName = txtMalzemeAdi.Text;
 
             await _materialRepository.AddAsync(new()
             {
@@ -701,7 +784,7 @@ namespace UretimTakipProgrami.Forms
         private void FrmProductionDefinitions_FormClosed(object sender, FormClosedEventArgs e)
         {
             btnFormuKapat1.Visible = false;
-            btnFormuKapat3.Visible = false;
+            btnFormuKapat2.Visible = false;
         }
 
         private void listMalzemeSekli_DropDown(object sender, EventArgs e)
@@ -801,6 +884,7 @@ namespace UretimTakipProgrami.Forms
             int materialTypeCount = _materialTypeRepository.GetAll().Select(x => x.Name).ToList().Count();
             int materialShapeCount = _materialShapeRepository.GetAll().Select(x => x.Name).ToList().Count();
             int materialCount = _materialRepository.GetAll().Select(x => x.Name).ToList().Count();
+            int machineProgramCount = _machineProgramRepository.GetAll().Select(x => x.Name).ToList().Count();
 
             if (machineCount > 0)
                 lblTezgahSayisi.Text = "Tezgah Sayısı: " + machineCount.ToString();
@@ -820,7 +904,12 @@ namespace UretimTakipProgrami.Forms
             if (materialCount > 0)
                 lblMalzemeSayisi.Text = "Malzeme Sayısı: " + materialCount.ToString();
             else
-                lblMalzemeSekliSayisi.Text = "Tanımlı Malzeme Yok.";
+                lblMalzemeSayisi.Text = "Tanımlı Malzeme Yok.";
+
+            if (machineProgramCount > 0)
+                lblProgramSayisi.Text = "Kayıtlı Program Sayısı: " + machineProgramCount.ToString();
+            else
+                lblProgramSayisi.Text = "Kayıtlı Program Sayısı: 0";
         }
 
         private void btnProgramGuncelle_Click(object sender, EventArgs e)
@@ -829,6 +918,13 @@ namespace UretimTakipProgrami.Forms
             {
                 editMode = true;
                 DisableButtonAndText(1);
+
+                if (listKod.Items.Count > 0)
+                {
+                    listKod.SelectedIndex = 1;
+                    kodListIndex = 1;
+                    txtKodSatir.Text = listKod.Items[kodListIndex].ToString();
+                }
             }
             else
                 MessageBox.Show("Güncellenecek kaydı seçin.", "Güncelleme Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -852,6 +948,62 @@ namespace UretimTakipProgrami.Forms
         private void btnKaydetMalzeme_MouseHover(object sender, EventArgs e)
         {
             buttonToolTip.SetToolTip(btnKaydetMalzeme, "Malzeme Kaydet");
+        }
+
+        private void CheckUserAuth(User u)
+        {
+            List<TabPage> hideTabPages = new List<TabPage>();
+            List<int> hideTabPageNumbers = new List<int>();
+            bool isAdminManager = false;
+
+            if (this._user.IsAdmin)
+                isAdminManager = true;
+            else
+                hideTabPageNumbers = new List<int> { 0, 1 };
+
+            if (!isAdminManager)
+            {
+                foreach (int i in hideTabPageNumbers)
+                {
+                    hideTabPages.Add(tabControl1.TabPages[i]);
+                }
+
+                foreach (TabPage tabPage in hideTabPages)
+                {
+                    tabControl1.TabPages.Remove(tabPage);
+                }
+            }
+        }
+
+        private void txtMalzemeDelikCap_Enter(object sender, EventArgs e)
+        {
+            txtMalzemeDelikCap.Select(0, txtMalzemeDelikCap.Text.Length);
+        }
+
+        private void txtMalzemeDisCap_Enter(object sender, EventArgs e)
+        {
+            txtMalzemeDisCap.Select(0, txtMalzemeDisCap.Text.Length);
+        }
+
+        private void txtMalzemeBoy_Enter(object sender, EventArgs e)
+        {
+            txtMalzemeBoy.Select(0, txtMalzemeBoy.Text.Length);
+        }
+
+        private void txtMalzemeDelikCap_Leave(object sender, EventArgs e)
+        {
+            if (txtMalzemeDelikCap.Text.Length == 0)
+                txtMalzemeDelikCap.Value = txtMalzemeDelikCap.Minimum;
+        }
+
+        private void listMalzemeSekli_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void btnFormuKapat3_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

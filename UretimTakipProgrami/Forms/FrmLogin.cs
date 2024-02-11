@@ -34,6 +34,7 @@ namespace UretimTakipProgrami
             {
                 MessageBox.Show("Kullanıcı Adı veya Şifre Hatalı !", "Yetki Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtKullaniciAdi.Focus();
+                txtKullaniciAdi.SelectAll();
             }
         }
 
@@ -76,11 +77,28 @@ namespace UretimTakipProgrami
             }
         }
 
-        private void FrmLogin_Shown(object sender, EventArgs e)
+        private void txtKullaniciAdi_KeyPress(object sender, KeyPressEventArgs e)
         {
-            txtKullaniciAdi.Text = "umt";
-            txtSifre.Text = "dev";
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnGiris_Click(sender, e);
+            }
+        }
+
+        private void txtSifre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                btnGiris_Click(sender, e);
+            }
+        }
+
+        private void FrmLogin_Activated(object sender, EventArgs e)
+        {
+            txtSifre.Clear();
+
             txtKullaniciAdi.Focus();
+            txtKullaniciAdi.SelectAll();            
         }
     }
 }

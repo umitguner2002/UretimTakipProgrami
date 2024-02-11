@@ -82,5 +82,13 @@ namespace UretimTakipProgrami.Forms
         {
             this.Close();
         }
+
+        private void txtSifre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+                btnTamam_Click(sender, e);
+            else if (e.KeyChar == (char)Keys.Escape)
+                btnIptal_Click(sender, e);
+        }
     }
 }

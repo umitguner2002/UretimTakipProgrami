@@ -120,6 +120,7 @@
             txtSifre.Size = new Size(244, 23);
             txtSifre.TabIndex = 1;
             txtSifre.UseSystemPasswordChar = true;
+            txtSifre.KeyPress += txtSifre_KeyPress;
             // 
             // FrmDailyProductionConfirm
             // 

@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami.Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UretimTakipProgrami.UnitTests", "UretimTakipProgrami.UnitTests\UretimTakipProgrami.UnitTests.csproj", "{7869A0B8-C22C-46CE-A882-E2E089AEE36D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "UretimTakipProgrami.Setup", "UretimTakipProgrami.Setup\UretimTakipProgrami.Setup.vdproj", "{A8DFCB67-F718-4E39-87DC-4EBDD12A8CE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,8 @@ Global
 		{7869A0B8-C22C-46CE-A882-E2E089AEE36D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7869A0B8-C22C-46CE-A882-E2E089AEE36D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7869A0B8-C22C-46CE-A882-E2E089AEE36D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DFCB67-F718-4E39-87DC-4EBDD12A8CE1}.Debug|Any CPU.ActiveCfg = Debug
+		{A8DFCB67-F718-4E39-87DC-4EBDD12A8CE1}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

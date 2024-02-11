@@ -40,6 +40,7 @@ namespace UretimTakipProgrami.DataAccess
             SeedFirstUser(modelBuilder);
             SeedMaterialShapes(modelBuilder);
             SeedMaterialTypes(modelBuilder);
+            SeedMachines(modelBuilder);
         }
 
         private void SeedFirstUser(ModelBuilder modelBuilder)
@@ -49,14 +50,14 @@ namespace UretimTakipProgrami.DataAccess
                 {
                     Id = Guid.NewGuid(),
                     CreatedDate = DateTime.UtcNow,
-                    Name = "ÜMİT",
-                    Username = "umt",
-                    Password = SHA256Hash("dev"),
-                    Phone = "5359678785",
-                    Email = "umitguner2002@gmail.com",
+                    Name = "SONER ERDENK",
+                    Username = "soner",
+                    Password = SHA256Hash("4554"),
+                    Phone = "5428341132",
+                    Email = "erdenksoner@gmail.com",
                     IsAdmin = true,
-                    IsManager = false,
-                    IsOperator = false,
+                    IsManager = true,
+                    IsOperator = true,
                     IsActive = true,
                     IsDeleted = false
                 }
@@ -95,6 +96,23 @@ namespace UretimTakipProgrami.DataAccess
 
                 modelBuilder.Entity<MaterialType>().HasData(materialType);
             }            
+        }
+
+        private void SeedMachines(ModelBuilder modelBuilder)
+        {
+            var machines = new List<string> { "NEX 106", "NEX 108", "NEX 110", "PİNACHO", "DİK İŞLEM" };
+
+            foreach (var machineName in machines)
+            {
+                var machine = new Machine
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.UtcNow,
+                    Name = machineName
+                };
+
+                modelBuilder.Entity<Machine>().HasData(machine);
+            }
         }
 
 

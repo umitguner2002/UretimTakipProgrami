@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             btnUrunAdiSil = new FontAwesome.Sharp.IconButton();
@@ -39,6 +40,8 @@
             monthCalendar1 = new MonthCalendar();
             btnSiparisBaslangicSil = new FontAwesome.Sharp.IconButton();
             dataGridView1 = new DataGridView();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem = new ToolStripMenuItem();
             label6 = new Label();
             panel5 = new Panel();
             btnIptal = new FontAwesome.Sharp.IconButton();
@@ -52,6 +55,8 @@
             btnTeslimBaslangicSil = new FontAwesome.Sharp.IconButton();
             btnSiparisBitisSil = new FontAwesome.Sharp.IconButton();
             btnMusteriAdıSil = new FontAwesome.Sharp.IconButton();
+            txtIsEmriNoSil = new FontAwesome.Sharp.IconButton();
+            listİsEmriDurum = new ComboBox();
             btnTeslimBitis = new FontAwesome.Sharp.IconButton();
             btnTeslimBaslangic = new FontAwesome.Sharp.IconButton();
             btnSiparisBitis = new FontAwesome.Sharp.IconButton();
@@ -59,13 +64,17 @@
             txtIsEmriBitis = new TextBox();
             txtTeslimBaslangic = new TextBox();
             txtMusteriAdiAra = new TextBox();
+            txtIsEmriNoAra = new TextBox();
             lblKayitSayisi = new Label();
             label11 = new Label();
             label9 = new Label();
+            label17 = new Label();
             label10 = new Label();
             label13 = new Label();
+            label16 = new Label();
             panel1 = new Panel();
             groupBox1 = new GroupBox();
+            btnOncekiIsEmriNo = new FontAwesome.Sharp.IconButton();
             btnOpenFormCustomer = new Button();
             btnOpenFormProduct = new Button();
             checkAcil = new CheckBox();
@@ -89,6 +98,7 @@
             label2 = new Label();
             panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            contextMenuStrip1.SuspendLayout();
             panel5.SuspendLayout();
             grpboxUrunAra.SuspendLayout();
             pnlArama.SuspendLayout();
@@ -110,7 +120,7 @@
             btnUrunAdiSil.IconColor = Color.WhiteSmoke;
             btnUrunAdiSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunAdiSil.IconSize = 18;
-            btnUrunAdiSil.Location = new Point(280, 8);
+            btnUrunAdiSil.Location = new Point(283, 37);
             btnUrunAdiSil.Margin = new Padding(4, 3, 4, 3);
             btnUrunAdiSil.Name = "btnUrunAdiSil";
             btnUrunAdiSil.Size = new Size(23, 23);
@@ -123,7 +133,7 @@
             // txtUrunAdiAra
             // 
             txtUrunAdiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtUrunAdiAra.Location = new Point(81, 8);
+            txtUrunAdiAra.Location = new Point(84, 37);
             txtUrunAdiAra.Name = "txtUrunAdiAra";
             txtUrunAdiAra.Size = new Size(200, 22);
             txtUrunAdiAra.TabIndex = 7;
@@ -141,10 +151,10 @@
             btnUrunBul.IconColor = Color.WhiteSmoke;
             btnUrunBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrunBul.IconSize = 18;
-            btnUrunBul.Location = new Point(879, 8);
+            btnUrunBul.Location = new Point(779, 65);
             btnUrunBul.Margin = new Padding(4, 3, 4, 3);
             btnUrunBul.Name = "btnUrunBul";
-            btnUrunBul.Size = new Size(100, 22);
+            btnUrunBul.Size = new Size(110, 22);
             btnUrunBul.TabIndex = 12;
             btnUrunBul.Text = "İş Emri Bul ";
             btnUrunBul.TextAlign = ContentAlignment.MiddleRight;
@@ -190,7 +200,7 @@
             // 
             // monthCalendar1
             // 
-            monthCalendar1.Location = new Point(332, 81);
+            monthCalendar1.Location = new Point(626, 103);
             monthCalendar1.MaxSelectionCount = 1;
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 7;
@@ -235,6 +245,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridView1.ContextMenuStrip = contextMenuStrip1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
@@ -246,7 +257,7 @@
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.EnableHeadersVisualStyles = false;
             dataGridView1.Font = new Font("Tahoma", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridView1.Location = new Point(4, 83);
+            dataGridView1.Location = new Point(4, 113);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
@@ -254,16 +265,31 @@
             dataGridView1.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1126, 293);
+            dataGridView1.Size = new Size(1126, 263);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
+            dataGridView1.MouseDown += dataGridView1_MouseDown;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { seçiliÜrünİçinİşEmriOluşturToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(258, 48);
+            // 
+            // seçiliÜrünİçinİşEmriOluşturToolStripMenuItem
+            // 
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem.Enabled = false;
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem.Name = "seçiliÜrünİçinİşEmriOluşturToolStripMenuItem";
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem.Size = new Size(257, 22);
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem.Text = "Seçili Ürün İçin Yeni İş Emri Oluştur";
+            seçiliÜrünİçinİşEmriOluşturToolStripMenuItem.Click += seçiliÜrünİçinİşEmriOluşturToolStripMenuItem_Click;
             // 
             // label6
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.Gainsboro;
-            label6.Location = new Point(16, 11);
+            label6.Location = new Point(19, 41);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(58, 14);
@@ -400,7 +426,7 @@
             grpboxUrunAra.Size = new Size(1134, 379);
             grpboxUrunAra.TabIndex = 7;
             grpboxUrunAra.TabStop = false;
-            grpboxUrunAra.Text = "Sipariş Ara";
+            grpboxUrunAra.Text = "İş Emri Arama";
             // 
             // pnlArama
             // 
@@ -411,6 +437,8 @@
             pnlArama.Controls.Add(btnSiparisBitisSil);
             pnlArama.Controls.Add(btnSiparisBaslangicSil);
             pnlArama.Controls.Add(btnMusteriAdıSil);
+            pnlArama.Controls.Add(txtIsEmriNoSil);
+            pnlArama.Controls.Add(listİsEmriDurum);
             pnlArama.Controls.Add(btnUrunAdiSil);
             pnlArama.Controls.Add(btnTeslimBitis);
             pnlArama.Controls.Add(btnTeslimBaslangic);
@@ -421,19 +449,22 @@
             pnlArama.Controls.Add(txtTeslimBaslangic);
             pnlArama.Controls.Add(txtIsEmriBaslangic);
             pnlArama.Controls.Add(txtMusteriAdiAra);
+            pnlArama.Controls.Add(txtIsEmriNoAra);
             pnlArama.Controls.Add(txtUrunAdiAra);
             pnlArama.Controls.Add(btnUrunBul);
             pnlArama.Controls.Add(lblKayitSayisi);
             pnlArama.Controls.Add(label11);
             pnlArama.Controls.Add(label9);
+            pnlArama.Controls.Add(label17);
             pnlArama.Controls.Add(label10);
             pnlArama.Controls.Add(label13);
+            pnlArama.Controls.Add(label16);
             pnlArama.Controls.Add(label7);
             pnlArama.Controls.Add(label6);
             pnlArama.Dock = DockStyle.Top;
             pnlArama.Location = new Point(4, 18);
             pnlArama.Name = "pnlArama";
-            pnlArama.Size = new Size(1126, 65);
+            pnlArama.Size = new Size(1126, 95);
             pnlArama.TabIndex = 1;
             // 
             // checkAcilAra
@@ -442,7 +473,7 @@
             checkAcilAra.CheckAlign = ContentAlignment.MiddleRight;
             checkAcilAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             checkAcilAra.ForeColor = Color.Gainsboro;
-            checkAcilAra.Location = new Point(885, 38);
+            checkAcilAra.Location = new Point(634, 68);
             checkAcilAra.Name = "checkAcilAra";
             checkAcilAra.Size = new Size(138, 18);
             checkAcilAra.TabIndex = 20;
@@ -464,7 +495,7 @@
             btnTeslimBitisSil.IconColor = Color.WhiteSmoke;
             btnTeslimBitisSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTeslimBitisSil.IconSize = 18;
-            btnTeslimBitisSil.Location = new Point(841, 36);
+            btnTeslimBitisSil.Location = new Point(868, 36);
             btnTeslimBitisSil.Margin = new Padding(4, 3, 4, 3);
             btnTeslimBitisSil.Name = "btnTeslimBitisSil";
             btnTeslimBitisSil.Size = new Size(23, 23);
@@ -487,7 +518,7 @@
             btnTeslimBaslangicSil.IconColor = Color.WhiteSmoke;
             btnTeslimBaslangicSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTeslimBaslangicSil.IconSize = 18;
-            btnTeslimBaslangicSil.Location = new Point(841, 7);
+            btnTeslimBaslangicSil.Location = new Point(868, 7);
             btnTeslimBaslangicSil.Margin = new Padding(4, 3, 4, 3);
             btnTeslimBaslangicSil.Name = "btnTeslimBaslangicSil";
             btnTeslimBaslangicSil.Size = new Size(23, 23);
@@ -533,7 +564,7 @@
             btnMusteriAdıSil.IconColor = Color.WhiteSmoke;
             btnMusteriAdıSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnMusteriAdıSil.IconSize = 18;
-            btnMusteriAdıSil.Location = new Point(280, 37);
+            btnMusteriAdıSil.Location = new Point(283, 66);
             btnMusteriAdıSil.Margin = new Padding(4, 3, 4, 3);
             btnMusteriAdıSil.Name = "btnMusteriAdıSil";
             btnMusteriAdıSil.Size = new Size(23, 23);
@@ -542,6 +573,41 @@
             btnMusteriAdıSil.TextImageRelation = TextImageRelation.ImageBeforeText;
             btnMusteriAdıSil.UseVisualStyleBackColor = false;
             btnMusteriAdıSil.Click += btnMusteriAdıSil_Click;
+            // 
+            // txtIsEmriNoSil
+            // 
+            txtIsEmriNoSil.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            txtIsEmriNoSil.BackColor = Color.FromArgb(43, 84, 126);
+            txtIsEmriNoSil.Cursor = Cursors.Hand;
+            txtIsEmriNoSil.FlatAppearance.BorderSize = 0;
+            txtIsEmriNoSil.FlatStyle = FlatStyle.Flat;
+            txtIsEmriNoSil.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtIsEmriNoSil.ForeColor = Color.WhiteSmoke;
+            txtIsEmriNoSil.IconChar = FontAwesome.Sharp.IconChar.Xmark;
+            txtIsEmriNoSil.IconColor = Color.WhiteSmoke;
+            txtIsEmriNoSil.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            txtIsEmriNoSil.IconSize = 18;
+            txtIsEmriNoSil.Location = new Point(283, 9);
+            txtIsEmriNoSil.Margin = new Padding(4, 3, 4, 3);
+            txtIsEmriNoSil.Name = "txtIsEmriNoSil";
+            txtIsEmriNoSil.Size = new Size(23, 23);
+            txtIsEmriNoSil.TabIndex = 3;
+            txtIsEmriNoSil.TextAlign = ContentAlignment.MiddleRight;
+            txtIsEmriNoSil.TextImageRelation = TextImageRelation.ImageBeforeText;
+            txtIsEmriNoSil.UseVisualStyleBackColor = false;
+            txtIsEmriNoSil.Click += txtIsEmriNoSil_Click;
+            // 
+            // listİsEmriDurum
+            // 
+            listİsEmriDurum.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            listİsEmriDurum.FormattingEnabled = true;
+            listİsEmriDurum.Items.AddRange(new object[] { "Tezgah Seçiminde", "Onay Bekliyor", "Üretimde", "Hazır", "Tüm Durumlar" });
+            listİsEmriDurum.Location = new Point(452, 66);
+            listİsEmriDurum.Name = "listİsEmriDurum";
+            listİsEmriDurum.Size = new Size(155, 22);
+            listİsEmriDurum.TabIndex = 0;
+            listİsEmriDurum.SelectedValueChanged += listUrunAdi_SelectedValueChanged;
+            listİsEmriDurum.KeyPress += listİsEmriDurum_KeyPress;
             // 
             // btnTeslimBitis
             // 
@@ -552,7 +618,7 @@
             btnTeslimBitis.IconColor = Color.Black;
             btnTeslimBitis.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTeslimBitis.IconSize = 20;
-            btnTeslimBitis.Location = new Point(820, 37);
+            btnTeslimBitis.Location = new Point(847, 37);
             btnTeslimBitis.Name = "btnTeslimBitis";
             btnTeslimBitis.Size = new Size(20, 20);
             btnTeslimBitis.TabIndex = 4;
@@ -568,7 +634,7 @@
             btnTeslimBaslangic.IconColor = Color.Black;
             btnTeslimBaslangic.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTeslimBaslangic.IconSize = 20;
-            btnTeslimBaslangic.Location = new Point(820, 8);
+            btnTeslimBaslangic.Location = new Point(847, 8);
             btnTeslimBaslangic.Name = "btnTeslimBaslangic";
             btnTeslimBaslangic.Size = new Size(20, 20);
             btnTeslimBaslangic.TabIndex = 4;
@@ -594,7 +660,7 @@
             // txtTeslimBitis
             // 
             txtTeslimBitis.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtTeslimBitis.Location = new Point(732, 36);
+            txtTeslimBitis.Location = new Point(759, 36);
             txtTeslimBitis.Name = "txtTeslimBitis";
             txtTeslimBitis.Size = new Size(110, 22);
             txtTeslimBitis.TabIndex = 11;
@@ -610,7 +676,7 @@
             // txtTeslimBaslangic
             // 
             txtTeslimBaslangic.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtTeslimBaslangic.Location = new Point(732, 7);
+            txtTeslimBaslangic.Location = new Point(759, 7);
             txtTeslimBaslangic.Name = "txtTeslimBaslangic";
             txtTeslimBaslangic.Size = new Size(110, 22);
             txtTeslimBaslangic.TabIndex = 10;
@@ -618,10 +684,18 @@
             // txtMusteriAdiAra
             // 
             txtMusteriAdiAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            txtMusteriAdiAra.Location = new Point(81, 37);
+            txtMusteriAdiAra.Location = new Point(84, 66);
             txtMusteriAdiAra.Name = "txtMusteriAdiAra";
             txtMusteriAdiAra.Size = new Size(200, 22);
             txtMusteriAdiAra.TabIndex = 7;
+            // 
+            // txtIsEmriNoAra
+            // 
+            txtIsEmriNoAra.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            txtIsEmriNoAra.Location = new Point(84, 9);
+            txtIsEmriNoAra.Name = "txtIsEmriNoAra";
+            txtIsEmriNoAra.Size = new Size(200, 22);
+            txtIsEmriNoAra.TabIndex = 7;
             // 
             // lblKayitSayisi
             // 
@@ -629,7 +703,7 @@
             lblKayitSayisi.AutoSize = true;
             lblKayitSayisi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblKayitSayisi.ForeColor = Color.Gainsboro;
-            lblKayitSayisi.Location = new Point(1013, 12);
+            lblKayitSayisi.Location = new Point(981, 11);
             lblKayitSayisi.Margin = new Padding(4, 0, 4, 0);
             lblKayitSayisi.Name = "lblKayitSayisi";
             lblKayitSayisi.Size = new Size(69, 14);
@@ -641,7 +715,7 @@
             label11.AutoSize = true;
             label11.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label11.ForeColor = Color.Gainsboro;
-            label11.Location = new Point(622, 40);
+            label11.Location = new Point(649, 40);
             label11.Margin = new Padding(4, 0, 4, 0);
             label11.Name = "label11";
             label11.Size = new Size(103, 14);
@@ -653,12 +727,24 @@
             label9.AutoSize = true;
             label9.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label9.ForeColor = Color.Gainsboro;
-            label9.Location = new Point(595, 11);
+            label9.Location = new Point(622, 11);
             label9.Margin = new Padding(4, 0, 4, 0);
             label9.Name = "label9";
             label9.Size = new Size(130, 14);
             label9.TabIndex = 2;
             label9.Text = "Teslim Başlangıç Tarihi:";
+            // 
+            // label17
+            // 
+            label17.AutoSize = true;
+            label17.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label17.ForeColor = Color.Gainsboro;
+            label17.Location = new Point(354, 69);
+            label17.Margin = new Padding(4, 0, 4, 0);
+            label17.Name = "label17";
+            label17.Size = new Size(94, 14);
+            label17.TabIndex = 2;
+            label17.Text = "İş Emri Durumu:";
             // 
             // label10
             // 
@@ -677,12 +763,24 @@
             label13.AutoSize = true;
             label13.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             label13.ForeColor = Color.Gainsboro;
-            label13.Location = new Point(3, 41);
+            label13.Location = new Point(6, 70);
             label13.Margin = new Padding(4, 0, 4, 0);
             label13.Name = "label13";
             label13.Size = new Size(71, 14);
             label13.TabIndex = 2;
             label13.Text = "Müşteri Adı:";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label16.ForeColor = Color.Gainsboro;
+            label16.Location = new Point(11, 13);
+            label16.Margin = new Padding(4, 0, 4, 0);
+            label16.Name = "label16";
+            label16.Size = new Size(66, 14);
+            label16.TabIndex = 2;
+            label16.Text = "İş Emri No:";
             // 
             // panel1
             // 
@@ -697,6 +795,7 @@
             // groupBox1
             // 
             groupBox1.BackColor = Color.FromArgb(175, 174, 209);
+            groupBox1.Controls.Add(btnOncekiIsEmriNo);
             groupBox1.Controls.Add(btnOpenFormCustomer);
             groupBox1.Controls.Add(btnOpenFormProduct);
             groupBox1.Controls.Add(checkAcil);
@@ -729,6 +828,26 @@
             groupBox1.TabIndex = 5;
             groupBox1.TabStop = false;
             groupBox1.Text = "İş Emri Tanımlama";
+            // 
+            // btnOncekiIsEmriNo
+            // 
+            btnOncekiIsEmriNo.BackColor = Color.DarkSeaGreen;
+            btnOncekiIsEmriNo.BackgroundImageLayout = ImageLayout.Center;
+            btnOncekiIsEmriNo.Enabled = false;
+            btnOncekiIsEmriNo.FlatStyle = FlatStyle.Flat;
+            btnOncekiIsEmriNo.Font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btnOncekiIsEmriNo.IconChar = FontAwesome.Sharp.IconChar.BackwardStep;
+            btnOncekiIsEmriNo.IconColor = Color.Black;
+            btnOncekiIsEmriNo.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnOncekiIsEmriNo.IconSize = 16;
+            btnOncekiIsEmriNo.Location = new Point(158, 85);
+            btnOncekiIsEmriNo.Name = "btnOncekiIsEmriNo";
+            btnOncekiIsEmriNo.Size = new Size(29, 22);
+            btnOncekiIsEmriNo.TabIndex = 10;
+            btnOncekiIsEmriNo.TextAlign = ContentAlignment.MiddleLeft;
+            btnOncekiIsEmriNo.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnOncekiIsEmriNo.UseVisualStyleBackColor = false;
+            btnOncekiIsEmriNo.Click += btnOncekiIsEmriNo_Click;
             // 
             // btnOpenFormCustomer
             // 
@@ -824,7 +943,7 @@
             txtIsEmriNo.Margin = new Padding(4, 3, 4, 3);
             txtIsEmriNo.Name = "txtIsEmriNo";
             txtIsEmriNo.ReadOnly = true;
-            txtIsEmriNo.Size = new Size(171, 22);
+            txtIsEmriNo.Size = new Size(135, 22);
             txtIsEmriNo.TabIndex = 6;
             // 
             // txtSiparisTarihi
@@ -832,11 +951,11 @@
             txtSiparisTarihi.BackColor = Color.LightYellow;
             txtSiparisTarihi.Enabled = false;
             txtSiparisTarihi.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            txtSiparisTarihi.Location = new Point(199, 85);
+            txtSiparisTarihi.Location = new Point(205, 85);
             txtSiparisTarihi.Margin = new Padding(4, 3, 4, 3);
             txtSiparisTarihi.Name = "txtSiparisTarihi";
             txtSiparisTarihi.ReadOnly = true;
-            txtSiparisTarihi.Size = new Size(126, 22);
+            txtSiparisTarihi.Size = new Size(120, 22);
             txtSiparisTarihi.TabIndex = 6;
             // 
             // txtProgramAdi
@@ -870,7 +989,7 @@
             txtAciklama.Location = new Point(332, 185);
             txtAciklama.Margin = new Padding(4, 3, 4, 3);
             txtAciklama.Name = "txtAciklama";
-            txtAciklama.Size = new Size(279, 22);
+            txtAciklama.Size = new Size(566, 22);
             txtAciklama.TabIndex = 6;
             // 
             // label5
@@ -921,7 +1040,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label3.Location = new Point(199, 68);
+            label3.Location = new Point(205, 68);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(76, 14);
@@ -965,7 +1084,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(332, 68);
+            label2.Location = new Point(330, 69);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(74, 14);
@@ -992,7 +1111,9 @@
             MinimumSize = new Size(1150, 650);
             Name = "FrmOrder";
             Text = "Siparişler";
+            Load += FrmOrder_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            contextMenuStrip1.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
             grpboxUrunAra.ResumeLayout(false);
@@ -1065,5 +1186,13 @@
         private Label label14;
         private TextBox txtIsEmriNo;
         private Label label15;
+        private FontAwesome.Sharp.IconButton txtIsEmriNoSil;
+        private TextBox txtIsEmriNoAra;
+        private Label label16;
+        private FontAwesome.Sharp.IconButton btnOncekiIsEmriNo;
+        private ComboBox listİsEmriDurum;
+        private Label label17;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem seçiliÜrünİçinİşEmriOluşturToolStripMenuItem;
     }
 }

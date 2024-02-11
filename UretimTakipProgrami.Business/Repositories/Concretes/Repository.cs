@@ -66,12 +66,12 @@ namespace UretimTakipProgrami.Business.Repositories.Concretes
 
         public async Task<bool> RemoveAsync(string id)
         {
-            var entityToRemove = await Table.SingleOrDefaultAsync(p => p.Id == Guid.Parse(id));
+            var entityToRemove = Table.SingleOrDefault(p => p.Id == Guid.Parse(id));
 
             if (entityToRemove != null)
             {
                 entityToRemove.IsDeleted = true;
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return true;
             }
 

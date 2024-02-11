@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Windows.Controls;
 using System.Windows.Media;
 using UretimTakipProgrami;
 using UretimTakipProgrami.Business.DependencyResolver;
+using UretimTakipProgrami.Business.Repositories.Abstractions;
 using UretimTakipProgrami.Business.Repositories.Concretes;
+using UretimTakipProgrami.Business.Validators;
 using UretimTakipProgrami.Entities;
 using UretimTakipProgrami.Forms;
 using UretimTakipProgrami.Messages;
@@ -19,6 +22,7 @@ namespace UretimTakip.Forms
 
         private int selectedIndex = -1;
         private int monthCalendarNo = 0;
+        private string lastOrderCode = "";
 
         private bool editMode = false;
 
@@ -79,13 +83,14 @@ namespace UretimTakip.Forms
                 dataGridView1.Columns[8].HeaderText = "Durum";
                 dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataGridView1.Columns[9].HeaderText = "Açıklama";
-                dataGridView1.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+                dataGridView1.Columns[9].Visible = false; // Açıklama
                 dataGridView1.Columns[10].Visible = false;
                 dataGridView1.Columns[11].Visible = false;
                 dataGridView1.Columns[12].Visible = false;
                 dataGridView1.Columns[13].Visible = false;
+                dataGridView1.Columns[14].Visible = false;
+                dataGridView1.Columns[15].Visible = false;
+                dataGridView1.Columns[16].Visible = false;
 
                 int acilDurumSutunu = 7;
                 int durumSutunu = 8; // Durum sütununun indeksi
@@ -145,8 +150,10 @@ namespace UretimTakip.Forms
             DateTime? isEmriBitis = null;
             DateTime? teslimBaslangic = null;
             DateTime? teslimBitis = null;
+            string arananIsEmriNo = txtIsEmriNoAra.Text;
             string arananMusteri = txtMusteriAdiAra.Text;
             string arananUrun = txtUrunAdiAra.Text;
+            int uretimDurumu = listİsEmriDurum.SelectedIndex;
 
             if (DateTime.TryParse(txtIsEmriBaslangic.Text, out var parsedIsemriBaslangic))
             {
@@ -184,7 +191,10 @@ namespace UretimTakip.Forms
                     order.Id, // 10
                     order.IsUrgent, // 11
                     materialName = order.Product.Material.Name, // 12 
-                    programName = order.Product.MachineProgram.Name // 13 
+                    programName = order.Product.MachineProgram.Name, // 13 
+                    order.IsWaiting,
+                    order.IsProduction,
+                    order.IsReady
                 })
                 .Where(order =>
                     (checkAcilAra.Checked ? order.IsUrgent : true) &&
@@ -192,6 +202,12 @@ namespace UretimTakip.Forms
                     (!isEmriBitis.HasValue || order.orderCreatedDate.Date <= isEmriBitis) &&
                     (!teslimBaslangic.HasValue || order.deliveryDate.Date >= teslimBaslangic) &&
                     (!teslimBitis.HasValue || order.deliveryDate.Date <= teslimBitis) &&
+                    (uretimDurumu == 0 ? order.IsWaiting && !order.IsProduction && !order.IsReady :
+                     uretimDurumu == 1 ? !order.IsWaiting && !order.IsProduction && !order.IsReady :
+                     uretimDurumu == 2 ? !order.IsWaiting && order.IsProduction && !order.IsReady :
+                     uretimDurumu == 3 ? order.IsReady :
+                     order.IsWaiting || order.IsProduction || order.IsReady) &&
+                    (string.IsNullOrEmpty(arananIsEmriNo) || order.OrderCode == arananIsEmriNo) &&
                     (string.IsNullOrEmpty(arananMusteri) || order.customerName.ToLower().Contains(arananMusteri.ToLower())) &&
                     (string.IsNullOrEmpty(arananUrun) || order.productName.ToLower().Contains(arananUrun.ToLower())))
                 .OrderBy(order => order.orderCreatedDate)
@@ -200,10 +216,12 @@ namespace UretimTakip.Forms
             if (orderList.Count > 0)
             {
                 dataGridView1.DataSource = orderList.ToList();
+                contextMenuStrip1.Items[0].Enabled = true;
                 SetDataGridSettings();
             }
             else
             {
+                contextMenuStrip1.Items[0].Enabled = true;
                 dataGridView1.DataSource = null;
             }
 
@@ -219,6 +237,11 @@ namespace UretimTakip.Forms
             btnIptal.Enabled = false;
             btnOpenFormCustomer.Enabled = false;
             btnOpenFormProduct.Enabled = false;
+
+            if (editMode)
+                btnOncekiIsEmriNo.Enabled = false;
+            else
+                btnOncekiIsEmriNo.Enabled = true;
 
             listUrunAdi.Enabled = false;
             listMusteriAdi.Enabled = false;
@@ -243,6 +266,11 @@ namespace UretimTakip.Forms
             btnIptal.Enabled = true;
             btnOpenFormCustomer.Enabled = true;
             btnOpenFormProduct.Enabled = true;
+
+            if (editMode)
+                btnOncekiIsEmriNo.Enabled = false;
+            else
+                btnOncekiIsEmriNo.Enabled = true;
 
             listUrunAdi.Enabled = true;
             listMusteriAdi.Enabled = true;
@@ -298,60 +326,95 @@ namespace UretimTakip.Forms
             {
                 bool editStatus = false;
 
-                if (!editMode)
+                ProductValidator productValidation;
+                object selectedProductNameValue = listUrunAdi.SelectedValue;
+                object selectedCustomerValue = listMusteriAdi.SelectedValue;
+
+                bool isValidProductName = selectedProductNameValue != null && !string.IsNullOrEmpty(listUrunAdi.ToString());
+                bool isValidCustomer = selectedCustomerValue != null && !string.IsNullOrEmpty(listMusteriAdi.ToString());
+
+                if (!isValidProductName)
                 {
-                    await _orderRepository.AddAsync(new()
-                    {
-                        OrderCode = txtIsEmriNo.Text,
-                        ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString()),
-                        CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString()),
-                        Quantity = Convert.ToInt32(txtMiktar.Value),
-                        DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date,
-                        Description = txtAciklama.Text.ToUpper(),
-                        IsUrgent = checkAcil.Checked ? true : false
-                    });
-
-                    _appMessage.SaveSuccessMessage();
+                    MessageBox.Show("Geçersiz Ürün Adı", "Ürün Adı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    listUrunAdi.Focus();
                 }
-
+                else if (!isValidCustomer)
+                {
+                    MessageBox.Show("Geçersiz Müşteri Adı", "Müşteri Adı Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    listMusteriAdi.Focus();
+                }
                 else
                 {
-                    try
+                    if (_productRepository.GetById(listUrunAdi.SelectedValue.ToString()) == null)
                     {
-                        var orderId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[10].Value.ToString());
-                        var order = _orderRepository.GetWhere(o => o.Id == orderId).FirstOrDefault();
-
-                        order.CreatedDate = order.CreatedDate;
-                        order.OrderCode = txtIsEmriNo.Text;
-                        order.Quantity = Convert.ToInt32(txtMiktar.Value);
-                        order.Description = txtAciklama.Text.ToUpper();
-                        order.DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date;
-                        order.ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString());
-                        order.CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString());
-                        order.IsUrgent = checkAcil.Checked ? true : false;
-
-                        await _orderRepository.SaveAsync();
-
-                        txtUrunAdiAra.Text = _productRepository.GetWhere(p => p.Id == order.ProductId).FirstOrDefault().Name;
-                        txtMusteriAdiAra.Text = _customerRepository.GetWhere(c => c.Id == order.CustomerId).FirstOrDefault().Name;
-                        GetOrderList();
-                        SetDataGridSettings();
-
-                        selectedIndex = 0;
-                        dataGridView1.Rows[selectedIndex].Selected = true;
-                        DataGridTextAktar();
-
-                        _appMessage.UpdateSuccessMessage();
+                        MessageBox.Show("Geçerli bir ürün adı seçiniz.", "Ürün Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        listUrunAdi.Focus();
+                        return;
                     }
-                    catch (Exception err)
+                    else if (_customerRepository.GetById(listMusteriAdi.SelectedValue.ToString()) == null)
                     {
-                        MessageBox.Show(err.ToString());
+                        MessageBox.Show("Geçerli bir müşteri adı seçiniz.", "Müşteri Seçim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        listMusteriAdi.Focus();
+                        return;
+                    }
+                    else
+                    {
+                        if (!editMode)
+                        {
+                            await _orderRepository.AddAsync(new()
+                            {
+                                OrderCode = txtIsEmriNo.Text,
+                                ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString()),
+                                CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString()),
+                                Quantity = Convert.ToInt32(txtMiktar.Value),
+                                DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date,
+                                Description = txtAciklama.Text.ToUpper(),
+                                IsUrgent = checkAcil.Checked ? true : false
+                            });
+
+                            await _orderRepository.SaveAsync();
+                            _appMessage.SaveSuccessMessage();
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var orderId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[10].Value.ToString());
+                                var order = _orderRepository.GetWhere(o => o.Id == orderId).FirstOrDefault();
+
+                                order.CreatedDate = order.CreatedDate;
+                                order.OrderCode = txtIsEmriNo.Text;
+                                order.Quantity = Convert.ToInt32(txtMiktar.Value);
+                                order.Description = txtAciklama.Text.ToUpper();
+                                order.DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date;
+                                order.ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString());
+                                order.CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString());
+                                order.IsUrgent = checkAcil.Checked ? true : false;
+
+                                _orderRepository.Save();
+
+                                txtUrunAdiAra.Text = _productRepository.GetWhere(p => p.Id == order.ProductId).FirstOrDefault().Name;
+                                txtMusteriAdiAra.Text = _customerRepository.GetWhere(c => c.Id == order.CustomerId).FirstOrDefault().Name;
+                                GetOrderList();
+                                SetDataGridSettings();
+
+                                if (dataGridView1.Rows.Count > 0)
+                                {
+                                    selectedIndex = 0;
+                                    dataGridView1.Rows[selectedIndex].Selected = true;
+                                    DataGridTextAktar();
+                                }
+
+                                _appMessage.UpdateSuccessMessage();
+                            }
+                            catch (Exception err)
+                            {
+                                MessageBox.Show(err.ToString());
+                            }
+                        }
+                        EnableButtonAndText();
                     }
                 }
-
-
-                await _orderRepository.SaveAsync();
-                EnableButtonAndText();
             }
             catch (Exception err)
             {
@@ -367,54 +430,9 @@ namespace UretimTakip.Forms
 
             txtSiparisTarihi.Text = DateTime.Now.ToShortDateString();
 
-            try
-            {
-                var emptyItem = new
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "--Seçiniz--"
-                };
-
-                var productList = _productRepository.GetAll()
-                    .Select(product => new
-                    {
-                        product.Id,
-                        product.Name
-                    })
-                    .ToList();
-
-                productList.Insert(0, emptyItem);
-
-                var customerList = _customerRepository.GetAll()
-                    .Select(customer => new
-                    {
-                        customer.Id,
-                        customer.Name
-                    })
-                    .ToList();
-
-                customerList.Insert(0, emptyItem);
-
-                listUrunAdi.DataSource = productList;
-                listUrunAdi.DisplayMember = "Name";
-                listUrunAdi.ValueMember = "Id";
-
-                listUrunAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                listUrunAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
-
-                listMusteriAdi.DataSource = customerList;
-                listMusteriAdi.DisplayMember = "Name";
-                listMusteriAdi.ValueMember = "Id";
-
-                listMusteriAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                listMusteriAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show($"Error: {err.ToString()}");
-            }
-
-
+            GetProductList();
+            GetCustomerList();
+            dataGridView1.DataSource = null;
         }
 
         private void btnIptal_Click(object sender, EventArgs e)
@@ -530,76 +548,82 @@ namespace UretimTakip.Forms
 
         private void btnDuzenle_Click(object sender, EventArgs e)
         {
-            object status = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
-            bool statusReady = status != null && status.ToString() == Durumlar.Hazir;
-
-            if (!statusReady)
+            if (dataGridView1.Rows.Count > 0)
             {
-                try
+                object status = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
+                bool statusReady = status != null && status.ToString() == Durumlar.Hazir;
+
+                if (!statusReady)
                 {
-                    if (dataGridView1.ColumnCount > 0 && selectedIndex > -1)
+                    try
                     {
-                        editMode = true;
-                        DisableButtonAndText();
-
-                        var productList = _productRepository.GetAll()
-                        .Select(product => new
+                        if (dataGridView1.ColumnCount > 0 && selectedIndex > -1)
                         {
-                            product.Id,
-                            product.Name
-                        })
-                        .ToList();
+                            editMode = true;
+                            DisableButtonAndText();
 
-                        var customerList = _customerRepository.GetAll()
-                            .Select(customer => new
+                            var productList = _productRepository.GetAll()
+                            .Select(product => new
                             {
-                                customer.Id,
-                                customer.Name
+                                product.Id,
+                                product.Name
                             })
                             .ToList();
 
-                        listUrunAdi.DataSource = productList;
-                        listUrunAdi.DisplayMember = "Name";
-                        listUrunAdi.ValueMember = "Id";
+                            var customerList = _customerRepository.GetAll()
+                                .Select(customer => new
+                                {
+                                    customer.Id,
+                                    customer.Name
+                                })
+                                .ToList();
 
-                        listUrunAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                        listUrunAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
+                            listUrunAdi.DataSource = productList;
+                            listUrunAdi.DisplayMember = "Name";
+                            listUrunAdi.ValueMember = "Id";
 
-                        listMusteriAdi.DataSource = customerList;
-                        listMusteriAdi.DisplayMember = "Name";
-                        listMusteriAdi.ValueMember = "Id";
+                            listUrunAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                            listUrunAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
 
-                        listMusteriAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                        listMusteriAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
+                            listMusteriAdi.DataSource = customerList;
+                            listMusteriAdi.DisplayMember = "Name";
+                            listMusteriAdi.ValueMember = "Id";
 
-                        foreach (var item in listUrunAdi.Items)
-                        {
-                            if (item.ToString().Contains(dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString())) // ProductName
+                            listMusteriAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                            listMusteriAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
+
+                            foreach (var item in listUrunAdi.Items)
                             {
-                                listUrunAdi.SelectedItem = item;
-                                break;
+                                if (item.ToString().Contains(dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString())) // ProductName
+                                {
+                                    listUrunAdi.SelectedItem = item;
+                                    break;
+                                }
+                            }
+
+                            foreach (var item in listMusteriAdi.Items)
+                            {
+                                if (item.ToString().Contains(dataGridView1.Rows[selectedIndex].Cells[3].Value.ToString())) // CustomerName
+                                {
+                                    listMusteriAdi.SelectedItem = item;
+                                    break;
+                                }
                             }
                         }
-
-                        foreach (var item in listMusteriAdi.Items)
-                        {
-                            if (item.ToString().Contains(dataGridView1.Rows[selectedIndex].Cells[3].Value.ToString())) // CustomerName
-                            {
-                                listMusteriAdi.SelectedItem = item;
-                                break;
-                            }
-                        }
+                        else
+                            MessageBox.Show("Güncellenecek kaydı seçin.", "Güncelleme Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
-                    else
-                        MessageBox.Show("Güncellenecek kaydı seçin.", "Güncelleme Seçimi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    catch (Exception err)
+                    {
+                        MessageBox.Show($"Error: {err.ToString()}");
+                    }
                 }
-                catch (Exception err)
-                {
-                    MessageBox.Show($"Error: {err.ToString()}");
-                }
+                else
+                    MessageBox.Show("Hazır durumdaki bir iş emrini düzenleyemezsiniz.", "Bilgilendirme", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
-                MessageBox.Show("Hazır durumdaki bir iş emrini düzenleyemezsiniz.","Bilgilendirme",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("Güncelleme yapılacak kaydı seçiniz.", "İş Emri Güncelle", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
 
         private void btnOpenFormProduct_Click(object sender, EventArgs e)
@@ -611,6 +635,10 @@ namespace UretimTakip.Forms
                 button1.Visible = true;
 
             frmProduct.ShowDialog();
+
+            GetProductList();
+            if (!string.IsNullOrEmpty(frmProduct.selectedProductName))
+                listUrunAdi.Text = frmProduct.selectedProductName;
         }
 
         private void btnOpenFormCustomer_Click(object sender, EventArgs e)
@@ -622,6 +650,78 @@ namespace UretimTakip.Forms
                 button1.Visible = true;
 
             frmCustomer.ShowDialog();
+
+            GetCustomerList();
+            if (!string.IsNullOrEmpty(frmCustomer.selectedCustomerName))
+                listMusteriAdi.Text = frmCustomer.selectedCustomerName;
+        }
+
+        private void GetProductList()
+        {
+            try
+            {
+                var emptyItem = new
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "--Seçiniz--"
+                };
+
+                var productList = _productRepository.GetAll()
+                    .Select(product => new
+                    {
+                        product.Id,
+                        product.Name
+                    })
+                    .OrderBy(x => x.Name)
+                    .ToList();
+
+                productList.Insert(0, emptyItem);
+
+                listUrunAdi.DataSource = productList;
+                listUrunAdi.DisplayMember = "Name";
+                listUrunAdi.ValueMember = "Id";
+
+                listUrunAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                listUrunAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show($"Error: {err.ToString()}");
+            }
+        }
+
+        private void GetCustomerList()
+        {
+            try
+            {
+                var emptyItem = new
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "--Seçiniz--"
+                };
+
+                var customerList = _customerRepository.GetAll()
+                    .Select(customer => new
+                    {
+                        customer.Id,
+                        customer.Name
+                    })
+                    .OrderBy(x => x.Name)
+                    .ToList();
+
+                customerList.Insert(0, emptyItem);
+
+                listMusteriAdi.DataSource = customerList;
+                listMusteriAdi.DisplayMember = "Name";
+                listMusteriAdi.ValueMember = "Id";
+
+                listMusteriAdi.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                listMusteriAdi.AutoCompleteSource = AutoCompleteSource.ListItems;
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show($"Error: {err.ToString()}");
+            }
         }
 
         private void listUrunAdi_SelectedValueChanged(object sender, EventArgs e)
@@ -651,18 +751,18 @@ namespace UretimTakip.Forms
 
         public string GenerateOrderCode(int currentYear)
         {
-            string lastProductCode = GetLastProductCodeFromDatabase();
+            lastOrderCode = GetLastProductCodeFromDatabase();
 
-            if (string.IsNullOrEmpty(lastProductCode) || !lastProductCode.StartsWith(currentYear.ToString()))
+            if (string.IsNullOrEmpty(lastOrderCode) || !lastOrderCode.StartsWith(currentYear.ToString()))
             {
-                return currentYear.ToString() + "00001";
+                return currentYear.ToString() + "000001";
             }
             else
             {
-                int lastCodeNumber = int.Parse(lastProductCode.Substring(4));
+                int lastCodeNumber = int.Parse(lastOrderCode.Substring(4));
                 int newCodeNumber = lastCodeNumber + 1;
 
-                return currentYear.ToString() + newCodeNumber.ToString("D5");
+                return currentYear.ToString() + newCodeNumber.ToString("D6");
             }
         }
 
@@ -674,6 +774,54 @@ namespace UretimTakip.Forms
                 .FirstOrDefault();
 
             return lastOrder;
+        }
+
+        private void txtIsEmriNoSil_Click(object sender, EventArgs e)
+        {
+            txtIsEmriNoAra.Clear();
+        }
+
+        private void btnOncekiIsEmriNo_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(lastOrderCode))
+                txtIsEmriNo.Text = lastOrderCode;
+            else
+                GenerateOrderCode(DateTime.Now.Year);
+        }
+
+        private void listİsEmriDurum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void FrmOrder_Load(object sender, EventArgs e)
+        {
+            listİsEmriDurum.SelectedIndex = 0;            
+        }
+
+        private void seçiliÜrünİçinİşEmriOluşturToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.RowCount > 0)
+            {
+                var urunAdi = dataGridView1.Rows[selectedIndex].Cells[2].Value.ToString();
+                var musteriAdi = dataGridView1.Rows[selectedIndex].Cells[3].Value.ToString();
+                btnYeni_Click(sender, e);
+                listUrunAdi.Text = urunAdi;
+                listMusteriAdi.Text = musteriAdi;
+            }
+        }
+
+        private void dataGridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)//farenin sağ tuşuna basılmışsa
+            {
+                selectedIndex = dataGridView1.HitTest(e.X, e.Y).RowIndex;
+                if (selectedIndex > -1)
+                {
+                    dataGridView1.Rows[selectedIndex].Selected = true;//bu tıkladığımız alanı seçtiriyoruz
+                    DataGridTextAktar();
+                }
+            }
         }
     }
 }

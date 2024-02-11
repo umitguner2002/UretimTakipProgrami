@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>ark_productbox_arc_6255.ico</ApplicationIcon>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
@@ -20,6 +20,10 @@
     <None Remove="ark_productbox_arc_6255.ico" />
     <None Remove="spur-gear-icon.ico" />
     <None Remove="spur-gear-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="app.ico" />
   </ItemGroup>
 
   <ItemGroup>

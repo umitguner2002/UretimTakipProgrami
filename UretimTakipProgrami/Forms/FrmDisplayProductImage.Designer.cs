@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDisplayProductImage));
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             panel2 = new Panel();
@@ -39,10 +40,13 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = Color.FromArgb(115, 147, 179);
+            pictureBox1.BorderStyle = BorderStyle.Fixed3D;
             pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Location = new Point(0, 0);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(798, 448);
+            pictureBox1.Padding = new Padding(10);
+            pictureBox1.Size = new Size(932, 520);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
@@ -53,7 +57,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(800, 450);
+            panel1.Size = new Size(934, 522);
             panel1.TabIndex = 1;
             // 
             // panel2
@@ -62,19 +66,23 @@
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(798, 448);
+            panel2.Size = new Size(932, 520);
             panel2.TabIndex = 1;
             // 
             // FrmDisplayProductImage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            AutoScroll = true;
+            ClientSize = new Size(934, 522);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MinimizeBox = false;
+            MinimumSize = new Size(400, 300);
             Name = "FrmDisplayProductImage";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmDisplayProductImage";
+            Load += FrmDisplayProductImage_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);

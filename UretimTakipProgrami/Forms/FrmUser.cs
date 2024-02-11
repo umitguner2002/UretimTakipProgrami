@@ -135,10 +135,13 @@ namespace UretimTakipProgrami.Forms
             txtSifre.Clear();
             txtEmail.Clear();
             txtTelefon.Clear();
+            txtTelefon.Mask = "";
             txtSifre.Clear();
 
             txtAdiSoyadi.Focus();
 
+            checkAdmin.Checked = false;
+            checkManager.Checked = false;
             checkActive.Checked = true;
             checkOperator.Checked = true;
         }
@@ -153,88 +156,95 @@ namespace UretimTakipProgrami.Forms
 
         private async void btnKaydet_Click(object sender, EventArgs e)
         {
-            UserValidator userValidation;
-
-            var u = new User
+            if (!checkAdmin.Checked && !checkManager.Checked && !checkOperator.Checked)
             {
-                Name = txtAdiSoyadi.Text.ToUpper(),
-                Username = txtKullaniciAdi.Text,
-                Email = txtEmail.Text,
-                Password = txtSifre.Text
-            };
-
-            if (!editMode)
-            {
-                userValidation = new UserValidator();
+                MessageBox.Show("En az bir yetki türü seçmeniz gerekiyor.", "Yetkilendirme Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                string editUserId = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
-                userValidation = new UserValidator(editUserId, u.Password);
-            }
+                UserValidator userValidation;
 
-            ValidationResult result = userValidation.Validate(u);
-            IList<ValidationFailure> errors = result.Errors;
-
-            if (!result.IsValid)
-            {
-                foreach (ValidationFailure failure in errors)
-                {
-                    MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-            var phoneNumber = txtTelefon.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
-            if (txtTelefon.Text != "")
-                phoneNumber = phoneNumber.Substring(1);
-
-            if (!editMode)
-            {
-                var newUser = new User
+                var u = new User
                 {
                     Name = txtAdiSoyadi.Text.ToUpper(),
                     Username = txtKullaniciAdi.Text,
-                    Password = SHA256Hash(txtSifre.Text),
-                    Phone = phoneNumber,
                     Email = txtEmail.Text,
-                    IsAdmin = checkAdmin.Checked,
-                    IsManager = checkManager.Checked,
-                    IsOperator = checkOperator.Checked,
-                    IsActive = checkActive.Checked
+                    Password = txtSifre.Text
                 };
 
-                _userRepository.AddAsync(newUser);
-                await _userRepository.SaveAsync();
+                if (!editMode)
+                {
+                    userValidation = new UserValidator();
+                }
+                else
+                {
+                    string editUserId = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
+                    userValidation = new UserValidator(editUserId, u.Password);
+                }
 
-                _appMessage.SaveSuccessMessage();
+                ValidationResult result = userValidation.Validate(u);
+                IList<ValidationFailure> errors = result.Errors;
+
+                if (!result.IsValid)
+                {
+                    foreach (ValidationFailure failure in errors)
+                    {
+                        MessageBox.Show(failure.ErrorMessage, "Hata Mesajı", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                var phoneNumber = txtTelefon.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
+                if (txtTelefon.Text != "")
+                    phoneNumber = phoneNumber.Substring(1);
+
+                if (!editMode)
+                {
+                    var newUser = new User
+                    {
+                        Name = txtAdiSoyadi.Text.ToUpper(),
+                        Username = txtKullaniciAdi.Text,
+                        Password = SHA256Hash(txtSifre.Text),
+                        Phone = phoneNumber,
+                        Email = txtEmail.Text,
+                        IsAdmin = checkAdmin.Checked,
+                        IsManager = checkManager.Checked,
+                        IsOperator = checkOperator.Checked,
+                        IsActive = checkActive.Checked
+                    };
+
+                    _userRepository.AddAsync(newUser);
+                    await _userRepository.SaveAsync();
+
+                    _appMessage.SaveSuccessMessage();
+                }
+                else
+                {
+                    var userId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString());
+                    var user = _userRepository.GetWhere(u => u.Id == userId).FirstOrDefault();
+
+                    user.CreatedDate = user.CreatedDate;
+                    user.Name = txtAdiSoyadi.Text.ToUpper();
+                    user.Username = txtKullaniciAdi.Text;
+                    user.Password = !string.IsNullOrEmpty(txtSifre.Text) ? SHA256Hash(txtSifre.Text) : user.Password;
+                    user.Phone = phoneNumber;
+                    user.Email = txtEmail.Text;
+                    user.IsAdmin = checkAdmin.Checked;
+                    user.IsManager = checkManager.Checked;
+                    user.IsOperator = checkOperator.Checked;
+                    user.IsActive = checkActive.Checked;
+
+                    await _userRepository.SaveAsync();
+                    _appMessage.UpdateSuccessMessage();
+
+                }
+
+                EnableButtonAndText();
+                editMode = false;
+                txtSifre.Clear();
+
+                GetUserList();
             }
-            else
-            {
-                var userId = Guid.Parse(dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString());
-                var user = _userRepository.GetWhere(u => u.Id == userId).FirstOrDefault();
-
-                user.CreatedDate = user.CreatedDate;
-                user.Name = txtAdiSoyadi.Text.ToUpper();
-                user.Username = txtKullaniciAdi.Text;
-                user.Password = !string.IsNullOrEmpty(txtSifre.Text) ? SHA256Hash(txtSifre.Text) : user.Password;
-                user.Phone = phoneNumber;
-                user.Email = txtEmail.Text;
-                user.IsAdmin = checkAdmin.Checked;
-                user.IsManager = checkManager.Checked;
-                user.IsOperator = checkOperator.Checked;
-                user.IsActive = checkActive.Checked;
-
-                await _userRepository.SaveAsync();
-                _appMessage.UpdateSuccessMessage();
-
-            }
-
-            EnableButtonAndText();
-            editMode = false;
-            txtSifre.Clear();
-
-            GetUserList();
         }
 
         public string SHA256Hash(string text)
@@ -335,9 +345,18 @@ namespace UretimTakipProgrami.Forms
             SetPhoneNumber(txtTelefon);
         }
 
-        private void btnSil_Click(object sender, EventArgs e)
+        private async void btnSil_Click(object sender, EventArgs e)
         {
+            var result = MessageBox.Show("Bu kullanıcıyı silmek istedğinize emin misiniz?", "Kullanıcı Sil", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
+            if (result == DialogResult.Yes)
+            {
+                string deletingId = dataGridView1.Rows[selectedIndex].Cells[8].Value.ToString();
+
+                _userRepository.RemoveAsync(deletingId);
+
+                GetUserList();
+            }
         }
     }
 }

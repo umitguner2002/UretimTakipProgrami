@@ -25,11 +25,9 @@
             btnUrun = new FontAwesome.Sharp.IconButton();
             btnAnaEkran = new FontAwesome.Sharp.IconButton();
             pnlLogo = new Panel();
-            pictureBox1 = new PictureBox();
-            label1 = new Label();
+            pictureBox2 = new PictureBox();
             pnlContent = new Panel();
             pnlDesktop = new Panel();
-            button1 = new Button();
             panel3 = new Panel();
             label10 = new Label();
             lblNumberOfWaitingSelectMachine = new Label();
@@ -67,7 +65,7 @@
             btnTamEkran = new FontAwesome.Sharp.IconButton();
             pnlSideBar.SuspendLayout();
             pnlLogo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             pnlContent.SuspendLayout();
             pnlDesktop.SuspendLayout();
             panel3.SuspendLayout();
@@ -112,7 +110,7 @@
             btnKullanici.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnKullanici.IconSize = 32;
             btnKullanici.ImageAlign = ContentAlignment.MiddleLeft;
-            btnKullanici.Location = new Point(0, 461);
+            btnKullanici.Location = new Point(0, 456);
             btnKullanici.Margin = new Padding(4, 3, 4, 3);
             btnKullanici.Name = "btnKullanici";
             btnKullanici.Padding = new Padding(12, 0, 12, 0);
@@ -136,7 +134,7 @@
             btnTezgahOperator.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTezgahOperator.IconSize = 32;
             btnTezgahOperator.ImageAlign = ContentAlignment.MiddleLeft;
-            btnTezgahOperator.Location = new Point(0, 403);
+            btnTezgahOperator.Location = new Point(0, 398);
             btnTezgahOperator.Margin = new Padding(4, 3, 4, 3);
             btnTezgahOperator.Name = "btnTezgahOperator";
             btnTezgahOperator.Padding = new Padding(12, 0, 12, 0);
@@ -160,7 +158,7 @@
             btnUretim.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUretim.IconSize = 32;
             btnUretim.ImageAlign = ContentAlignment.MiddleLeft;
-            btnUretim.Location = new Point(0, 345);
+            btnUretim.Location = new Point(0, 340);
             btnUretim.Margin = new Padding(4, 3, 4, 3);
             btnUretim.Name = "btnUretim";
             btnUretim.Padding = new Padding(12, 0, 12, 0);
@@ -184,7 +182,7 @@
             btnSiparis.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnSiparis.IconSize = 32;
             btnSiparis.ImageAlign = ContentAlignment.MiddleLeft;
-            btnSiparis.Location = new Point(0, 287);
+            btnSiparis.Location = new Point(0, 282);
             btnSiparis.Margin = new Padding(4, 3, 4, 3);
             btnSiparis.Name = "btnSiparis";
             btnSiparis.Padding = new Padding(12, 0, 12, 0);
@@ -208,7 +206,7 @@
             btnMusteri.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnMusteri.IconSize = 32;
             btnMusteri.ImageAlign = ContentAlignment.MiddleLeft;
-            btnMusteri.Location = new Point(0, 229);
+            btnMusteri.Location = new Point(0, 224);
             btnMusteri.Margin = new Padding(4, 3, 4, 3);
             btnMusteri.Name = "btnMusteri";
             btnMusteri.Padding = new Padding(12, 0, 12, 0);
@@ -232,7 +230,7 @@
             btnUrun.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnUrun.IconSize = 32;
             btnUrun.ImageAlign = ContentAlignment.MiddleLeft;
-            btnUrun.Location = new Point(0, 171);
+            btnUrun.Location = new Point(0, 166);
             btnUrun.Margin = new Padding(4, 3, 4, 3);
             btnUrun.Name = "btnUrun";
             btnUrun.Padding = new Padding(12, 0, 12, 0);
@@ -256,7 +254,7 @@
             btnAnaEkran.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnAnaEkran.IconSize = 32;
             btnAnaEkran.ImageAlign = ContentAlignment.MiddleLeft;
-            btnAnaEkran.Location = new Point(0, 113);
+            btnAnaEkran.Location = new Point(0, 108);
             btnAnaEkran.Margin = new Padding(4, 3, 4, 3);
             btnAnaEkran.Name = "btnAnaEkran";
             btnAnaEkran.Padding = new Padding(12, 0, 12, 0);
@@ -270,53 +268,38 @@
             // 
             // pnlLogo
             // 
-            pnlLogo.Controls.Add(pictureBox1);
-            pnlLogo.Controls.Add(label1);
+            pnlLogo.Controls.Add(pictureBox2);
             pnlLogo.Dock = DockStyle.Top;
             pnlLogo.Location = new Point(0, 0);
             pnlLogo.Margin = new Padding(4, 3, 4, 3);
             pnlLogo.Name = "pnlLogo";
-            pnlLogo.Size = new Size(244, 113);
+            pnlLogo.Size = new Size(244, 108);
             pnlLogo.TabIndex = 0;
             // 
-            // pictureBox1
+            // pictureBox2
             // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(30, 34);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(48, 48);
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBox1.TabIndex = 11;
-            pictureBox1.TabStop = false;
-            // 
-            // label1
-            // 
-            label1.FlatStyle = FlatStyle.Flat;
-            label1.Font = new Font("Tahoma", 12.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.ForeColor = Color.Gainsboro;
-            label1.Location = new Point(83, 28);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(116, 58);
-            label1.TabIndex = 0;
-            label1.Text = "Üretim Takip Programı";
-            label1.TextAlign = ContentAlignment.MiddleCenter;
+            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
+            pictureBox2.Location = new Point(37, 11);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(167, 85);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 11;
+            pictureBox2.TabStop = false;
             // 
             // pnlContent
             // 
             pnlContent.Controls.Add(pnlDesktop);
             pnlContent.Controls.Add(pnlShadow);
             pnlContent.Dock = DockStyle.Fill;
-            pnlContent.Location = new Point(244, 91);
+            pnlContent.Location = new Point(244, 102);
             pnlContent.Margin = new Padding(4, 3, 4, 3);
             pnlContent.Name = "pnlContent";
-            pnlContent.Size = new Size(1110, 526);
+            pnlContent.Size = new Size(1110, 515);
             pnlContent.TabIndex = 2;
             // 
             // pnlDesktop
             // 
             pnlDesktop.BackColor = Color.FromArgb(41, 40, 99);
-            pnlDesktop.Controls.Add(button1);
             pnlDesktop.Controls.Add(panel3);
             pnlDesktop.Controls.Add(panel8);
             pnlDesktop.Controls.Add(panel2);
@@ -329,18 +312,8 @@
             pnlDesktop.Location = new Point(0, 6);
             pnlDesktop.Margin = new Padding(4, 3, 4, 3);
             pnlDesktop.Name = "pnlDesktop";
-            pnlDesktop.Size = new Size(1110, 520);
+            pnlDesktop.Size = new Size(1110, 509);
             pnlDesktop.TabIndex = 1;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(83, 306);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 10;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // panel3
             // 
@@ -671,7 +644,7 @@
             pnlStatus.Location = new Point(244, 0);
             pnlStatus.Margin = new Padding(4, 3, 4, 3);
             pnlStatus.Name = "pnlStatus";
-            pnlStatus.Size = new Size(1110, 91);
+            pnlStatus.Size = new Size(1110, 102);
             pnlStatus.TabIndex = 0;
             pnlStatus.MouseDoubleClick += pnlStatus_MouseDoubleClick;
             pnlStatus.MouseDown += pnlStatus_MouseDown;
@@ -788,8 +761,7 @@
             Resize += FrmMain_Resize;
             pnlSideBar.ResumeLayout(false);
             pnlLogo.ResumeLayout(false);
-            pnlLogo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             pnlContent.ResumeLayout(false);
             pnlDesktop.ResumeLayout(false);
             panel3.ResumeLayout(false);
@@ -820,7 +792,6 @@
         private FontAwesome.Sharp.IconButton btnUretim;
         private FontAwesome.Sharp.IconButton btnUrun;
         private FontAwesome.Sharp.IconButton btnSiparis;
-        private Label label1;
         private Panel pnlDesktop;
         private Panel pnlShadow;
         private FontAwesome.Sharp.IconButton btnKullanici;
@@ -855,7 +826,6 @@
         private Label lblNumberOfWaitingSelectMachine;
         private Label label10;
         private FontAwesome.Sharp.IconPictureBox ıconPictureBox2;
-        private Button button1;
-        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
     }
 }

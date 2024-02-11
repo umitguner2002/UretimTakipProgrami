@@ -15,6 +15,8 @@ namespace UretimTakipProgrami.Forms
         private bool editMode = false;
         private AppMessage _appMessage;
 
+        public string selectedCustomerName = "";
+
         public FrmCustomer()
         {
             InitializeComponent();
@@ -141,7 +143,7 @@ namespace UretimTakipProgrami.Forms
             txtTelefon2.Clear();
             txtTelefon2.Mask = "";
             txtMail.Clear();
-            txtAdres.Clear();                      
+            txtAdres.Clear();
 
             txtMusteriAdi.Focus();
         }
@@ -160,7 +162,7 @@ namespace UretimTakipProgrami.Forms
             ClearText();
             txtMusteriAdiAra.Clear();
             txtTelefonNoAra.Clear();
-            dataGridView1.DataSource= null;
+            dataGridView1.DataSource = null;
         }
 
         private void btnKaydet_Click(object sender, EventArgs e)
@@ -207,6 +209,8 @@ namespace UretimTakipProgrami.Forms
                     return;
                 }
             }
+
+            selectedCustomerName = txtMusteriAdi.Text;
 
             var phoneNumber1 = txtTelefon1.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
             var phoneNumber2 = txtTelefon2.Text.Replace("(", "").Replace(")", "").Replace(" ", "").Replace("_", "");
@@ -274,7 +278,7 @@ namespace UretimTakipProgrami.Forms
                     selectedIndex = 0;
 
                     DataGridTextAktar();
-                }                    
+                }
             }
             else
             {

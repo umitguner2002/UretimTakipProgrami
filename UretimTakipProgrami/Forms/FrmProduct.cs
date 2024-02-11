@@ -24,6 +24,8 @@ namespace UretimTakipProgrami.Forms
 
         private string imageName, imageSourcePath, imageTargetPath;
 
+        public string? selectedProductName;
+
         FrmProductionDefinitions frmDef;
 
         public FrmProduct()
@@ -56,7 +58,7 @@ namespace UretimTakipProgrami.Forms
                     if (imageTargetPath != null && imageTargetPath != "")
                         resimKutusu.ImageLocation = dataGridView1.Rows[selectedIndex].Cells[6].Value.ToString();
                     else
-                        resimKutusu.ImageLocation = "";
+                        resimKutusu.ImageLocation = null;
                 }
             }
         }
@@ -65,6 +67,7 @@ namespace UretimTakipProgrami.Forms
         {
             try
             {
+                ProductValidator productValidation;
                 object selectedProgramValue = listProgramAdi.SelectedValue;
                 object selectedMaterialValue = listMalzeme.SelectedValue;
 
@@ -89,11 +92,20 @@ namespace UretimTakipProgrami.Forms
                         MachineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString())
                     };
 
-                    ProductValidator productValidation = new ProductValidator();
+                    if (!editMode)
+                    {
+                        productValidation = new ProductValidator();
+                    }
+                    else
+                    {
+                        string editProductId = dataGridView1.Rows[selectedIndex].Cells[5].Value.ToString();
+                        productValidation = new ProductValidator(editProductId);
+                    }
+
                     ValidationResult result = productValidation.Validate(pr);
                     IList<ValidationFailure> errors = result.Errors;
 
-                    if (!result.IsValid && !editMode)
+                    if (!result.IsValid)
                     {
                         foreach (ValidationFailure failure in errors)
                         {
@@ -101,6 +113,8 @@ namespace UretimTakipProgrami.Forms
                             return;
                         }
                     }
+
+                    selectedProductName = txtUrunAdi.Text;
 
                     if (_materialRepository.GetById(listMalzeme.SelectedValue.ToString()) == null)
                     {
@@ -116,8 +130,6 @@ namespace UretimTakipProgrami.Forms
                     }
                     else
                     {
-                        bool editStatus = false;
-
                         if (!string.IsNullOrEmpty(imageSourcePath))
                         {
                             imageName = $"{txtUrunAdi.Text}.jpg";
@@ -127,23 +139,42 @@ namespace UretimTakipProgrami.Forms
                         var materialId = Guid.Parse(listMalzeme.SelectedValue.ToString());
                         var machineProgramId = Guid.Parse(listProgramAdi.SelectedValue.ToString());
 
-                        if (!editMode)
+                        if (!editMode) // Ekleme Modu
                         {
                             var x = await _productRepository.AddAsync(new()
                             {
                                 Name = txtUrunAdi.Text.ToUpper(),
                                 MaterialId = materialId,
                                 MachineProgramId = machineProgramId,
-                                ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "",
-                                ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : ""
+                                ImageName = !string.IsNullOrEmpty(imageName) ? imageName : string.Empty,
+                                ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : string.Empty
                             });
 
                             if (!string.IsNullOrEmpty(imageSourcePath) && !string.IsNullOrEmpty(imageTargetPath))
-                                File.Copy(imageSourcePath, imageTargetPath);
+                            {
+                                if (!File.Exists(imageTargetPath))
+                                    File.Copy(imageSourcePath, imageTargetPath);
+                                else
+                                {
+                                    var r = MessageBox.Show("Bu resim adı mevcut. Daha önce kaydedilmiş resmi silmek istiyor musunuz?", "Mevcut Resim Hatası", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                    if (r == DialogResult.Yes)
+                                    {
+                                        File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil
+                                        File.Copy(imageSourcePath, imageTargetPath);
+                                    }
+                                    else
+                                        return;
+                                }
+                            }
 
                             await _productRepository.SaveAsync();
+
+                            _appMessage.SaveSuccessMessage();
+                            ClearText();
                         }
-                        else
+                        else // Düzenleme Modu
+
                         {
                             if (!result.IsValid)
                             {
@@ -161,8 +192,26 @@ namespace UretimTakipProgrami.Forms
                             product.Name = txtUrunAdi.Text.ToUpper();
                             product.MaterialId = materialId;
                             product.MachineProgramId = machineProgramId;
-                            product.ImageName = !string.IsNullOrEmpty(imageName) ? imageName : "";
-                            product.ImagePath = !string.IsNullOrEmpty(imageTargetPath) ? imageTargetPath : "";
+
+                            imageName = $"{txtUrunAdi.Text.ToUpper()}.jpg";
+                            imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
+
+                            if (string.IsNullOrEmpty(imageSourcePath) && string.IsNullOrEmpty(resimKutusu.ImageLocation))
+                            {
+                                product.ImageName = string.Empty;
+                                product.ImagePath = string.Empty;
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(imageSourcePath))
+                                    imageSourcePath = product.ImagePath;
+
+                                product.ImageName = imageName;
+                                product.ImagePath = imageTargetPath;
+
+                                File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil                                    
+                                File.Copy(imageSourcePath, imageTargetPath);
+                            }
 
                             await _productRepository.SaveAsync();
 
@@ -173,23 +222,6 @@ namespace UretimTakipProgrami.Forms
                             selectedIndex = 0;
                             dataGridView1.Rows[selectedIndex].Selected = true;
                             DataGridTextAktar();
-
-
-                            if (!string.IsNullOrEmpty(imageSourcePath) && !string.IsNullOrEmpty(imageTargetPath))
-                            {
-                                if (File.Exists(imageTargetPath))
-                                {
-                                    File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil
-                                }
-                                File.Copy(imageSourcePath, imageTargetPath); // Dosyayı kopyala
-                            }
-                            else
-                            {
-                                if (File.Exists(imageTargetPath))
-                                {
-                                    File.Delete(imageTargetPath); // Eğer varsa hedef dosyayı sil
-                                }
-                            }
 
                             _appMessage.UpdateSuccessMessage();
                         }
@@ -222,8 +254,8 @@ namespace UretimTakipProgrami.Forms
         {
             dataGridView1.DataSource = null;
 
-            string arananUrunAdi = txtUrunAdiAra.Text.ToLower();
-            string arananMalzeme = txtMalzemeAra.Text.ToLower();
+            string arananUrunAdi = txtUrunAdiAra.Text.ToUpper();
+            string arananMalzeme = txtMalzemeAra.Text.ToUpper();
 
             var productList = _productRepository.GetAll()
                 .Select(product => new
@@ -237,8 +269,8 @@ namespace UretimTakipProgrami.Forms
                     product.ImagePath
                 })
                 .Where(product =>
-                      (string.IsNullOrEmpty(arananUrunAdi) || product.Name.ToLower().Contains(arananUrunAdi)) &&
-                      (string.IsNullOrEmpty(arananMalzeme) || product.materialName.ToLower().Contains(arananMalzeme)))
+                      (string.IsNullOrEmpty(arananUrunAdi) || product.Name.Contains(arananUrunAdi)) &&
+                      (string.IsNullOrEmpty(arananMalzeme) || product.materialName.Contains(arananMalzeme)))
                 .OrderBy(product => product.Name)
                 .ToList();
 
@@ -248,12 +280,6 @@ namespace UretimTakipProgrami.Forms
                 lblKayitSayisi.Text = $"Kayıt Sayısı: {productList.Count.ToString()}";
                 SetDataGridSettings();
             }
-            else
-            {
-                lblKayitSayisi.Text = "Gösterilecek kayıt yok";
-                MessageBox.Show("Aranan değer bulunamadı.", "Arama Sonucu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
 
             LblKayitSayisiYerlestir();
 
@@ -275,7 +301,7 @@ namespace UretimTakipProgrami.Forms
                 dataGridView1.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dataGridView1.Columns[3].HeaderText = "Çizim Dosya Adı";
-                dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dataGridView1.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dataGridView1.Columns[4].HeaderText = "Kayıt Tarihi";
                 dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -295,6 +321,7 @@ namespace UretimTakipProgrami.Forms
                     material.Id,
                     material.Name
                 })
+                .OrderBy(material => material.Name)
                 .ToList();
 
                 var emptyItem = new
@@ -323,12 +350,13 @@ namespace UretimTakipProgrami.Forms
             try
             {
                 var programList = _machineProgramRepository.GetAll()
-                .Select(program => new
-                {
-                    program.Id,
-                    program.Name
-                })
-                .ToList();
+                    .Select(program => new
+                    {
+                        program.Id,
+                        program.Name
+                    })
+                    .OrderBy(program => program.Name)
+                    .ToList();
 
                 var emptyItem = new
                 {
@@ -384,6 +412,7 @@ namespace UretimTakipProgrami.Forms
             txtUrunAdiAra.Clear();
             txtMalzemeAra.Clear();
             dataGridView1.DataSource = null;
+            GetMachineProgramList();
             txtUrunAdi.Focus();
         }
 
@@ -429,7 +458,7 @@ namespace UretimTakipProgrami.Forms
 
         private void ClearText()
         {
-            txtUrunAdi.Clear();            
+            txtUrunAdi.Clear();
 
             if (listMalzeme.Items.Count > 0)
                 listMalzeme.SelectedIndex = 0;
@@ -438,9 +467,9 @@ namespace UretimTakipProgrami.Forms
 
             resimKutusu.Image = null;
 
-            imageName = "";
-            imageSourcePath = "";
-            imageTargetPath = "";
+            imageName = string.Empty;
+            imageSourcePath = string.Empty;
+            imageTargetPath = string.Empty;
         }
 
         private void btnIptal_Click(object sender, EventArgs e)
@@ -478,21 +507,34 @@ namespace UretimTakipProgrami.Forms
 
         private void btnDuzenle_Click(object sender, EventArgs e)
         {
-            editMode = true;
-            DisableButtonAndText();
+            if (dataGridView1.Rows.Count > 0)
+            {
+                editMode = true;
+                DisableButtonAndText();
+
+                imageName = string.Empty;
+                imageSourcePath = string.Empty;
+                imageTargetPath = string.Empty;
+            }
+            else
+                MessageBox.Show("Güncellenecek kaydı seçiniz.", "Kayıt Seç", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         private void btnResimKaldir_Click(object sender, EventArgs e)
         {
             resimKutusu.Image = null;
-            imageName = "";
-            imageSourcePath = "";
+            resimKutusu.ImageLocation = null;
+            imageName = string.Empty;
+            imageSourcePath = string.Empty;
+            imageTargetPath = string.Empty;
         }
 
         private void btnOpenFormMaterial_Click(object sender, EventArgs e)
         {
             OpenDefitinitionForms(0);
             GetMaterialList();
+            if (!string.IsNullOrEmpty(frmDef.selectedMaterialName))
+                listMalzeme.Text = frmDef.selectedMaterialName;
         }
 
         private void btnOpenFormProgram_Click(object sender, EventArgs e)
@@ -515,6 +557,9 @@ namespace UretimTakipProgrami.Forms
 
                 Button button1 = frmDef.Controls.Find("btnFormuKapat1", true).FirstOrDefault() as Button;
                 button1.Visible = true;
+
+                Button button2 = frmDef.Controls.Find("btnFormuKapat2", true).FirstOrDefault() as Button;
+                button2.Visible = true;
 
                 Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
                 button3.Visible = true;

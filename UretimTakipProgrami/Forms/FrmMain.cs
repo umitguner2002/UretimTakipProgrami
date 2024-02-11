@@ -169,7 +169,7 @@ namespace UretimTakipProgrami.Forms
         {
             lblUsername.Text = $"Hoşgeldin, {_user.Name}";
 
-            CheckUserAuth(this._user);            
+            CheckUserAuth(this._user);
 
             lblDate.Text = DateTime.Now.ToLongDateString();
             lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
@@ -186,15 +186,15 @@ namespace UretimTakipProgrami.Forms
                 btnTezgahOperator.Visible = true;
                 btnKullanici.Visible = true;
             }
-            else if (u.IsOperator) 
+            else if (u.IsOperator)
             {
                 btnUrun.Visible = false;
                 btnMusteri.Visible = false;
                 btnSiparis.Visible = false;
                 btnUretim.Visible = true;
-                btnTezgahOperator.Visible = false;
+                btnTezgahOperator.Visible = true;
                 btnKullanici.Visible = false;
-            }                
+            }
         }
 
         private void btnMusteri_Click(object sender, EventArgs e)
@@ -212,7 +212,7 @@ namespace UretimTakipProgrami.Forms
         private void btnTezgahOperator_Click(object sender, EventArgs e)
         {
             ActivateButton(sender, RGBColors.color3);
-            OpenChildForm(new FrmProductionDefinitions());
+            OpenChildForm(new FrmProductionDefinitions(this._user));
         }
 
         private void btnKucult_Click(object sender, EventArgs e)
@@ -245,6 +245,7 @@ namespace UretimTakipProgrami.Forms
 
             ActivateButton(btnAnaEkran, RGBColors.color6);
             ShowData();
+            this.WindowState = FormWindowState.Maximized;
         }
 
         private void ShowData()
@@ -258,12 +259,6 @@ namespace UretimTakipProgrami.Forms
             lblNumberOfPOrder.Text = dbContext.Orders.Where(o => o.IsProduction && !o.IsReady).ToList().Count().ToString();
             lblNumberOfWaiting.Text = dbContext.Orders.Where(o => !o.IsWaiting && !o.IsProduction && !o.IsReady).ToList().Count().ToString();
             lblNumberOfWaitingSelectMachine.Text = dbContext.Orders.Where(o => o.IsWaiting && !o.IsProduction && !o.IsReady).ToList().Count().ToString();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DataEkleme frmDataEkleme = new DataEkleme();
-            frmDataEkleme.ShowDialog();
         }
     }
 }

@@ -156,7 +156,7 @@ namespace UretimTakipProgrami.Forms
             groupUserInfo.Location = new Point(9, 6);
             groupUserInfo.Name = "groupUserInfo";
             groupUserInfo.Size = new Size(324, 170);
-            groupUserInfo.TabIndex = 12;
+            groupUserInfo.TabIndex = 0;
             groupUserInfo.TabStop = false;
             groupUserInfo.Text = "Kullanıcı Bilgileri";
             // 
@@ -167,7 +167,7 @@ namespace UretimTakipProgrami.Forms
             txtAdiSoyadi.Margin = new Padding(4, 3, 4, 3);
             txtAdiSoyadi.Name = "txtAdiSoyadi";
             txtAdiSoyadi.Size = new Size(230, 22);
-            txtAdiSoyadi.TabIndex = 0;
+            txtAdiSoyadi.TabIndex = 1;
             // 
             // label8
             // 
@@ -186,7 +186,7 @@ namespace UretimTakipProgrami.Forms
             txtTelefon.Location = new Point(81, 54);
             txtTelefon.Name = "txtTelefon";
             txtTelefon.Size = new Size(230, 22);
-            txtTelefon.TabIndex = 1;
+            txtTelefon.TabIndex = 2;
             txtTelefon.Enter += txtTelefon_Enter;
             txtTelefon.Leave += txtTelefon_Leave;
             // 
@@ -208,7 +208,7 @@ namespace UretimTakipProgrami.Forms
             txtEmail.Margin = new Padding(4, 3, 4, 3);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(230, 22);
-            txtEmail.TabIndex = 2;
+            txtEmail.TabIndex = 3;
             // 
             // label3
             // 
@@ -235,7 +235,7 @@ namespace UretimTakipProgrami.Forms
             groupUserAuth.Location = new Point(339, 6);
             groupUserAuth.Name = "groupUserAuth";
             groupUserAuth.Size = new Size(343, 170);
-            groupUserAuth.TabIndex = 11;
+            groupUserAuth.TabIndex = 4;
             groupUserAuth.TabStop = false;
             groupUserAuth.Text = "Kullanıcı İşlemleri";
             // 
@@ -258,7 +258,7 @@ namespace UretimTakipProgrami.Forms
             checkAdmin.Location = new Point(10, 21);
             checkAdmin.Name = "checkAdmin";
             checkAdmin.Size = new Size(70, 18);
-            checkAdmin.TabIndex = 6;
+            checkAdmin.TabIndex = 8;
             checkAdmin.Text = "Yönetici";
             checkAdmin.UseVisualStyleBackColor = true;
             // 
@@ -269,7 +269,7 @@ namespace UretimTakipProgrami.Forms
             checkManager.Location = new Point(97, 21);
             checkManager.Name = "checkManager";
             checkManager.Size = new Size(122, 18);
-            checkManager.TabIndex = 7;
+            checkManager.TabIndex = 9;
             checkManager.Text = "Üretim Sorumlusu";
             checkManager.UseVisualStyleBackColor = true;
             // 
@@ -280,7 +280,7 @@ namespace UretimTakipProgrami.Forms
             checkOperator.Location = new Point(235, 21);
             checkOperator.Name = "checkOperator";
             checkOperator.Size = new Size(75, 18);
-            checkOperator.TabIndex = 8;
+            checkOperator.TabIndex = 10;
             checkOperator.Text = "Operatör";
             checkOperator.UseVisualStyleBackColor = true;
             // 
@@ -291,7 +291,7 @@ namespace UretimTakipProgrami.Forms
             checkActive.Location = new Point(103, 84);
             checkActive.Name = "checkActive";
             checkActive.Size = new Size(51, 18);
-            checkActive.TabIndex = 5;
+            checkActive.TabIndex = 7;
             checkActive.Text = "Aktif";
             checkActive.UseVisualStyleBackColor = true;
             // 
@@ -302,7 +302,7 @@ namespace UretimTakipProgrami.Forms
             txtKullaniciAdi.Margin = new Padding(4, 3, 4, 3);
             txtKullaniciAdi.Name = "txtKullaniciAdi";
             txtKullaniciAdi.Size = new Size(230, 22);
-            txtKullaniciAdi.TabIndex = 3;
+            txtKullaniciAdi.TabIndex = 5;
             // 
             // label5
             // 
@@ -333,7 +333,7 @@ namespace UretimTakipProgrami.Forms
             txtSifre.Margin = new Padding(4, 3, 4, 3);
             txtSifre.Name = "txtSifre";
             txtSifre.Size = new Size(230, 22);
-            txtSifre.TabIndex = 4;
+            txtSifre.TabIndex = 6;
             // 
             // label1
             // 
@@ -378,7 +378,7 @@ namespace UretimTakipProgrami.Forms
             btnSil.Margin = new Padding(4, 3, 4, 3);
             btnSil.Name = "btnSil";
             btnSil.Size = new Size(51, 29);
-            btnSil.TabIndex = 3;
+            btnSil.TabIndex = 0;
             btnSil.TabStop = false;
             btnSil.Text = "Sil";
             btnSil.TextAlign = ContentAlignment.MiddleRight;
@@ -405,8 +405,7 @@ namespace UretimTakipProgrami.Forms
             btnIptal.Margin = new Padding(4, 3, 4, 3);
             btnIptal.Name = "btnIptal";
             btnIptal.Size = new Size(64, 29);
-            btnIptal.TabIndex = 3;
-            btnIptal.TabStop = false;
+            btnIptal.TabIndex = 12;
             btnIptal.Text = "İptal";
             btnIptal.TextAlign = ContentAlignment.MiddleRight;
             btnIptal.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -431,7 +430,7 @@ namespace UretimTakipProgrami.Forms
             btnYeni.Margin = new Padding(4, 3, 4, 3);
             btnYeni.Name = "btnYeni";
             btnYeni.Size = new Size(64, 29);
-            btnYeni.TabIndex = 3;
+            btnYeni.TabIndex = 0;
             btnYeni.TabStop = false;
             btnYeni.Text = "Yeni";
             btnYeni.TextAlign = ContentAlignment.MiddleRight;
@@ -458,7 +457,7 @@ namespace UretimTakipProgrami.Forms
             btnKaydet.Margin = new Padding(4, 3, 4, 3);
             btnKaydet.Name = "btnKaydet";
             btnKaydet.Size = new Size(78, 29);
-            btnKaydet.TabIndex = 9;
+            btnKaydet.TabIndex = 11;
             btnKaydet.Text = "Kaydet";
             btnKaydet.TextAlign = ContentAlignment.MiddleRight;
             btnKaydet.TextImageRelation = TextImageRelation.ImageBeforeText;
@@ -483,7 +482,7 @@ namespace UretimTakipProgrami.Forms
             btnDuzenle.Margin = new Padding(4, 3, 4, 3);
             btnDuzenle.Name = "btnDuzenle";
             btnDuzenle.Size = new Size(86, 29);
-            btnDuzenle.TabIndex = 3;
+            btnDuzenle.TabIndex = 0;
             btnDuzenle.TabStop = false;
             btnDuzenle.Text = "Güncelle";
             btnDuzenle.TextAlign = ContentAlignment.MiddleRight;

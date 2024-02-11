@@ -216,10 +216,10 @@
             btnMusteriBul.IconColor = Color.WhiteSmoke;
             btnMusteriBul.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnMusteriBul.IconSize = 18;
-            btnMusteriBul.Location = new Point(437, 8);
+            btnMusteriBul.Location = new Point(400, 8);
             btnMusteriBul.Margin = new Padding(4, 3, 4, 3);
             btnMusteriBul.Name = "btnMusteriBul";
-            btnMusteriBul.Size = new Size(100, 22);
+            btnMusteriBul.Size = new Size(120, 22);
             btnMusteriBul.TabIndex = 7;
             btnMusteriBul.Text = "Müşteri Bul ";
             btnMusteriBul.TextAlign = ContentAlignment.MiddleRight;

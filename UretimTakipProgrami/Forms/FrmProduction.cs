@@ -22,6 +22,7 @@ namespace UretimTakipProgrami.Forms
 
         private FrmDailyProductionUpdate frmDailyProductionUpdate;
         private FrmDailyProductionConfirm frmDailyProductionConfirm;
+        private FrmProductionDefinitions frmDef;
 
         private int selectedIndex1 = 0; // Order List Index
         private int selectedIndex2 = 0;
@@ -102,7 +103,7 @@ namespace UretimTakipProgrami.Forms
             .ToList();
 
             if (orderList.Count > 0)
-                dataListOrder.DataSource = orderList;            
+                dataListOrder.DataSource = orderList;
         }
 
         private void GetOrderProductionList()
@@ -195,7 +196,7 @@ namespace UretimTakipProgrami.Forms
             if (orderList.Count > 0)
                 dataListProduction.DataSource = orderList;
         }
-        
+
         private void GetDailyProductionList()
         {
             dataListDailyProduction.DataSource = null;
@@ -303,17 +304,10 @@ namespace UretimTakipProgrami.Forms
         {
             dataListSearchDailyProduction.DataSource = null;
 
-            var userList = _userRepository.GetAll();
-
-            var programList = _machineProgramRepository.GetAll().Select(mc => new
-            {
-                Id = mc.Id,
-                Name = mc.Name
-            });
-
             DateTime? baslangicTarih = null;
             DateTime? bitisTarih = null;
 
+            string arananIsEmriNo = txtIsEmriNoAra.Text;
             string arananMusteri = txtMusteriAdiAra.Text;
             string arananUrun = txtUrunAdiAra.Text;
 
@@ -333,6 +327,7 @@ namespace UretimTakipProgrami.Forms
             var dailyProductionList = _productionRepository.GetWhere(pr => pr.FinishDate != null)
             .Select(production => new
             {
+                production.Order.OrderCode,
                 productionStartDate = production.CreatedDate.ToLocalTime(),
                 productionFinishDate = production.FinishDate != null ? ((DateTime)production.FinishDate).ToLocalTime() : (DateTime?)null,
                 productionTime = production.FinishDate != null && production.CreatedDate != null
@@ -355,11 +350,13 @@ namespace UretimTakipProgrami.Forms
                 (!pr.IsStarted) &&
                 (!baslangicTarih.HasValue || pr.productionStartDate.Date >= baslangicTarih) &&
                 (!bitisTarih.HasValue || (pr.productionFinishDate.HasValue && pr.productionFinishDate.Value.Date <= bitisTarih.Value)) &&
+                (string.IsNullOrEmpty(arananIsEmriNo) || pr.OrderCode == arananIsEmriNo) &&
                 (string.IsNullOrEmpty(arananTezgah) || pr.machineName.ToLower().Contains(arananTezgah)) &&
                 (string.IsNullOrEmpty(arananOperator) || pr.producedOperatorName.ToLower().Contains(arananOperator)) &&
                 (string.IsNullOrEmpty(arananMusteri) || pr.customerName.ToLower().Contains(arananMusteri.ToLower())) &&
                 (string.IsNullOrEmpty(arananUrun) || pr.productName.ToLower().Contains(arananUrun.ToLower())))
-            .OrderBy(pr => pr.productionFinishDate)
+            .OrderBy(pr => pr.OrderCode)
+            .ThenBy(pr => pr.productionFinishDate)
             .ToList();
 
 
@@ -537,16 +534,14 @@ namespace UretimTakipProgrami.Forms
                 dataListProduction.Columns[10].HeaderText = "Tezgah/Makina";
                 dataListProduction.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListProduction.Columns[11].HeaderText = "Ayar Yapan";
-                dataListProduction.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+                dataListProduction.Columns[11].Visible = false; // Ayar Yapan
                 dataListProduction.Columns[12].Visible = false; // Açıklama
                 dataListProduction.Columns[13].Visible = false; // Order Id
                 dataListProduction.Columns[14].Visible = false; // IsWaiting
                 dataListProduction.Columns[15].Visible = false; // IsProduction
                 dataListProduction.Columns[16].Visible = false; // Program No
 
-                dataListProduction.Columns[17].HeaderText = "Üretim Durumu"; ; // IsStarted
+                dataListProduction.Columns[17].HeaderText = "Üretim Durumu"; // IsStarted
                 dataListProduction.Columns[17].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dataListProduction.Columns[18].Visible = false; // IsReady
@@ -628,45 +623,49 @@ namespace UretimTakipProgrami.Forms
             {
                 dataListSearchDailyProduction.ColumnHeadersHeight = 25;
 
-                dataListSearchDailyProduction.Columns[0].HeaderText = "Üretim Başlangıç";
+                dataListSearchDailyProduction.Columns[0].HeaderText = "İş Emri No";
                 dataListSearchDailyProduction.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-                dataListSearchDailyProduction.Columns[1].HeaderText = "Üretim Bitiş";
-                dataListSearchDailyProduction.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dataListSearchDailyProduction.Columns[1].HeaderText = "Üretim Başlangıç";
+                dataListSearchDailyProduction.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-                dataListSearchDailyProduction.Columns[2].HeaderText = "Çalışma Süresi";
+                dataListSearchDailyProduction.Columns[2].HeaderText = "Üretim Bitiş";
                 dataListSearchDailyProduction.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-                dataListSearchDailyProduction.Columns[3].HeaderText = "Ürün Adı";
-                dataListSearchDailyProduction.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataListSearchDailyProduction.Columns[3].HeaderText = "Çalışma Süresi";
+                dataListSearchDailyProduction.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-                dataListSearchDailyProduction.Columns[4].HeaderText = "Müşteri Adı";
+                dataListSearchDailyProduction.Columns[4].HeaderText = "Ürün Adı";
                 dataListSearchDailyProduction.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListSearchDailyProduction.Columns[5].HeaderText = "Miktar";
-                dataListSearchDailyProduction.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+                dataListSearchDailyProduction.Columns[5].HeaderText = "Müşteri Adı";
+                dataListSearchDailyProduction.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListSearchDailyProduction.Columns[6].HeaderText = "Defolu";
+                dataListSearchDailyProduction.Columns[6].HeaderText = "Miktar";
                 dataListSearchDailyProduction.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-                dataListSearchDailyProduction.Columns[7].HeaderText = "Tezgah/Makina";
-                dataListSearchDailyProduction.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataListSearchDailyProduction.Columns[7].HeaderText = "Defolu";
+                dataListSearchDailyProduction.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
-                dataListSearchDailyProduction.Columns[8].HeaderText = "Ayar Yapan";
+                dataListSearchDailyProduction.Columns[8].HeaderText = "Tezgah/Makina";
                 dataListSearchDailyProduction.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListSearchDailyProduction.Columns[9].HeaderText = "Üretim Yapan";
+                dataListSearchDailyProduction.Columns[9].HeaderText = "Ayar Yapan";
                 dataListSearchDailyProduction.Columns[9].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListSearchDailyProduction.Columns[10].Visible = false; // Açıklama
+                dataListSearchDailyProduction.Columns[10].HeaderText = "Üretim Yapan";
+                dataListSearchDailyProduction.Columns[10].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-                dataListSearchDailyProduction.Columns[11].HeaderText = "Program Adı";
-                dataListSearchDailyProduction.Columns[11].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataListSearchDailyProduction.Columns[11].HeaderText = "Açıklama";
+                dataListSearchDailyProduction.Columns[11].Visible = false;
 
-                dataListSearchDailyProduction.Columns[11].Visible = false; // Program Number
-                dataListSearchDailyProduction.Columns[12].Visible = false; // OrderId
-                dataListSearchDailyProduction.Columns[13].Visible = false; // IsStarted
-                dataListSearchDailyProduction.Columns[14].Visible = false; // ProductionId
+                dataListSearchDailyProduction.Columns[12].HeaderText = "Program Adı";
+                dataListSearchDailyProduction.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataListSearchDailyProduction.Columns[12].Visible = false; // Program Number
+                
+                dataListSearchDailyProduction.Columns[13].Visible = false; // OrderId
+                dataListSearchDailyProduction.Columns[14].Visible = false; // IsStarted
+                dataListSearchDailyProduction.Columns[15].Visible = false; // ProductionId
             }
         }
 
@@ -680,7 +679,6 @@ namespace UretimTakipProgrami.Forms
                 txtMusteriAdi.Text = dataListOrder.Rows[selectedIndex1].Cells[3].Value.ToString();
                 txtMiktar.Text = dataListOrder.Rows[selectedIndex1].Cells[4].Value.ToString();
                 txtTeslimTarihi.Text = Convert.ToDateTime(dataListOrder.Rows[selectedIndex1].Cells[5].Value).ToShortDateString();
-                txtAciklama.Text = dataListOrder.Rows[selectedIndex1].Cells[7].Value.ToString();
                 txtProgramAdi.Text = dataListOrder.Rows[selectedIndex1].Cells[13].Value.ToString();
 
                 dataListOrder.Rows[selectedIndex1].Selected = true;
@@ -689,12 +687,14 @@ namespace UretimTakipProgrami.Forms
             else
             {
                 dataListOrder.DataSource = null;
+                txtIsEmriNo1.Clear();
                 txtSiparisTarihi.Clear();
                 txtUrunAdi.Clear();
                 txtMusteriAdi.Clear();
+                txtIslenecekMalzeme.Clear();
+                txtProgramAdi.Clear();
                 txtMiktar.Clear();
                 txtTeslimTarihi.Clear();
-                txtAciklama.Clear();
                 btnOnayaGönder.Enabled = false;
             }
 
@@ -792,23 +792,23 @@ namespace UretimTakipProgrami.Forms
             List<int> hideTabPageNumbers = new List<int>();
             bool isAdminManager = false;
 
-            if (this._user.IsAdmin)
+            if (u.IsAdmin)
                 hideTabPageNumbers = new List<int> { 1 };
-            else if (this._user.IsManager)
-                hideTabPageNumbers = new List<int> { 0, 2 };       
-            else if (this._user.IsOperator)
+            else if (u.IsManager)
+                hideTabPageNumbers = new List<int> { 0, 2 };
+            else if (u.IsOperator)
                 hideTabPageNumbers = new List<int> { 0, 1, 3 };
 
-            if (this._user.IsManager && this._user.IsOperator)
+            if (u.IsManager && u.IsOperator)
                 hideTabPageNumbers = new List<int> { 0 };
 
-            if (this._user.IsAdmin && this._user.IsOperator)
-               hideTabPageNumbers = new List<int> { 1 };            
+            if (u.IsAdmin && u.IsOperator)
+                hideTabPageNumbers = new List<int> { 1 };
 
-            if (this._user.IsAdmin && this._user.IsManager)
+            if (u.IsAdmin && u.IsManager)
                 isAdminManager = true;
 
-            if(!isAdminManager)
+            if (!isAdminManager)
             {
                 foreach (int i in hideTabPageNumbers)
                 {
@@ -819,7 +819,7 @@ namespace UretimTakipProgrami.Forms
                 {
                     tabControl1.TabPages.Remove(tabPage);
                 }
-            }            
+            }
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -865,15 +865,18 @@ namespace UretimTakipProgrami.Forms
 
         private async void btnOnayaGönder_Click(object sender, EventArgs e)
         {
-            string orderId = dataListOrder.Rows[selectedIndex1].Cells[8].Value.ToString();
+            if (selectedIndex1 > -1)
+            {
+                string orderId = dataListOrder.Rows[selectedIndex1].Cells[8].Value.ToString();
 
-            FrmSendToProduction frmSendToProduction = new FrmSendToProduction(orderId);
-            frmSendToProduction.ShowDialog();
+                FrmSendToProduction frmSendToProduction = new FrmSendToProduction(orderId);
+                frmSendToProduction.ShowDialog();
 
-            if (selectedIndex1 == dataListOrder.RowCount - 1)
-                selectedIndex1 -= 1;
+                if (dataListOrder.RowCount == 0)
+                    selectedIndex1 = -1;
 
-            ListeYenile(TabPageName.Page1);
+                ListeYenile(TabPageName.Page1);
+            }
         }
 
         private async void btnGeriGonder_Click(object sender, EventArgs e)
@@ -981,6 +984,13 @@ namespace UretimTakipProgrami.Forms
             Rectangle recTab = e.Bounds;
             recTab = new Rectangle(recTab.X, recTab.Y + 4, recTab.Width, recTab.Height - 4);
             e.Graphics.DrawString(tabName, fntTab, bshFore, recTab, sftTab);
+
+            SolidBrush fillbrush = new SolidBrush(Color.FromArgb(175, 174, 209));
+            Rectangle lasttabrect = tabControl1.GetTabRect(tabControl1.TabPages.Count - 1);
+            Rectangle background = new Rectangle();
+            background.Location = new Point(lasttabrect.Right, 0);
+            background.Size = new Size(tabControl1.Right - background.Left, lasttabrect.Height + 1);
+            e.Graphics.FillRectangle(fillbrush, background);
         }
 
         private void btnYenile3_Click(object sender, EventArgs e)
@@ -995,20 +1005,25 @@ namespace UretimTakipProgrami.Forms
 
         private void btnDuzenle_Click(object sender, EventArgs e)
         {
-            var dailyProduction = _productionRepository
+            if (dataListDailyProduction.RowCount > 0)
+            {
+                var dailyProduction = _productionRepository
                     .GetWhere(pr => pr.Id == Guid.Parse(dataListDailyProduction.Rows[selectedIndex4].Cells[6].Value.ToString()), false).FirstOrDefault();
 
-            int editQuantity = Convert.ToInt32(dataListDailyProduction.Rows[selectedIndex4].Cells[3].Value.ToString());
-            int wastageQuantity = Convert.ToInt32(dataListDailyProduction.Rows[selectedIndex4].Cells[4].Value.ToString());
+                int editQuantity = Convert.ToInt32(dataListDailyProduction.Rows[selectedIndex4].Cells[3].Value.ToString());
+                int wastageQuantity = Convert.ToInt32(dataListDailyProduction.Rows[selectedIndex4].Cells[4].Value.ToString());
 
-            if (dailyProduction != null)
-            {
-                frmDailyProductionUpdate = new FrmDailyProductionUpdate(true, dailyProduction, editQuantity, wastageQuantity);
-                frmDailyProductionUpdate.ShowDialog();
-                ListeYenile(TabPageName.Page3);
+                if (dailyProduction != null)
+                {
+                    frmDailyProductionUpdate = new FrmDailyProductionUpdate(true, dailyProduction, editQuantity, wastageQuantity);
+                    frmDailyProductionUpdate.ShowDialog();
+                    ListeYenile(TabPageName.Page3);
+                }
+                else
+                    MessageBox.Show("Veritabanında istenen kayda erişelemedi.", "Erişim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
-                MessageBox.Show("Veritabanında istenen kayda erişelemedi.", "Erişim Hatası", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Güncellenecek kayıt yok.", "Üretim Güncelleme Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
 
@@ -1019,12 +1034,25 @@ namespace UretimTakipProgrami.Forms
 
         private async void btnSil_Click(object sender, EventArgs e)
         {
-            bool isDeleted = _productionRepository.Delete(dataListDailyProduction.Rows[selectedIndex4].Cells[4].Value.ToString());
+            if (dataListDailyProduction.RowCount > 0)
+            {
+                var result = MessageBox.Show("Bu üretimi silmek istediğinize emin misiniz?", "Günlük Üretim Sil", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            await _productionRepository.SaveAsync();
+                if (result == DialogResult.Yes)
+                {
+                    bool isDeleted = _productionRepository.Delete(dataListDailyProduction.Rows[selectedIndex4].Cells[6].Value.ToString());
 
-            GetProductionList();
-            SetProductionDataGridSettings();
+                    await _productionRepository.SaveAsync();
+
+                    GetProductionList();
+                    SetProductionDataGridSettings();
+                    GetDailyProductionList();
+                    SetDailyProductionDataGridSettings();
+                }
+            }
+            else
+                MessageBox.Show("Silinecek kayıt yok.", "Üretim Silme Hatası", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -1107,7 +1135,8 @@ namespace UretimTakipProgrami.Forms
         {
             if (!string.IsNullOrEmpty(txtUrunAdiAra.Text) || !string.IsNullOrEmpty(txtMusteriAdiAra.Text) ||
                !string.IsNullOrEmpty(txtTezgahAdiAra.Text) || !string.IsNullOrEmpty(txtBaslangicTarihi.Text) ||
-               !string.IsNullOrEmpty(txtBitisTarihi.Text) || !string.IsNullOrEmpty(txtOperatorAdiAra.Text))
+               !string.IsNullOrEmpty(txtBitisTarihi.Text) || !string.IsNullOrEmpty(txtOperatorAdiAra.Text) ||
+               !string.IsNullOrEmpty(txtIsEmriNoAra.Text))
             {
                 SearchDailyProductionList();
 
@@ -1170,8 +1199,6 @@ namespace UretimTakipProgrami.Forms
             saveFileDialog1.Title = "Excel'e Kaydet";
             saveFileDialog1.FileName = "report.xlsx";
 
-            var x = dataListSearchDailyProduction.Columns[1].HeaderText;
-
             try
             {
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -1179,30 +1206,33 @@ namespace UretimTakipProgrami.Forms
                     var workbook = new XLWorkbook();
                     var worksheet = workbook.Worksheets.Add("Veri Sayfası");
 
-                    for (int i = 0; i < dataListSearchDailyProduction.Columns.Count - 3; i++)
+
+                    for (int i = 0; i < dataListSearchDailyProduction.Columns.Count - 4; i++)
                     {
                         worksheet.Cell(1, i + 1).Value = dataListSearchDailyProduction.Columns[i].HeaderText;
-                        worksheet.Cell(1, i + 1).Style.Fill.BackgroundColor = XLColor.DarkOliveGreen;
-                        worksheet.Cell(1, i + 1).Style.Font.FontColor = XLColor.White;
+                        worksheet.Cell(1, i + 1).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         worksheet.Cell(1, i + 1).Style.Font.Bold = true;
                     }
 
                     // DataGridView'deki verileri Excel'e aktar
-                    for (int j = 1; j < dataListSearchDailyProduction.Rows.Count - 3; j++)
+                    for (int j = 1; j < dataListSearchDailyProduction.Rows.Count + 1; j++)
                     {
-                        for (int k = 0; k < dataListSearchDailyProduction.Columns.Count - 3; k++)
+                        for (int k = 0; k < dataListSearchDailyProduction.Columns.Count - 4; k++)
                         {
-                            var cellValue = dataListSearchDailyProduction.Rows[j].Cells[k].Value;
+                            var cellValue = dataListSearchDailyProduction.Rows[j - 1].Cells[k].Value;
                             var cell = worksheet.Cell(j + 1, k + 1);
 
-                            if ((j % 2) == 0) // Satır numarasına göre renklendirme
-                            {
-                                cell.Style.Fill.BackgroundColor = XLColor.DarkSeaGreen;
-                            }
+                            //if ((j % 2) == 0) // Satır numarasına göre renklendirme
+                            //{
+                            //    cell.Style.Fill.BackgroundColor = XLColor.DarkSeaGreen;
+                            //}
 
                             if (cellValue != null)
                             {
-                                cell.Value = cellValue.ToString();
+                                if(k == 6 || k == 7)
+                                    cell.Value = Convert.ToInt16(cellValue);
+                                else
+                                    cell.Value = cellValue.ToString();
                             }
                             else
                             {
@@ -1235,6 +1265,80 @@ namespace UretimTakipProgrami.Forms
         private void btnOnayaGönder_MouseHover(object sender, EventArgs e)
         {
             buttonToolTip.SetToolTip(btnOnayaGönder, "İş emrini üretim sorumlusu onay ekranına gönderir.");
+        }
+
+        private void btnIsEmriNoSil_Click(object sender, EventArgs e)
+        {
+            txtIsEmriNoAra.Clear();
+        }
+
+        private void btnUrunResmiGoster_Click(object sender, EventArgs e)
+        {
+            string orderId = dataListProduction.Rows[selectedIndex3].Cells[13].Value.ToString();
+            string productId = _orderRepository.GetWhere(o => o.Id == Guid.Parse(orderId)).FirstOrDefault().ProductId.ToString();
+            string imagePath = _productRepository.GetWhere(pr => pr.Id == Guid.Parse(productId)).FirstOrDefault().ImagePath;
+
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                FrmDisplayProductImage frmDisplayProductImage = new FrmDisplayProductImage(imagePath);
+                frmDisplayProductImage.ShowDialog();
+            }
+            else
+                MessageBox.Show("Ürüne ait yüklü bir resim dosyası yok.", "Resim Dosyası Yok.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnMakinaAktar_Click(object sender, EventArgs e)
+        {
+            string productionState = dataListProduction.Rows[selectedIndex3].Cells[17].Value.ToString();
+            if (productionState != Durumlar.Uretimde)
+            {
+                string? orderId = dataListProduction.Rows[selectedIndex3].Cells[13].Value.ToString();
+                int productionQuantity = Convert.ToInt32(dataListProduction.Rows[selectedIndex3].Cells[5].Value.ToString());
+
+                if (!string.IsNullOrEmpty(orderId))
+                {
+                    FrmTransferOrderToDifferentMachine frmTransferOrderToDifferentMachine = new FrmTransferOrderToDifferentMachine(orderId, productionQuantity);
+                    frmTransferOrderToDifferentMachine.ShowDialog();
+
+                    ListeYenile(TabPageName.Page3);
+                    dataListProduction.Rows[selectedIndex3].Selected = true;
+                }
+            }
+            else
+                MessageBox.Show("Üretim işlemini durdurmadan üretimdeki iş emrini başka makinaya aktaramazsınız.", "İş emri Aktarma Hatası", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
+        }
+
+        private void btnProgramFormuAc_Click(object sender, EventArgs e)
+        {
+            frmDef = new FrmProductionDefinitions(_user);
+
+            TabControl tabControl = frmDef.Controls.Find("tabControl1", true).FirstOrDefault() as TabControl;
+
+            if (tabControl != null)
+            {
+                if (_user.IsOperator && _user.IsAdmin)
+                {
+                    tabControl.SelectedIndex = 2;
+
+                    Button button1 = frmDef.Controls.Find("btnFormuKapat1", true).FirstOrDefault() as Button;
+                    button1.Visible = true;
+
+                    Button button2 = frmDef.Controls.Find("btnFormuKapat2", true).FirstOrDefault() as Button;
+                    button2.Visible = true;
+
+                    Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
+                    button3.Visible = true;                   
+                }
+                else
+                {
+                    Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
+                    button3.Visible = true;
+                }                
+            }
+
+            frmDef.ShowDialog();
         }
     }
 }

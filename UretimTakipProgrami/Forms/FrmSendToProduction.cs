@@ -105,7 +105,7 @@ namespace UretimTakipProgrami.Forms
         {
             try
             {
-                var freeMachineId = _orderRepository
+                var machineJobList = _orderRepository
                     .GetWhere(o => o.MachineId != null && !o.IsReady && !o.IsWaiting)
                     .GroupBy(o => o.MachineId)
                     .Select(g => new
@@ -113,15 +113,30 @@ namespace UretimTakipProgrami.Forms
                         MachineId = g.Key,
                         TotalQuantity = g.Sum(o => o.Quantity)
                     })
-                    .OrderBy(g => g.TotalQuantity)
-                    .FirstOrDefault()?.MachineId;
+                    .OrderBy(g => g.TotalQuantity).ToList();
 
-                freeMachine = _machineRepository.GetWhere(m => m.Id == freeMachineId).FirstOrDefault();
+                var machineList = _machineRepository.GetAll()
+                    .Select(m => m.Id).ToList();
+
+                var result = machineList
+                    .GroupJoin(
+                        machineJobList,
+                        machineId => machineId,
+                        job => job.MachineId,
+                        (machineId, jobs) => new
+                        {
+                            MachineId = machineId,
+                            TotalQuantity = jobs.Any() ? jobs.First().TotalQuantity : 0
+                        })
+                    .OrderBy(result => result.TotalQuantity)
+                    .FirstOrDefault();
+
+                freeMachine = _machineRepository.GetWhere(m => m.Id == result.MachineId).FirstOrDefault();
             }
             catch (Exception err)
             {
                 MessageBox.Show($"Error: {err.ToString()}");
-            }  
+            }
         }
 
         private void SetListTezgahSelectedItem(string freeMachine)
@@ -140,7 +155,6 @@ namespace UretimTakipProgrami.Forms
         {
             GetMachineList();
             GetUserList();
-            GetFreeMachine();
 
             if (listAyarOperator.Items.Count > 0)
                 listAyarOperator.SelectedIndex = 0;
@@ -148,7 +162,8 @@ namespace UretimTakipProgrami.Forms
             currentOrder = _orderRepository.GetWhere(o => o.Id == Guid.Parse(orderId)).FirstOrDefault();
 
             GetFreeMachine();
-            SetListTezgahSelectedItem(freeMachine.Name);
+            if (freeMachine != null)
+                SetListTezgahSelectedItem(freeMachine.Name);
         }
 
         private void listTezgah_KeyPress(object sender, KeyPressEventArgs e)
@@ -191,7 +206,7 @@ namespace UretimTakipProgrami.Forms
             catch (Exception err)
             {
                 MessageBox.Show($"Error: {err.ToString()}");
-            }            
+            }
         }
 
         private void btnIptal_Click(object sender, EventArgs e)
@@ -203,31 +218,31 @@ namespace UretimTakipProgrami.Forms
         {
             var results = PredictMachine(0.01f, 50, 3, false);
 
-            if (results != null) 
+            if (results != null)
             {
-                if (results[1] != results[0])
+                if (results[0].ToString() != listTezgah.Text)
                 {
                     DialogResult tezgahCevap = MessageBox.Show($"Uygun Boş Tezgah : {freeMachine.Name}\n" +
                                 $"Tavsiye Edilen Tezgah : {results[0]}\n" +
-                                $"Tahmin Doğruluğu: {Convert.ToSingle(results[1]) * 100:F2} %\n\n" +
+                                //$"Tahmin Doğruluğu: {Convert.ToSingle(results[1]) * 100:F2} %\n\n" +
                                 $"Tavsiye edilen {results[0]} tezgahını seçmek istiyor musunuz?",
                                 "Tezgah Bilgisi",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (tezgahCevap == DialogResult.Yes)
-                        SetListTezgahSelectedItem(results[1].ToString());
+                        SetListTezgahSelectedItem(results[0].ToString());
                 }
                 else
-                    MessageBox.Show($"Tavsiye edilen tezgah şu an seçili olan {freeMachine.Name} tezgahıdır.\n" +
+                    MessageBox.Show($"Tavsiye edilen tezgah şu an seçili olan {listTezgah.Text} tezgahıdır.\n" +
                                 $"Tahmin Doğruluğu: {Convert.ToSingle(results[1]) * 100:F2} %\n",
                                 "Tezgah Bilgisi",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }              
+            }
             else
             {
                 MessageBox.Show($"Yeterli veri yok. Tezgahı manuel olarak seçiniz.", "Tezgah Bilgisi",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
-            } 
+            }
         }
 
         private List<Production> GetProductionDataForPrediction(int dataOfPastMonths)
@@ -254,7 +269,7 @@ namespace UretimTakipProgrami.Forms
                 List<MachineData> data = new List<MachineData>();
                 List<object> results = new List<object>();
 
-                if (productions.Count > 30) 
+                if (productions.Count > 30)
                 {
                     foreach (var pr in productions)
                     {
@@ -293,7 +308,6 @@ namespace UretimTakipProgrami.Forms
                     //        writer.WriteLine(line);
                     //    }
                     //}
-
 
                     IDataView dataView = mlContext.Data.LoadFromEnumerable(data);
 
@@ -350,7 +364,7 @@ namespace UretimTakipProgrami.Forms
 
                     var predictedMachineId = prediction.PredictedMachineID.ToString();
 
-                    var predictedMachineName = _machineRepository.GetWhere(m => m.Id == Guid.Parse(predictedMachineId)).FirstOrDefault().Name; 
+                    var predictedMachineName = _machineRepository.GetWhere(m => m.Id == Guid.Parse(predictedMachineId)).FirstOrDefault().Name;
 
                     results.Add(predictedMachineName);
                     results.Add(metrics.MicroAccuracy);
@@ -370,6 +384,19 @@ namespace UretimTakipProgrami.Forms
         private void btnUygunTezgahSec_MouseHover(object sender, EventArgs e)
         {
             buttonToolTip.SetToolTip(btnUygunTezgahSec, "Oluşturulan iş emrinin üretimi için uygun olan makinayı belirtir.");
+        }
+
+        private void FrmSendToProduction_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+                btnKaydet_Click(sender, e);
+            else if (e.KeyChar == (char)Keys.Escape)
+                btnIptal_Click(sender, e);
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

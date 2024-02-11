@@ -184,6 +184,7 @@
             label2.Size = new Size(358, 21);
             label2.TabIndex = 1;
             label2.Text = "Tezgah ve Ayar Yapacak Operatör Seçimi";
+            label2.Click += label2_Click;
             // 
             // FrmSendToProduction
             // 
@@ -196,6 +197,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmSendToProduction";
             Load += FrmSendToProduction_Load;
+            KeyPress += FrmSendToProduction_KeyPress;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
