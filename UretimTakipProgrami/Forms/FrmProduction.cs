@@ -308,11 +308,11 @@ namespace UretimTakipProgrami.Forms
             DateTime? bitisTarih = null;
 
             string arananIsEmriNo = txtIsEmriNoAra.Text;
-            string arananMusteri = txtMusteriAdiAra.Text;
-            string arananUrun = txtUrunAdiAra.Text;
+            string arananMusteri = txtMusteriAdiAra.Text.ToLower();
+            string arananUrun = txtUrunAdiAra.Text.ToLower();
 
-            string arananTezgah = txtTezgahAdiAra.Text;
-            string arananOperator = txtOperatorAdiAra.Text;
+            string arananTezgah = txtTezgahAdiAra.Text.ToUpper();
+            string arananOperator = txtOperatorAdiAra.Text.ToLower();
 
             if (DateTime.TryParse(txtBaslangicTarihi.Text, out var parsedBaslangicTarihi))
             {
@@ -351,10 +351,10 @@ namespace UretimTakipProgrami.Forms
                 (!baslangicTarih.HasValue || pr.productionStartDate.Date >= baslangicTarih) &&
                 (!bitisTarih.HasValue || (pr.productionFinishDate.HasValue && pr.productionFinishDate.Value.Date <= bitisTarih.Value)) &&
                 (string.IsNullOrEmpty(arananIsEmriNo) || pr.OrderCode == arananIsEmriNo) &&
-                (string.IsNullOrEmpty(arananTezgah) || pr.machineName.ToLower().Contains(arananTezgah)) &&
+                (string.IsNullOrEmpty(arananTezgah) || pr.machineName.ToUpper().Contains(arananTezgah)) &&
                 (string.IsNullOrEmpty(arananOperator) || pr.producedOperatorName.ToLower().Contains(arananOperator)) &&
-                (string.IsNullOrEmpty(arananMusteri) || pr.customerName.ToLower().Contains(arananMusteri.ToLower())) &&
-                (string.IsNullOrEmpty(arananUrun) || pr.productName.ToLower().Contains(arananUrun.ToLower())))
+                (string.IsNullOrEmpty(arananMusteri) || pr.customerName.ToLower().Contains(arananMusteri)) &&
+                (string.IsNullOrEmpty(arananUrun) || pr.productName.ToLower().Contains(arananUrun)))
             .OrderBy(pr => pr.OrderCode)
             .ThenBy(pr => pr.productionFinishDate)
             .ToList();
@@ -662,7 +662,7 @@ namespace UretimTakipProgrami.Forms
                 dataListSearchDailyProduction.Columns[12].HeaderText = "Program Adı";
                 dataListSearchDailyProduction.Columns[12].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dataListSearchDailyProduction.Columns[12].Visible = false; // Program Number
-                
+
                 dataListSearchDailyProduction.Columns[13].Visible = false; // OrderId
                 dataListSearchDailyProduction.Columns[14].Visible = false; // IsStarted
                 dataListSearchDailyProduction.Columns[15].Visible = false; // ProductionId
@@ -671,6 +671,9 @@ namespace UretimTakipProgrami.Forms
 
         private void OrderDataGridTextAktar()
         {
+            if (selectedIndex1 >= dataListOrder.RowCount)
+                selectedIndex1 = dataListOrder.RowCount - 1;
+
             if (selectedIndex1 >= 0 && dataListOrder.RowCount > 0)
             {
                 txtIsEmriNo1.Text = dataListOrder.Rows[selectedIndex1].Cells[0].Value.ToString();
@@ -1229,7 +1232,7 @@ namespace UretimTakipProgrami.Forms
 
                             if (cellValue != null)
                             {
-                                if(k == 6 || k == 7)
+                                if (k == 6 || k == 7)
                                     cell.Value = Convert.ToInt16(cellValue);
                                 else
                                     cell.Value = cellValue.ToString();
@@ -1329,13 +1332,13 @@ namespace UretimTakipProgrami.Forms
                     button2.Visible = true;
 
                     Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
-                    button3.Visible = true;                   
+                    button3.Visible = true;
                 }
                 else
                 {
                     Button button3 = frmDef.Controls.Find("btnFormuKapat3", true).FirstOrDefault() as Button;
                     button3.Visible = true;
-                }                
+                }
             }
 
             frmDef.ShowDialog();

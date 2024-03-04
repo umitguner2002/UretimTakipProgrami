@@ -294,7 +294,7 @@
             pnlContent.Location = new Point(244, 102);
             pnlContent.Margin = new Padding(4, 3, 4, 3);
             pnlContent.Name = "pnlContent";
-            pnlContent.Size = new Size(1110, 515);
+            pnlContent.Size = new Size(1090, 515);
             pnlContent.TabIndex = 2;
             // 
             // pnlDesktop
@@ -312,7 +312,7 @@
             pnlDesktop.Location = new Point(0, 6);
             pnlDesktop.Margin = new Padding(4, 3, 4, 3);
             pnlDesktop.Name = "pnlDesktop";
-            pnlDesktop.Size = new Size(1110, 509);
+            pnlDesktop.Size = new Size(1090, 509);
             pnlDesktop.TabIndex = 1;
             // 
             // panel3
@@ -594,7 +594,7 @@
             pnlShadow.Location = new Point(0, 0);
             pnlShadow.Margin = new Padding(4, 3, 4, 3);
             pnlShadow.Name = "pnlShadow";
-            pnlShadow.Size = new Size(1110, 6);
+            pnlShadow.Size = new Size(1090, 6);
             pnlShadow.TabIndex = 0;
             // 
             // lblTime
@@ -626,7 +626,7 @@
             pnlFooter.Location = new Point(244, 617);
             pnlFooter.Margin = new Padding(4, 3, 4, 3);
             pnlFooter.Name = "pnlFooter";
-            pnlFooter.Size = new Size(1110, 44);
+            pnlFooter.Size = new Size(1090, 44);
             pnlFooter.TabIndex = 3;
             // 
             // pnlStatus
@@ -644,7 +644,7 @@
             pnlStatus.Location = new Point(244, 0);
             pnlStatus.Margin = new Padding(4, 3, 4, 3);
             pnlStatus.Name = "pnlStatus";
-            pnlStatus.Size = new Size(1110, 102);
+            pnlStatus.Size = new Size(1090, 102);
             pnlStatus.TabIndex = 0;
             pnlStatus.MouseDoubleClick += pnlStatus_MouseDoubleClick;
             pnlStatus.MouseDown += pnlStatus_MouseDown;
@@ -698,7 +698,7 @@
             btnCikis.IconColor = Color.Gainsboro;
             btnCikis.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnCikis.IconSize = 24;
-            btnCikis.Location = new Point(1063, 7);
+            btnCikis.Location = new Point(1043, 7);
             btnCikis.Margin = new Padding(4, 3, 4, 3);
             btnCikis.Name = "btnCikis";
             btnCikis.Size = new Size(35, 35);
@@ -715,7 +715,7 @@
             btnKucult.IconColor = Color.Gainsboro;
             btnKucult.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnKucult.IconSize = 24;
-            btnKucult.Location = new Point(978, 7);
+            btnKucult.Location = new Point(958, 7);
             btnKucult.Margin = new Padding(4, 3, 4, 3);
             btnKucult.Name = "btnKucult";
             btnKucult.Size = new Size(35, 35);
@@ -732,7 +732,7 @@
             btnTamEkran.IconColor = Color.Gainsboro;
             btnTamEkran.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnTamEkran.IconSize = 24;
-            btnTamEkran.Location = new Point(1021, 7);
+            btnTamEkran.Location = new Point(1001, 7);
             btnTamEkran.Margin = new Padding(4, 3, 4, 3);
             btnTamEkran.Name = "btnTamEkran";
             btnTamEkran.Size = new Size(35, 35);
@@ -745,14 +745,14 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(26, 25, 62);
-            ClientSize = new Size(1354, 661);
+            ClientSize = new Size(1334, 661);
             Controls.Add(pnlContent);
             Controls.Add(pnlStatus);
             Controls.Add(pnlFooter);
             Controls.Add(pnlSideBar);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 3, 4, 3);
-            MinimumSize = new Size(1370, 700);
+            MinimumSize = new Size(1350, 700);
             Name = "FrmMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmMain";

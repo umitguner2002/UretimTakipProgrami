@@ -186,6 +186,15 @@ namespace UretimTakipProgrami.Forms
                 btnTezgahOperator.Visible = true;
                 btnKullanici.Visible = true;
             }
+            else if (u.IsManager)
+            {
+                btnUrun.Visible = true;
+                btnMusteri.Visible = true;
+                btnSiparis.Visible = true;
+                btnUretim.Visible = true;
+                btnTezgahOperator.Visible = true;
+                btnKullanici.Visible = false;
+            }
             else if (u.IsOperator)
             {
                 btnUrun.Visible = false;

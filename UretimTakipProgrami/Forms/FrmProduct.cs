@@ -132,7 +132,7 @@ namespace UretimTakipProgrami.Forms
                     {
                         if (!string.IsNullOrEmpty(imageSourcePath))
                         {
-                            imageName = $"{txtUrunAdi.Text}.jpg";
+                            imageName = $"{txtUrunAdi.Text.ToUpper()}.jpg";
                             imageTargetPath = Path.Combine(Path.Combine(Application.StartupPath, $"Files\\Images"), imageName);
                         }
 
@@ -200,6 +200,9 @@ namespace UretimTakipProgrami.Forms
                             {
                                 product.ImageName = string.Empty;
                                 product.ImagePath = string.Empty;
+
+                                if(!string.IsNullOrEmpty(imageTargetPath))
+                                    File.Delete(imageTargetPath);
                             }
                             else
                             {

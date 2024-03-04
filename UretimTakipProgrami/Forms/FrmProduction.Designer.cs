@@ -190,7 +190,7 @@ namespace UretimTakipProgrami.Forms
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1092, 583);
+            tabControl1.Size = new Size(1037, 583);
             tabControl1.TabIndex = 0;
             tabControl1.DrawItem += tabControl1_DrawItem;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
@@ -203,7 +203,7 @@ namespace UretimTakipProgrami.Forms
             tabPage1.Location = new Point(4, 44);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1084, 535);
+            tabPage1.Size = new Size(1029, 535);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Tezgah / Makina Seçimi";
             // 
@@ -214,7 +214,7 @@ namespace UretimTakipProgrami.Forms
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(3, 185);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1078, 347);
+            panel1.Size = new Size(1023, 347);
             panel1.TabIndex = 3;
             // 
             // dataListOrder
@@ -250,7 +250,7 @@ namespace UretimTakipProgrami.Forms
             dataListOrder.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataListOrder.RowTemplate.Height = 25;
             dataListOrder.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataListOrder.Size = new Size(1078, 314);
+            dataListOrder.Size = new Size(1023, 314);
             dataListOrder.TabIndex = 0;
             dataListOrder.CellClick += listOrder_CellClick;
             // 
@@ -265,7 +265,7 @@ namespace UretimTakipProgrami.Forms
             pnlStatus1.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             pnlStatus1.Location = new Point(0, 0);
             pnlStatus1.Name = "pnlStatus1";
-            pnlStatus1.Size = new Size(1078, 33);
+            pnlStatus1.Size = new Size(1023, 33);
             pnlStatus1.TabIndex = 1;
             pnlStatus1.Resize += pnlStatus1_Resize;
             // 
@@ -275,7 +275,7 @@ namespace UretimTakipProgrami.Forms
             lblKayitSayisi.AutoSize = true;
             lblKayitSayisi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblKayitSayisi.ForeColor = Color.WhiteSmoke;
-            lblKayitSayisi.Location = new Point(903, 9);
+            lblKayitSayisi.Location = new Point(848, 9);
             lblKayitSayisi.Margin = new Padding(4, 0, 4, 0);
             lblKayitSayisi.Name = "lblKayitSayisi";
             lblKayitSayisi.Size = new Size(129, 14);
@@ -312,7 +312,7 @@ namespace UretimTakipProgrami.Forms
             label16.AutoSize = true;
             label16.Font = new Font("Tahoma", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             label16.ForeColor = Color.WhiteSmoke;
-            label16.Location = new Point(439, 7);
+            label16.Location = new Point(384, 7);
             label16.Name = "label16";
             label16.Size = new Size(187, 16);
             label16.TabIndex = 1;
@@ -350,7 +350,7 @@ namespace UretimTakipProgrami.Forms
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(3, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1078, 182);
+            panel2.Size = new Size(1023, 182);
             panel2.TabIndex = 6;
             // 
             // groupBox1
@@ -1864,7 +1864,7 @@ namespace UretimTakipProgrami.Forms
             AutoScaleDimensions = new SizeF(7F, 14F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(175, 174, 209);
-            ClientSize = new Size(1092, 583);
+            ClientSize = new Size(1037, 583);
             Controls.Add(tabControl1);
             Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             MinimumSize = new Size(800, 283);

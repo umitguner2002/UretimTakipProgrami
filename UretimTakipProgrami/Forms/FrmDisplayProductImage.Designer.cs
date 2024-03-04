@@ -49,6 +49,7 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
+            pictureBox1.LoadCompleted += pictureBox1_LoadCompleted;
             // 
             // panel1
             // 
@@ -83,6 +84,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmDisplayProductImage";
             Load += FrmDisplayProductImage_Load;
+            Shown += FrmDisplayProductImage_Shown;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);

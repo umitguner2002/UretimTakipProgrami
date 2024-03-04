@@ -274,7 +274,7 @@
             // 
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { seçiliÜrünİçinİşEmriOluşturToolStripMenuItem });
             contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(258, 48);
+            contextMenuStrip1.Size = new Size(258, 26);
             // 
             // seçiliÜrünİçinİşEmriOluşturToolStripMenuItem
             // 
@@ -466,6 +466,7 @@
             pnlArama.Name = "pnlArama";
             pnlArama.Size = new Size(1126, 95);
             pnlArama.TabIndex = 1;
+            pnlArama.Resize += pnlArama_Resize;
             // 
             // checkAcilAra
             // 
@@ -703,7 +704,7 @@
             lblKayitSayisi.AutoSize = true;
             lblKayitSayisi.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblKayitSayisi.ForeColor = Color.Gainsboro;
-            lblKayitSayisi.Location = new Point(981, 11);
+            lblKayitSayisi.Location = new Point(1034, 12);
             lblKayitSayisi.Margin = new Padding(4, 0, 4, 0);
             lblKayitSayisi.Name = "lblKayitSayisi";
             lblKayitSayisi.Size = new Size(69, 14);
@@ -1108,7 +1109,6 @@
             Controls.Add(grpboxUrunAra);
             Controls.Add(panel1);
             Margin = new Padding(4, 3, 4, 3);
-            MinimumSize = new Size(1150, 650);
             Name = "FrmOrder";
             Text = "Siparişler";
             Load += FrmOrder_Load;

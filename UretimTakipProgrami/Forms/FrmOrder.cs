@@ -208,7 +208,7 @@ namespace UretimTakip.Forms
                      uretimDurumu == 3 ? order.IsReady :
                      order.IsWaiting || order.IsProduction || order.IsReady) &&
                     (string.IsNullOrEmpty(arananIsEmriNo) || order.OrderCode == arananIsEmriNo) &&
-                    (string.IsNullOrEmpty(arananMusteri) || order.customerName.ToLower().Contains(arananMusteri.ToLower())) &&
+                    (string.IsNullOrEmpty(arananMusteri) || order.customerName.Contains(arananMusteri.ToUpper())) &&
                     (string.IsNullOrEmpty(arananUrun) || order.productName.ToLower().Contains(arananUrun.ToLower())))
                 .OrderBy(order => order.orderCreatedDate)
                 .ToList();
@@ -218,6 +218,7 @@ namespace UretimTakip.Forms
                 dataGridView1.DataSource = orderList.ToList();
                 contextMenuStrip1.Items[0].Enabled = true;
                 SetDataGridSettings();
+                BaslikKayitEtiketLocation();
             }
             else
             {
@@ -386,15 +387,14 @@ namespace UretimTakip.Forms
                                 order.OrderCode = txtIsEmriNo.Text;
                                 order.Quantity = Convert.ToInt32(txtMiktar.Value);
                                 order.Description = txtAciklama.Text.ToUpper();
-                                order.DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date;
+                                order.DeliveryDate = Convert.ToDateTime(txtTeslimTarihi.Value).ToUniversalTime().Date.AddDays(1);
                                 order.ProductId = Guid.Parse(listUrunAdi.SelectedValue.ToString());
                                 order.CustomerId = Guid.Parse(listMusteriAdi.SelectedValue.ToString());
                                 order.IsUrgent = checkAcil.Checked ? true : false;
 
                                 _orderRepository.Save();
 
-                                txtUrunAdiAra.Text = _productRepository.GetWhere(p => p.Id == order.ProductId).FirstOrDefault().Name;
-                                txtMusteriAdiAra.Text = _customerRepository.GetWhere(c => c.Id == order.CustomerId).FirstOrDefault().Name;
+                                txtIsEmriNoAra.Text = order.OrderCode;
                                 GetOrderList();
                                 SetDataGridSettings();
 
@@ -796,7 +796,8 @@ namespace UretimTakip.Forms
 
         private void FrmOrder_Load(object sender, EventArgs e)
         {
-            listİsEmriDurum.SelectedIndex = 0;            
+            listİsEmriDurum.SelectedIndex = 0;
+            BaslikKayitEtiketLocation();
         }
 
         private void seçiliÜrünİçinİşEmriOluşturToolStripMenuItem_Click(object sender, EventArgs e)
@@ -822,6 +823,16 @@ namespace UretimTakip.Forms
                     DataGridTextAktar();
                 }
             }
+        }
+
+        private void BaslikKayitEtiketLocation()
+        {
+            lblKayitSayisi.Left = (pnlArama.Width - lblKayitSayisi.Width - 20);
+        }
+
+        private void pnlArama_Resize(object sender, EventArgs e)
+        {
+            BaslikKayitEtiketLocation();
         }
     }
 }
